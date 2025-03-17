@@ -66,7 +66,6 @@
                             </div>
                         </div>
 
-
                         <div class="col-lg-12 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.product name') }}</label>
@@ -431,6 +430,12 @@
             var dueAmount = grandTotal - paidAmount;
 
             $(".due_amount").val(dueAmount);
+
+            if (dueAmount != 0) {
+                $('#due_date').attr('required', true);
+            } else {
+                $('#due_date').attr('required', false);
+            }
         });
 
         $(document).ready(function() {
@@ -442,7 +447,7 @@
             $('#due_amount').on('blur', function() {
                 let dueAmount = parseFloat($(this).val().trim()); // Get value & convert to number
 
-                if (!isNaN(dueAmount) && dueAmount > 0) {
+                if (!isNaN(dueAmount) && dueAmount != 0) {
                     $('#due_date').attr('required', true); // Add required if amount > 0
                 } else {
                     $('#due_date').removeAttr('required'); // Remove required if amount is 0 or empty

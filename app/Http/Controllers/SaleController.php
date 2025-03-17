@@ -28,9 +28,11 @@ class SaleController extends Controller
         $product = Product::latest()->get();
         $customer = Customer::latest()
             ->with(['sales' => function ($q) {
-                $q->select('grandtotal',
+                $q->select(
+                    'grandtotal',
                     'paid_amount',
-                    'due_amount');
+                    'due_amount'
+                );
             }])
             ->get();
         $warehouse = Warehouse::latest()->get();
@@ -64,10 +66,9 @@ class SaleController extends Controller
             'search' => 'required',
         ]);
 
-        $products = Product::where('name', 'LIKE', '%'.$request->search.'%')->paginate(10);
+        $products = Product::where('name', 'LIKE', '%' . $request->search . '%')->paginate(10);
 
         return view('admin.search-result', compact('products'));
-
     }
 
     public function findProducts(Request $request)
@@ -80,16 +81,15 @@ class SaleController extends Controller
         $authId = Auth::user()->id;
 
         $products = Product::where(function ($query) use ($request) {
-            $query->where('product_code', 'LIKE', '%'.$request->search.'%');
+            $query->where('product_code', 'LIKE', '%' . $request->search . '%');
         })->orWhere(function ($query) use ($request) {
-            $query->where('name', 'LIKE', '%'.$request->search.'%')
+            $query->where('name', 'LIKE', '%' . $request->search . '%')
                 ->where('quantity', '>', 0);
         })
             ->where('status', 'active')
             ->take(5)->get();
 
         return view('admin.search-product', compact('products'));
-
     }
 
     public function store(Request $request)
@@ -97,7 +97,7 @@ class SaleController extends Controller
 
         // return $request->all();
 
-        // dd($request->all());
+        dd($request->all());
 
         // $request->validate([
         // 'customer_id'=> 'required|max:255',
@@ -117,9 +117,9 @@ class SaleController extends Controller
         // dd($request->all());
         // make barcode
         $ref_code = 100 + Sale::count();
-        $barCodeName = $ref_code.'.png';
+        $barCodeName = $ref_code . '.png';
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($ref_code, 'C39+'));
-        $barCodeSavePath = 'upload/barcode/'.$barCodeName;
+        $barCodeSavePath = 'upload/barcode/' . $barCodeName;
         Storage::disk('public_uploads')->put($barCodeName, $barcodeFile);
 
         $sale = Sale::create([
@@ -175,12 +175,10 @@ class SaleController extends Controller
             ]);
 
             Product::where('id', $request->product_id[$i])->decrement('quantity', $request->quantity[$i]);
-
         }
         session()->flash('sale_id', $sale->id);
 
         return Redirect()->route('sale.index')->with('success', 'Sale Added');
-
     }
 
     public function edit($sale_id)
@@ -211,9 +209,9 @@ class SaleController extends Controller
         // dd($request->all());
 
         // make barcode
-        $barCodeName = $request->ref_code.'.png';
+        $barCodeName = $request->ref_code . '.png';
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($request->ref_code, 'C39+'));
-        $barCodeSavePath = 'upload/barcode/'.$barCodeName;
+        $barCodeSavePath = 'upload/barcode/' . $barCodeName;
         Storage::disk('public_uploads')->put($barCodeName, $barcodeFile);
 
         Sale::findOrFail($id)->update([
@@ -267,21 +265,22 @@ class SaleController extends Controller
     {
         $randomNumber = random_int(100000, 999999);
 
-        $sale->
-                  with(['customer' => function ($query) {
-                      $query->select('id', 'name', 'email', 'address');
-                  },
-                      'warehouse' => function ($query) {
-                          $query->select('id', 'name', 'email', 'address');
-                      },
+        $sale->with([
+                'customer' => function ($query) {
+                    $query->select('id', 'name', 'email', 'address');
+                },
+                'warehouse' => function ($query) {
+                    $query->select('id', 'name', 'email', 'address');
+                },
 
-                      'items' => function ($query) {
-                          $query->select('id', 'sale_id', 'product_id', 'quantity', 'sub_total');
-                      },
+                'items' => function ($query) {
+                    $query->select('id', 'sale_id', 'product_id', 'quantity', 'sub_total');
+                },
 
-                      'items.product' => function ($query) {
-                          $query->select('id', 'name');
-                      }])->first();
+                'items.product' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])->first();
 
         $pdf = Pdf::loadView('admin.sales.print-page', compact('sale', 'randomNumber'));
 
@@ -295,9 +294,10 @@ class SaleController extends Controller
 
     public function generateChallanPDF(Sale $sale)
     {
-        $sale->with(['customer' => function ($query) {
-            $query->select('id', 'name', 'email', 'address');
-        },
+        $sale->with([
+            'customer' => function ($query) {
+                $query->select('id', 'name', 'email', 'address');
+            },
             'warehouse' => function ($query) {
                 $query->select('id', 'name', 'email', 'address');
             },
@@ -308,11 +308,12 @@ class SaleController extends Controller
 
             'items.product' => function ($query) {
                 $query->select('id', 'name');
-            }])->first();
+            }
+        ])->first();
         // return view('admin.sales.print-challan-page', compact('sale'));
         $pdf = Pdf::loadView('admin.sales.print-challan-page', compact('sale'));
 
-        return $pdf->download('challan - '.$sale->ref_code.'.pdf');
+        return $pdf->download('challan - ' . $sale->ref_code . '.pdf');
 
         // return $pdf->download('codesolutionstuff.pdf');
         // return view('admin.sales.print-page');
