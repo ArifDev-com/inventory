@@ -9,6 +9,8 @@ use App\Models\CutomerPayment;
 use App\Models\Order_emi;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Quotation;
+use App\Models\QuotationItem;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Warehouse;
@@ -97,7 +99,7 @@ class SaleController extends Controller
 
         // return $request->all();
 
-        dd($request->all());
+        // dd($request->all());
 
         // $request->validate([
         // 'customer_id'=> 'required|max:255',
@@ -266,21 +268,21 @@ class SaleController extends Controller
         $randomNumber = random_int(100000, 999999);
 
         $sale->with([
-                'customer' => function ($query) {
-                    $query->select('id', 'name', 'email', 'address');
-                },
-                'warehouse' => function ($query) {
-                    $query->select('id', 'name', 'email', 'address');
-                },
+            'customer' => function ($query) {
+                $query->select('id', 'name', 'email', 'address');
+            },
+            'warehouse' => function ($query) {
+                $query->select('id', 'name', 'email', 'address');
+            },
 
-                'items' => function ($query) {
-                    $query->select('id', 'sale_id', 'product_id', 'quantity', 'sub_total');
-                },
+            'items' => function ($query) {
+                $query->select('id', 'sale_id', 'product_id', 'quantity', 'sub_total');
+            },
 
-                'items.product' => function ($query) {
-                    $query->select('id', 'name');
-                }
-            ])->first();
+            'items.product' => function ($query) {
+                $query->select('id', 'name');
+            }
+        ])->first();
 
         $pdf = Pdf::loadView('admin.sales.print-page', compact('sale', 'randomNumber'));
 
@@ -329,5 +331,34 @@ class SaleController extends Controller
         $sale = Sale::with(['items.product', 'customer'])->findOrFail($sale_id);
 
         return view('admin.sales.sale-details', compact('customers', 'product', 'sale', 'warehouses'));
+    }
+
+    public function quotation_store(Request $request)
+    {
+        // dd($request->all());
+
+        $quotation = Quotation::create([
+            'customer_id' => $request->customer_id,
+            'date' => $request->date,
+            'discount' => $request->discount ?? 0,
+            'grandtotal' => $request->grand_total,
+            'warehouse_id' => $request->warehouse_id ?? 0,
+            'description' => $request->description ?? '',
+            'ref_code' => $request->ref_code ?? 0,
+            'status' => 'pending'
+        ]);
+
+        $quotationItem = new QuotationItem;
+
+        foreach ($request->product_id as $key => $value) {
+            $quotationItem::create([
+                'quotation_id' => $quotation->id,
+                'product_id' => $value,
+                'quantity' => $request->quantity[$key],
+                'sub_total' => $request->sub_total[$key],
+            ]);
+        }
+
+        return back();
     }
 }

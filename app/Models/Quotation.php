@@ -9,8 +9,7 @@ class Quotation extends Model
 {
     use HasFactory;
 
-        
-    protected $fillable=[
+    protected $fillable = [
         'customer_id',
         'warehouse_id',
         'date',
@@ -24,17 +23,20 @@ class Quotation extends Model
     ];
 
 
-    public function customer(){
-        return $this->belongsTo(Customer::class,'customer_id');
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-    public function warehouse(){
-        return $this->belongsTo(Warehouse::class,'warehouse_id');
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
 
-  
 
-    public function items(){
+
+    public function items()
+    {
         return $this->hasMany(QuotationItem::class);
     }
 }

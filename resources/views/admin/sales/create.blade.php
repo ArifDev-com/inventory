@@ -23,7 +23,7 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('sale.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('sale.store') }}" id="sale_store" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-lg-3 col-sm-6 col-12">
@@ -173,7 +173,8 @@
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.due amount') }}</label>
-                                <input type="text" name="due_amount" class="due_amount" id="due_amount" value="0">
+                                <input type="text" name="due_amount" class="due_amount" id="due_amount"
+                                    value="0">
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
@@ -196,7 +197,8 @@
                             <a href="" class="btn btn-cancel">{{ trans('form.sale.cancel') }}</a>
                             <a href="#" onclick="checkout()" class="btn btn-warning"
                                 style="padding: 13px 25px; margin: 0px 10px;">Checkout</a>
-                            <a href="" class="btn btn-success" style="padding: 13px 25px;">Quotation</a>
+                            <button href="" class="btn btn-success" id="quotation_add"
+                                style="padding: 13px 25px;">Quotation</button>
                         </div>
                     </div>
                 </form>
@@ -452,6 +454,24 @@
                 } else {
                     $('#due_date').removeAttr('required'); // Remove required if amount is 0 or empty
                 }
+            });
+
+            $('#quotation_add').on('click', function() {
+                let formData = $('#sale_store').serialize(); // Converts form fields into a query string
+
+                $.ajax({
+                    url: "{{ route('quotation.store') }}", // Replace with your actual route
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        alert("Form submitted successfully!");
+                        console.log(response); // Handle response here
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error submitting form.");
+                        console.error(xhr.responseText); // Debugging error
+                    }
+                });
             });
         });
 

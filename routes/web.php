@@ -40,7 +40,6 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/forgot/password', [App\Http\Controllers\LoginController::class, 'forgotPassword'])->name('forgot.password');
     Route::post('/otp/new/password', [App\Http\Controllers\LoginController::class, 'updateOtp'])->name('update.otp');
     Route::post('/reset/password', [App\Http\Controllers\LoginController::class, 'updateResetPassword'])->name('update.reset.password');
-
 });
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
@@ -416,6 +415,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/find-products', [App\Http\Controllers\SaleController::class, 'findProducts'])->name('find.products');
 
+    Route::post('/quotation-store', [App\Http\Controllers\SaleController::class, 'quotation_store'])->name('quotation.store');
+
     // Transfer here
 
     Route::get('/transfers', [App\Http\Controllers\TransferController::class, 'index'])->name('transfer.index');
@@ -573,14 +574,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/shopDocuments', [App\Http\Controllers\ShopDocumentController::class, 'index'])->name('shopDocument.index');
 
-    Route::get('/shopDocument/create',[App\Http\Controllers\ShopDocumentController::class, 'create'])->name('shopDocument.create');
+    Route::get('/shopDocument/create', [App\Http\Controllers\ShopDocumentController::class, 'create'])->name('shopDocument.create');
 
-    Route::post('/shopDocument/store',[App\Http\Controllers\ShopDocumentController::class, 'store'])->name('shopDocument.store');
+    Route::post('/shopDocument/store', [App\Http\Controllers\ShopDocumentController::class, 'store'])->name('shopDocument.store');
 
-    Route::get('/shopDocument/edit/{shopDoc_id}',[App\Http\Controllers\ShopDocumentController::class, 'edit'])->name('shopDocument.edit');
+    Route::get('/shopDocument/edit/{shopDoc_id}', [App\Http\Controllers\ShopDocumentController::class, 'edit'])->name('shopDocument.edit');
 
-    Route::post('/shopDocument/update/{id}',[App\Http\Controllers\ShopDocumentController::class, 'update'])->name('shopDocument.update');
+    Route::post('/shopDocument/update/{id}', [App\Http\Controllers\ShopDocumentController::class, 'update'])->name('shopDocument.update');
 
-    Route::delete('/shopDocument/delete/{shopDocument}',[App\Http\Controllers\ShopDocumentController::class, 'destroy'])->name('shopDocument.delete');
-
+    Route::delete('/shopDocument/delete/{shopDocument}', [App\Http\Controllers\ShopDocumentController::class, 'destroy'])->name('shopDocument.delete');
 });
