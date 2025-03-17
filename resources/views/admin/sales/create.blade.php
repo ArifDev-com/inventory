@@ -1,0 +1,504 @@
+@extends('layouts.app')
+@section('content')
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<style>
+    select.link {
+        border: none;
+        background-color: transparent;
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>{{ trans('sidebar.sale.create.add sale') }}</h4>
+                <h6>{{ trans('sidebar.sale.create.add your new sale') }}</h6>
+            </div>
+            <a href="{{ route('sale.index') }}" class="btn btn-info">{{ trans('sidebar.sale.create.back') }}</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('sale.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.customer') }}</label>
+                            <div class="row">
+                                <div class="col-lg-10 col-sm-10 col-10">
+                                    <select class="select2" id="selectpicker" name="customer_id" required
+                                        onchange="showCustomerDue()" onclick="showCustomerDue()">
+                                        <option value="">Select Customer</option>
+                                        @foreach ($customers as $customer)
+                                        <option value="{{ $customer->id }}"
+                                            @if (session('auto_customer_id') == $customer->id)
+                                                selected
+                                            @endif
+                                            >{{ $customer->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div id="customerDue" class="mt-1 text-danger"></div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                    <div class="add-icon">
+                                        <span><img src="{{asset('backend')}}/img/icons/plus1.svg" data-bs-toggle="modal"
+                                                data-bs-target="#create" alt="img"></span>
+                                        {{-- <a href="javascript:void(0);" class="btn btn-adds" data-bs-toggle="modal"
+                                            data-bs-target="#create"><i class="fa fa-plus me-2"></i></a> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.sale date') }}</label>
+                            <div class="input-groupicon">
+                                <input type="date" class="form-control" name="date" placeholder="Choose Date"
+                                    value="<?php echo date("Y-m-d");?>" >
+                                {{-- <a class="addonset">
+                                    <img src="{{asset('backend')}}/img/icons/calendars.svg" alt="img">
+                                </a> --}}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-12 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.product name') }}</label>
+                            <div class="input-groupicon">
+
+                                <input type="text" id="search" placeholder="Please type product code and select..."
+                                    autocomplete="off">
+                                <div class="addonset">
+                                    <img src="{{asset('backend')}}/img/icons/scanners.svg" alt="img">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="suggestProduct"></div>
+                </div>
+                <div class="row">
+                    <div class="table-responsive mb-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{ trans('form.sale.product name') }}</th>
+                                    <th>Stock</th>
+                                    <th>{{ trans('form.sale.qty') }}</th>
+                                    <th>{{ trans('form.sale.price') }}</th>
+
+                                    <th class="text-end">{{ trans('form.sale.subtotal') }}</th>
+                                    <th>{{ trans('form.sale.action') }}</th>
+                                </tr>
+                            </thead>
+                            <br>
+                            <tbody class="tbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 float-md-right">
+                        <div class="total-order">
+                            <ul>
+
+                                <li>
+                                    <h4>{{ trans('form.sale.discount') }}</h4>
+                                    <h5 id="discount">৳ 0.00</h5>
+                                </li>
+                                <li>
+                                    <h4>Other Cost</h4>
+                                    <h5>
+                                        <input type="number" value="0" name="other_cost" class="other_cost"
+                                            placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
+                                            onblur="updateGrandTotal();">
+                                    </h5>
+                                </li>
+
+
+                                <li class="total">
+                                    <h4>{{ trans('form.sale.grand total') }}</h4>
+                                    <input type="text" readonly class="total_val" name="grand_total"
+                                        style="margin-left:30px;">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    {{-- <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.order tax') }} %</label>
+                            <input type="text" name="tax" value="0" id="tax_val">
+                        </div>
+                    </div> --}}
+
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Discount Amount <code>(Optional)</code></label>
+                            <input type="text" name="discount" class="discount" id="discount_val" min="1"
+                                placeholder="Enter Your Discount">
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.payment type') }}</label>
+                            <select class="select2" name="payment_type" required="true">
+
+                                <option value="cash">Cash</option>
+                                <option value="bkash">bKash</option>
+                                <option value="rocket">Rocket</option>
+                                <option value="nagad">Nagad</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.paid amount') }}</label>
+                            <input type="text" name="paid_amount" class="paid_amount"
+                                placeholder="{{ trans('form.sale.enter paid amount') }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.due amount') }}</label>
+                            <input type="text" name="due_amount" class="due_amount" value="0">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label>Due Date </label>
+                            <input type="date" name="due_date" class="form-control due_date" value="">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 mt-4">
+                        <div class="form-group">
+                            <label>{{ trans('form.sale.note') }}</label>
+                            <textarea class="form-control" name="note"
+                                placeholder="{{ trans('form.sale.enter note') }}"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-submit me-2">{{ trans('form.sale.submit') }}</button>
+                        <a href="" class="btn btn-cancel">{{ trans('form.sale.cancel') }}</a>
+                        <a href="#" onclick="checkout()" class="btn btn-warning" style="padding: 13px 25px; margin: 0px 10px;">Checkout</a>
+                        <a href="" class="btn btn-success" style="padding: 13px 25px;">Quotation</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+{{-- modal here --}}
+<div class="modal fade" id="create" tabindex="-1" aria-labelledby="create" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('customer.store.modal') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <input type="text" name="name">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" name="company_name">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" name="phone" required>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="address">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 col-12 d-none">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" name="dob" value="{{  date("Y-m-d") }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-submit me-2">Submit</button>
+                        <a href="" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+
+<script>
+function checkout() {
+    // Open the current page in a new tab
+    let newTab = window.open(window.location.href, '_blank');
+    // Ensure the new tab opened successfully
+    if (newTab) {
+        // Delay refocusing on the original tab
+        setTimeout(() => {
+            window.focus();
+        }, 500);
+    } else {
+        alert("Popup blocked! Please allow pop-ups for this site.");
+    }
+}
+
+$("body").on("keyup", "#search", function () {
+    let searchData = $("#search").val();
+    let token = "{{ csrf_token() }}";
+    var route = "{{route('find.products.purchase')}}";
+    if (searchData.length > 0) {
+        $.ajax({
+            type: "GET",
+            url: route,
+            data: {
+                search: searchData,
+                // _token:token,
+            },
+            success: function (result) {
+                $("#suggestProduct").html(result);
+            },
+        });
+    }
+    if (searchData.length < 1) $("#suggestProduct").html(" ");
+});
+
+function testClick(product) {
+    var htmldata = `<tr>
+						<input type="hidden" name="product_id[]"  class="form-control product_id"  value="${product.id}">
+
+						<td class="productimgname">
+
+						<a href="javascript:void(0);">${product.name}</a>-<a href="javascript:void(0);">${product.product_code}</a>
+					   </td>
+
+                        <td >${product.quantity}</td>
+
+
+
+						<td>
+						<input type="text" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;" >
+						</td>
+
+                        <input type="hidden" name="purchase_price[]" class="purchase_price" value="${product.price}" style="width:100px;">
+
+
+
+                        <td class="price_td" mrp="${product.price}" retail="${product.retail_price}" purchase="${product.purchase_price}" wholesale="${product.wholesale_price}">
+                            <input type="text" name="price[]" class="form-control price"  placeholder="price" value="${product.price}" style="width:100px;"
+                                onkeyup="$(this).next().val('').trigger('change');"
+                            >
+
+
+                            <select name="price_type[]" class="link" onchange="updatePriceTypePrice(this)">
+                                <option value="">Custom price</option>
+                                <option value="mrp" selected>MRP price - ${product.price}</option>
+                                <option value="retail">Retail price - ${product.retail_price}</option>
+                                <option value="wholesale">Wholesale price - ${product.wholesale_price}</option>
+                            </select>
+                        </td>
+						<td class="text-end" >
+                            <input type="text" class="inline_total" readonly name="sub_total[]" value="${product.price}" style="width:100px;">
+                        </td>
+						<td>
+							<a class="remove"><img src="{{asset('backend')}}/img/icons/delete.svg" alt="svg"></a>
+						</td>
+					</tr>`;
+
+    $(".table .tbody").append(htmldata);
+
+    updateGrandTotal();
+    $('#search').val('');
+    $("#suggestProduct").html('');
+    // subTotalAmount();
+}
+
+//delete row
+$("table tbody").delegate(".remove", "click", function () {
+    $(this).parent().parent().remove();
+});
+
+function updatePriceTypePrice(element) {
+    //  console.log($(element), element);
+    var td = $(element).parent();
+    var priceType = $(element).val();
+    var price = td.attr(priceType);
+    if (priceType == "mrp") {
+        td.find(".price").val(price);
+    } else if (priceType == "retail") {
+        td.find(".price").val(price);
+    } else if (priceType == "purchase") {
+        td.find(".price").val(price);
+    } else if (priceType == "wholesale") {
+        td.find(".price").val(price);
+    }
+    setTimeout(() => {
+        totalOfSubTotal(td.parent());
+    }, 100);
+}
+
+// when qty will increment or drecrement.. it will be call automically
+function totalOfSubTotal(tr) {
+    var qty = tr.find(".quantity").val();
+    var price = tr.find(".price").val();
+    var totalAmount = price * qty;
+    tr.find(".inline_total").val(totalAmount);
+    updateGrandTotal();
+}
+$("table tbody").delegate(".quantity", "keyup", function () {
+    var tr = $(this).parent().parent();
+    totalOfSubTotal(tr);
+});
+
+$("table tbody").delegate(".price", "keyup", function () {
+    var tr = $(this).parent().parent();
+    totalOfSubTotal(tr);
+});
+
+function updateGrandTotal() {
+    var total = 0;
+    $(".inline_total").each(function (i, e) {
+        var inlineTotal = parseFloat($(this).val()) || 0;
+        total += inlineTotal;
+    });
+    total += parseFloat($(".other_cost").val()) || 0;
+    var formattedTotal = total.toFixed(2);
+    $(".total_val").val(formattedTotal);
+}
+
+// Discount calculation
+$("#discount_val").keyup(function () {
+    updateGrandTotal();
+
+    var total = parseFloat($(".total_val").val()) || 0;
+    var discount = parseFloat($(this).val()) || 0;
+    var t = total - discount;
+
+    $(".total_val").val(t.toFixed(2)); // Updating total value
+    $("#discount").text(discount.toFixed(2)); // Displaying discount value
+});
+
+// Paid amount and due amount calculation
+$(".paid_amount").keyup(function () {
+    var paidAmount = $(this).val();
+    var grandTotal = $(".total_val").val();
+    var dueAmount = grandTotal - paidAmount;
+
+    $(".due_amount").val(dueAmount);
+});
+
+$(document).ready(function () {
+    $(".select2").select2();
+});
+</script>
+<script>
+    $(document).ready(function() {
+
+		// $("#suggestProduct").click(function() {
+		// 	$("#suggestProduct").slideUp(1400);
+        //     $(this).next('#suggestProduct').slideDown('slide', {direction: 'left'}, 1400);
+        //   ;
+		// });
+
+        // $("#suggestProduct").click(function() {
+		// 	$("#suggestProduct").slideDown(1400);
+        //     $(this).next('#suggestProduct').slideUp('slide', {direction: 'left'}, 1400);
+        //   ;
+		// });
+
+        showCustomerDue();
+	});
+</script>
+
+<script>
+    var i = 0;
+    $('#add').click(function(){
+        ++i;
+        $('#table').append(
+            `<tr>
+                <td>
+                    <div class="form-group">
+                        <input type="text" name="inputs[`+i+`][emi_amount]" required >
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="date" name="inputs[`+i+`][emi_date]"   class="form-control" required>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger remove-table-row">Remove</button>
+                    </div>
+                </td>
+            </tr>`
+        );
+    });
+
+    $(document).on('click','.remove-table-row',function(){
+        $(this).parents('tr').remove();
+    })
+
+    const customers = @json($customers);
+    function showCustomerDue() {
+        var customerId = $('#selectpicker').val();
+        // console.log(customerId);
+        if(customerId){
+            const customer = customers.find(customer => customer.id == customerId);
+            // console.log(customer);
+            $('#customerDue').text(
+                'Due: ' + customer.sales.reduce((acc, sale) => acc + sale.due_amount, 0)
+                + ' Tk'
+            );
+        }else{
+            $('#customerDue').text('');
+        }
+    }
+</script>
+
+@endsection

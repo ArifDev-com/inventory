@@ -1,0 +1,19 @@
+$authId = Auth::user()->id;
+        $products = Product::with('user')->where('user_id',$authId)->latest()->get();
+
+
+
+        'user_id' => Auth::id(),
+
+
+
+customer
+supplier
+notification
+return
+reports
+admin manually
+cron job
+payment gateway
+
+potol , kachamorich, alo
