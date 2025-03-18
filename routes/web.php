@@ -362,6 +362,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/quotation-pdf/{quotation}', [App\Http\Controllers\QuotationController::class, 'generatePDF'])->name('quotation.pdf');
 
+    Route::get('/move/sale/{id}', [App\Http\Controllers\QuotationController::class, 'move_sale'])->name('quotation.move_sale');
+
     // Search here
 
     Route::get('/search-products', [App\Http\Controllers\QuotationController::class, 'searchProduct'])->name('search.product');

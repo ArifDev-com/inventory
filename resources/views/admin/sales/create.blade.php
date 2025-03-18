@@ -197,8 +197,11 @@
                             <a href="" class="btn btn-cancel">{{ trans('form.sale.cancel') }}</a>
                             <a href="#" onclick="checkout()" class="btn btn-warning"
                                 style="padding: 13px 25px; margin: 0px 10px;">Checkout</a>
-                            <button href="" class="btn btn-success" id="quotation_add"
-                                style="padding: 13px 25px;">Quotation</button>
+                            @if (session()->get('quotation_to_sale') == null)
+                                <button href="" class="btn btn-success" id="quotation_add"
+                                    style="padding: 13px 25px;">Quotation</button>
+                            @endif
+
                         </div>
                     </div>
                 </form>
@@ -445,7 +448,21 @@
         });
     </script>
     <script>
+        var quotationData = @json(session('quotation_to_sale'));
         $(document).ready(function() {
+
+            if (quotationData) {
+                console.log("Quotation Details:", quotationData);
+                customer_id = quotationData.customer_id;
+                $('#selectpicker').val(customer_id).change();
+
+                items = quotationData.items;
+
+                items.forEach(element => {
+                    testClick(element.product);
+                });
+            }
+
             $('#due_amount').on('blur', function() {
                 let dueAmount = parseFloat($(this).val().trim()); // Get value & convert to number
 

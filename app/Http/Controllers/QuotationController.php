@@ -23,7 +23,6 @@ class QuotationController extends Controller
 
         // return $quotations;
         return view('admin.quotation.index', compact('product', 'quotations', 'customer', 'warehouse'));
-
     }
 
     public function create()
@@ -45,11 +44,10 @@ class QuotationController extends Controller
             'search' => 'required',
         ]);
 
-        $products = Product::where('name', 'LIKE', '%'.$request->search.'%')
+        $products = Product::where('name', 'LIKE', '%' . $request->search . '%')
             ->paginate(5);
 
         return view('admin.search-result', compact('products'));
-
     }
 
     public function findProducts(Request $request)
@@ -58,10 +56,9 @@ class QuotationController extends Controller
             'search' => 'required',
         ]);
 
-        $products = Product::where('name', 'LIKE', '%'.$request->search.'%')->take(5)->get();
+        $products = Product::where('name', 'LIKE', '%' . $request->search . '%')->take(5)->get();
 
         return view('admin.search-product', compact('products'));
-
     }
 
     public function store(Request $request)
@@ -104,7 +101,6 @@ class QuotationController extends Controller
                 'quantity' => $request->quantity[$i],
                 'sub_total' => $request->sub_total[$i],
             ]);
-
         }
 
         return Redirect()->route('quotation.index')->with('success', 'Quotation Added');
@@ -146,7 +142,6 @@ class QuotationController extends Controller
                 'quantity' => $request->quantity[$i],
                 'sub_total' => $request->sub_total[$i],
             ]);
-
         }
 
         return Redirect()->route('quotation.index')->with('success', 'Quotation successfully Updated');
@@ -163,25 +158,44 @@ class QuotationController extends Controller
     {
         $randomNumber = random_int(100000, 999999);
 
-        $quotation->
-                    with(['customer' => function ($query) {
-                        $query->select('id', 'name', 'email', 'address');
-                    },
-                        'warehouse' => function ($query) {
-                            $query->select('id', 'name', 'email', 'address');
-                        },
+        $quotation->with([
+            'customer' => function ($query) {
+                $query->select('id', 'name', 'email', 'address');
+            },
+            'warehouse' => function ($query) {
+                $query->select('id', 'name', 'email', 'address');
+            },
 
-                        'items' => function ($query) {
-                            $query->select('id', 'quotation_id', 'product_id', 'quantity', 'sub_total');
-                        },
+            'items' => function ($query) {
+                $query->select('id', 'quotation_id', 'product_id', 'quantity', 'sub_total');
+            },
 
-                        'items.product' => function ($query) {
-                            $query->select('id', 'name');
-                        }])->first();
+            'items.product' => function ($query) {
+                $query->select('id', 'name');
+            }
+        ])->first();
 
-        $pdf = Pdf::loadView('admin.quotation.print-page',compact('quotation','randomNumber'));
+        $pdf = Pdf::loadView('admin.quotation.print-page', compact('quotation', 'randomNumber'));
 
         return $pdf->download('invoice.pdf');
+    }
 
+    public function move_sale($id)
+    {
+        $quotation = Quotation::with('items.product')->find($id);
+
+        $quotation->status = 'sent';
+        $quotation->save();
+
+        // dd($quotation->items);
+
+        // foreach ($quotation->items as $key => $value) {
+        //     dd($value->product);
+        // }
+
+        session()->flash('quotation_to_sale', $quotation);
+
+        return redirect()->route('sale.create');
+        // dd($quotation->items);
     }
 }
