@@ -457,22 +457,46 @@
             });
 
             $('#quotation_add').on('click', function() {
+                let isValid = true;
+
+                // Loop through all required fields and check if they are empty
+                $('#sale_store').find('[required]').each(function() {
+                    if ($(this).val().trim() === '') {
+                        $(this).addClass('is-invalid'); // Add a red border or error styling
+                        isValid = false;
+                    } else {
+                        $(this).removeClass('is-invalid'); // Remove error styling if fixed
+                    }
+                });
+
+                // If any required field is empty, prevent form submission
+                if (!isValid) {
+                    alert("Please fill all required fields before submitting.");
+                    return;
+                }
+
+                // Collect form data
                 let formData = $('#sale_store').serialize(); // Converts form fields into a query string
 
+                // Send AJAX request
                 $.ajax({
-                    url: "{{ route('quotation.store') }}", // Replace with your actual route
+                    url: "{{ route('quotation.store') }}", // Ensure this route exists
                     type: "POST",
                     data: formData,
                     success: function(response) {
                         alert("Form submitted successfully!");
-                        console.log(response); // Handle response here
+                        console.log(response);
+
+                        // Redirect to quotation.index route
+                        window.location.href = "{{ route('quotation.index') }}";
                     },
                     error: function(xhr, status, error) {
                         alert("Error submitting form.");
-                        console.error(xhr.responseText); // Debugging error
+                        console.error(xhr.responseText);
                     }
                 });
             });
+
         });
 
         $(document).ready(function() {
