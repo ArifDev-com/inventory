@@ -132,7 +132,7 @@
                                         <td>{{ $sale->paid_amount }}</td>
                                         <td class="text-red">{{ $sale->due_amount }}</td>
                                         <td>{{ $sale->due_date }}</td>
-                                        <td>{{ $sale->user->first_name . ' ' . $sale->user->last_name }}</td>
+                                        <td>{{ $sale->user?->first_name . ' ' . $sale->user?->last_name }}</td>
                                         <td class="text-center">
                                             <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
                                                 aria-expanded="true">
