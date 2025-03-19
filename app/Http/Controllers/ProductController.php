@@ -8,6 +8,7 @@ use App\Imports\ProductImport;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductStockUpdate;
 use App\Models\SubCategory;
 use App\Models\Supplier;
 use App\Models\Unit;
@@ -259,5 +260,45 @@ class ProductController extends Controller
     public function barcodePDF()
     {
         return view('admin.products.print-barcode');
+    }
+
+    public function stock()
+    {
+        $products = Product::latest()->get();
+        return view('admin.products.stock', compact('products'));
+    }
+
+    public function stockUpdate(Request $request)
+    {
+        $request->validate([
+            'quantity' => 'required|array',
+            'quantity.*' => 'required|integer|min:0',
+        ], [
+            'quantity.required' => 'The quantity field is required.',
+            'quantity.*.required' => 'The quantity field is required.',
+            'quantity.*.integer' => 'The quantity must be an integer.',
+            'quantity.*.min' => 'The quantity must be at least 0.',
+        ]);
+
+        foreach ($request->quantity as $productId => $quantity) {
+            $product = Product::find($productId);
+            ProductStockUpdate::create([
+                'product_id' => $productId,
+                'quantity' => $quantity,
+                'user_id' => Auth::user()->id,
+                'prev_quantity' => $product->current_stock,
+                'type' => 'stock_update',
+                'note' => 'Stock updated by ' . Auth::user()->name,
+            ]);
+        }
+
+        return back()->with('success', 'Stock updated successfully!');
+    }
+
+    public function stockHistory()
+    {
+        $stockUpdates = ProductStockUpdate::with('product', 'user')->latest()
+            ->get();
+        return view('admin.products.stock-history', compact('stockUpdates'));
     }
 }

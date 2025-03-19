@@ -18,17 +18,19 @@
                 {{-- // Product // --}}
                 <li class="submenu ">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/products') || request()->is('admin/product/create') || request()->is('admin/barcode') || request()->is('admin/products-import') ? 'active' : '' }}"><img
+                        class="{{ request()->is('admin/products') || request()->is('admin/product/stock') || request()->is('admin/product/stock/history') || request()->is('admin/barcode') || request()->is('admin/products-import') ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/product.svg" alt="img"><span> {{
                             trans('sidebar.product.menu_name') }} </span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{{ route('product.index') }}"
                                 class="{{ request()->is('admin/products') ? 'active' : '' }}">All Product List</a></li>
 
-                        {{-- <li><a href="{{ route('product.category') }}"
-                                class="{{ request()->is('admin/category') ? 'active' : '' }}">Category Product List</a>
-                        </li> --}}
-
+                        <li><a href="{{ route('product.stock') }}"
+                                class="{{ request()->is('admin/product/stock') ? 'active' : '' }}">Stock Update</a>
+                        </li>
+                        <li><a href="{{ route('product.stock.history') }}"
+                                class="{{ request()->is('admin/product/stock/history') ? 'active' : '' }}">Stock History</a>
+                        </li>
                     </ul>
                 </li>
 
@@ -72,14 +74,12 @@
 
                 <li class="submenu ">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/sale/create') || request()->is('admin/sales') ? 'active' : '' }}"><img
+                        class="{{ request()->is('admin/quotations') || request()->is('admin/quotations') ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/sales1.svg" alt="img"><span>
                             Quoations</span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{{ route('quotation.index') }}"
                                 class="{{ request()->is('admin/quotation')  ? 'active' : '' }}">Quotation List</a></li>
-                        <li><a href="{{ route('quotation.create') }}"
-                                class="{{ request()->is('admin/quotation/create') ? 'active' : '' }}">Add Quotation</a>
                         </li>
                     </ul>
                 </li>

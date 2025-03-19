@@ -74,4 +74,15 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+
+    public function stockUpdates()
+    {
+        return $this->hasMany(ProductStockUpdate::class);
+    }
+
+    function getCurrentStockAttribute()
+    {
+        // add stock from return amount later
+        return $this->quantity + $this->stockUpdates()->sum('quantity');
+    }
 }

@@ -222,6 +222,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::post('product/validateandimportdata/', [App\Http\Controllers\ProductController::class, 'validateAndImportdata'])->name('product.validateandimportdata');
 
+    Route::get('/product/stock', [App\Http\Controllers\ProductController::class, 'stock'])->name('product.stock');
+    Route::post('/product/stock/update', [App\Http\Controllers\ProductController::class, 'stockUpdate'])->name('product.stock.update');
+
+    Route::get('/product/stock/history', [App\Http\Controllers\ProductController::class, 'stockHistory'])->name('product.stock.history');
+
     Route::get('/barcode-pdf', [App\Http\Controllers\ProductController::class, 'barcodePDF'])->name('barcode.pdf');
 
     // Language
