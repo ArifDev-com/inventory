@@ -591,4 +591,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/shopDocument/update/{id}', [App\Http\Controllers\ShopDocumentController::class, 'update'])->name('shopDocument.update');
 
     Route::delete('/shopDocument/delete/{shopDocument}', [App\Http\Controllers\ShopDocumentController::class, 'destroy'])->name('shopDocument.delete');
+
+    Route::get('/reports/datewise-stock', [App\Http\Controllers\ReportController::class, 'datewiseStockReport'])->name('reports.datewise-stock');
+    Route::get('/reports/datewise-sale', [App\Http\Controllers\ReportController::class, 'datewiseSaleReport'])->name('reports.datewise-sale');
+    Route::get('/reports/product-wise', [App\Http\Controllers\ReportController::class, 'productWiseReport'])->name('reports.product-wise');
+    Route::get('/reports/product-list', [App\Http\Controllers\ReportController::class, 'productList'])->name('reports.product-list');
 });

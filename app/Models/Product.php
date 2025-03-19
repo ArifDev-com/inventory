@@ -85,9 +85,49 @@ class Product extends Model
         return $this->hasMany(PurchaseItem::class);
     }
 
+    public function saleItems()
+    {
+        return $this->hasMany(SaleItem::class);
+    }
+
     function getCurrentStockAttribute()
     {
         // add stock from return amount later
-        return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity');
+        return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity') - $this->saleItems()->sum('quantity');
     }
+
+    public function stockQuantityAtStartOf($date): int
+    {
+        $purchasesBefore = $this->purchaseItems()
+            ->whereDate('created_at', '<', $date)
+            ->sum('quantity');
+
+        $salesBefore = $this->saleItems()
+            ->whereDate('created_at', '<', $date)
+            ->sum('quantity');
+
+        $stockUpdatesBefore = $this->stockUpdates()
+            ->whereDate('created_at', '<', $date)
+            ->sum('quantity');
+
+        return $this->quantity + $purchasesBefore + $stockUpdatesBefore - $salesBefore;
+    }
+    public function stockQuantityAtEndOf($date): int
+    {
+        $purchasesUpToDate = $this->purchaseItems()
+            ->whereDate('created_at', '<=', $date)
+            ->sum('quantity');
+
+        $salesUpToDate = $this->saleItems()
+            ->whereDate('created_at', '<=', $date)
+            ->sum('quantity');
+
+        $stockUpdatesUpToDate = $this->stockUpdates()
+            ->whereDate('created_at', '<=', $date)
+            ->sum('quantity');
+
+        // dump($this->quantity , $purchasesUpToDate , $stockUpdatesUpToDate , $salesUpToDate);
+        return $this->quantity + $purchasesUpToDate + $stockUpdatesUpToDate - $salesUpToDate;
+    }
+
 }

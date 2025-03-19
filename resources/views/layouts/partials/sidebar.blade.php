@@ -49,8 +49,6 @@
                                 class="{{ request()->is('admin/purchases') ? 'active' : '' }}">{{
                                 trans('sidebar.purchase.purchase_list') }}</a></li>
 
-
-
                     </ul>
                 </li>
                 @endif
@@ -181,9 +179,27 @@
                 @endif --}}
 
                 @if(auth()->user()->user_role == 'admin')
-                <li>
+                {{-- <li>
                     <a href="{{ route('reportssummary') }}"><img src="{{asset('backend')}}/img/icons/time.svg"
                             alt="img"><span> Reports </span> </a>
+                </li> --}}
+
+                <li class="submenu">
+                    <a href="javascript:void(0);"
+                        class="{{ request()->is('admin/report*') ? 'active' : '' }}"><img
+                            src="{{asset('backend')}}/img/icons/settings.svg" alt="img"><span> Reports </span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{{ route('reports.datewise-stock') }}"
+                                class="{{ request()->is('admin/report/datewise-stock-report') ? 'active' : '' }}">Date Wise Stock </a></li>
+
+                        <li><a href="{{ route('reports.datewise-sale') }}"
+                                class="{{ request()->is('admin/report/datewise-sale-report') ? 'active' : '' }}">Date Wise Sale </a></li>
+                        <li><a href="{{ route('reports.product-wise') }}"
+                                class="{{ request()->is('admin/report/product-wise-report') ? 'active' : '' }}">Product Wise</a></li>
+                        <li><a href="{{ route('reports.product-list') }}"
+                                class="{{ request()->is('admin/report/product-list') ? 'active' : '' }}">Product List</a></li>
+                    </ul>
                 </li>
 
                 <li class="submenu">

@@ -20,194 +20,187 @@
                 </div>
                 <a href="{{ route('sale.index') }}" class="btn btn-info">{{ trans('sidebar.sale.create.back') }}</a>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <form action="{{ route('sale.store') }}" id="sale_store" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row">
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.customer') }}</label>
-                                <div class="row">
-                                    <div class="col-lg-10 col-sm-10 col-10">
-                                        <select class="select2" id="selectpicker" name="customer_id" required
-                                            onchange="showCustomerDue()" onclick="showCustomerDue()">
-                                            <option value="">Select Customer</option>
-                                            @foreach ($customers as $customer)
-                                                <option value="{{ $customer->id }}"
-                                                    @if (session('auto_customer_id') == $customer->id) selected @endif>{{ $customer->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <div id="customerDue" class="mt-1 text-danger"></div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                        <div class="add-icon">
-                                            <span><img src="{{ asset('backend') }}/img/icons/plus1.svg"
-                                                    data-bs-toggle="modal" data-bs-target="#create" alt="img"></span>
-                                            {{-- <a href="javascript:void(0);" class="btn btn-adds" data-bs-toggle="modal"
-                                            data-bs-target="#create"><i class="fa fa-plus me-2"></i></a> --}}
+
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('sale.store') }}" id="sale_store" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('form.sale.customer') }}</label>
+                                    <div class="row">
+                                        <div class="col-lg-10 col-sm-10 col-10">
+                                            <select class="select2" id="selectpicker" name="customer_id" required
+                                                onchange="showCustomerDue()" onclick="showCustomerDue()">
+                                                <option value="">Select Customer</option>
+                                                @foreach ($customers as $customer)
+                                                    <option value="{{ $customer->id }}"
+                                                        @if (session('auto_customer_id') == $customer->id) selected @endif>{{ $customer->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div id="customerDue" class="mt-1 text-danger"></div>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                            <div class="add-icon">
+                                                <span><img src="{{ asset('backend') }}/img/icons/plus1.svg"
+                                                        data-bs-toggle="modal" data-bs-target="#create" alt="img"></span>
+                                                {{-- <a href="javascript:void(0);" class="btn btn-adds" data-bs-toggle="modal"
+                                                data-bs-target="#create"><i class="fa fa-plus me-2"></i></a> --}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.sale date') }}</label>
-                                <div class="input-groupicon">
-                                    <input type="date" class="form-control" name="date" placeholder="Choose Date"
-                                        value="<?php echo date('Y-m-d'); ?>">
-                                    {{-- <a class="addonset">
-                                    <img src="{{asset('backend')}}/img/icons/calendars.svg" alt="img">
-                                </a> --}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.product name') }}</label>
-                                <div class="input-groupicon">
-
-                                    <input type="text" id="search"
-                                        placeholder="Please type product code and select..." autocomplete="off">
-                                    <div class="addonset">
-                                        <img src="{{ asset('backend') }}/img/icons/scanners.svg" alt="img">
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('form.sale.sale date') }}</label>
+                                    <div class="input-groupicon">
+                                        <input type="date" class="form-control" name="date" placeholder="Choose Date"
+                                            value="<?php echo date('Y-m-d'); ?>">
+                                        {{-- <a class="addonset">
+                                        <img src="{{asset('backend')}}/img/icons/calendars.svg" alt="img">
+                                    </a> --}}
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-lg-12 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('form.sale.product name') }}</label>
+                                    <div class="input-groupicon">
+
+                                        <input type="text" id="search"
+                                            placeholder="Please type product code and select..." autocomplete="off">
+                                        <div class="addonset">
+                                            <img src="{{ asset('backend') }}/img/icons/scanners.svg" alt="img">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="suggestProduct"></div>
                         </div>
-                        <div id="suggestProduct"></div>
-                    </div>
-                    <div class="row">
-                        <div class="table-responsive mb-3">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>{{ trans('form.sale.product name') }}</th>
-                                        <th>Stock</th>
-                                        <th>{{ trans('form.sale.qty') }}</th>
-                                        <th>{{ trans('form.sale.price') }}</th>
+                        <div class="row">
+                            <div class="table-responsive mb-3">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ trans('form.sale.product name') }}</th>
+                                            <th>Stock</th>
+                                            <th>{{ trans('form.sale.qty') }}</th>
+                                            <th>{{ trans('form.sale.price') }}</th>
 
-                                        <th class="text-end">{{ trans('form.sale.subtotal') }}</th>
-                                        <th>{{ trans('form.sale.action') }}</th>
-                                    </tr>
-                                </thead>
-                                <br>
-                                <tbody class="tbody">
+                                            <th class="text-end">{{ trans('form.sale.subtotal') }}</th>
+                                            <th>{{ trans('form.sale.action') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <br>
+                                    <tbody class="tbody">
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 float-md-right">
-                            <div class="total-order">
-                                <ul>
-
-                                    <li>
-                                        <h4>{{ trans('form.sale.discount') }}</h4>
-                                        <h5 id="discount">৳ 0.00</h5>
-                                    </li>
-                                    <li>
-                                        <h4>Other Cost</h4>
-                                        <h5>
-                                            <input type="number" value="0" name="other_cost" class="other_cost"
-                                                placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
-                                                onblur="updateGrandTotal();">
-                                        </h5>
-                                    </li>
-
-
-                                    <li class="total">
-                                        <h4>{{ trans('form.sale.grand total') }}</h4>
-                                        <input type="text" readonly class="total_val" name="grand_total"
-                                            style="margin-left:30px;">
-                                    </li>
-                                </ul>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        <div class="row">
+                            <div class="col-lg-12 float-md-right">
+                                <div class="total-order">
+                                    <ul>
 
-                        {{-- <div class="col-lg-3 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label>{{ trans('form.sale.order tax') }} %</label>
-                            <input type="text" name="tax" value="0" id="tax_val">
-                        </div>
-                    </div> --}}
+                                        <li>
+                                            <h4>{{ trans('form.sale.discount') }}</h4>
+                                            <h5 id="discount">৳ 0.00</h5>
+                                        </li>
+                                        <li>
+                                            <h4>Other Cost</h4>
+                                            <h5>
+                                                <input type="number" value="0" name="other_cost" class="other_cost"
+                                                    placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
+                                                    onblur="updateGrandTotal();">
+                                            </h5>
+                                        </li>
 
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>Discount Amount <code>(Optional)</code></label>
-                                <input type="text" name="discount" class="discount" id="discount_val" min="1"
-                                    placeholder="Enter Your Discount">
+
+                                        <li class="total">
+                                            <h4>{{ trans('form.sale.grand total') }}</h4>
+                                            <input type="text" readonly class="total_val" name="grand_total"
+                                                style="margin-left:30px;">
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+                        <div class="row">
+
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Discount Amount <code>(Optional)</code></label>
+                                    <input type="text" name="discount" class="discount" id="discount_val" min="1"
+                                        placeholder="Enter Your Discount">
+                                </div>
+                            </div>
 
 
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.payment type') }}</label>
-                                <select class="select2" name="payment_type" required="true">
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('form.sale.payment type') }}</label>
+                                    <select class="select2" name="payment_type" required="true">
 
-                                    <option value="cash">Cash</option>
-                                    <option value="bkash">bKash</option>
-                                    <option value="rocket">Rocket</option>
-                                    <option value="nagad">Nagad</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="bkash">bKash</option>
+                                        <option value="rocket">Rocket</option>
+                                        <option value="nagad">Nagad</option>
 
-                                </select>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('form.sale.paid amount') }}</label>
+                                    <input type="text" name="paid_amount" class="paid_amount"
+                                        placeholder="{{ trans('form.sale.enter paid amount') }}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>{{ trans('form.sale.due amount') }}</label>
+                                    <input type="text" name="due_amount" class="due_amount" id="due_amount"
+                                        value="0">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Due Date </label>
+                                    <input type="date" name="due_date" class="form-control due_date" id="due_date"
+                                        value="">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 mt-4">
+                                <div class="form-group">
+                                    <label>{{ trans('form.sale.note') }}</label>
+                                    <textarea class="form-control" name="note" placeholder="{{ trans('form.sale.enter note') }}"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-submit me-2">{{ trans('form.sale.submit') }}</button>
+                                <a href="" class="btn btn-cancel">{{ trans('form.sale.cancel') }}</a>
+                                <a href="#" onclick="checkout()" class="btn btn-warning"
+                                    style="padding: 13px 25px; margin: 0px 10px;">Checkout</a>
+                                @if (session()->get('quotation_to_sale') == null)
+                                    <button href="" class="btn btn-success" id="quotation_add"
+                                        style="padding: 13px 25px;">Quotation</button>
+                                @endif
+
                             </div>
                         </div>
-
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.paid amount') }}</label>
-                                <input type="text" name="paid_amount" class="paid_amount"
-                                    placeholder="{{ trans('form.sale.enter paid amount') }}" required>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.due amount') }}</label>
-                                <input type="text" name="due_amount" class="due_amount" id="due_amount"
-                                    value="0">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>Due Date </label>
-                                <input type="date" name="due_date" class="form-control due_date" id="due_date"
-                                    value="">
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12 mt-4">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.note') }}</label>
-                                <textarea class="form-control" name="note" placeholder="{{ trans('form.sale.enter note') }}"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <button type="submit" class="btn btn-submit me-2">{{ trans('form.sale.submit') }}</button>
-                            <a href="" class="btn btn-cancel">{{ trans('form.sale.cancel') }}</a>
-                            <a href="#" onclick="checkout()" class="btn btn-warning"
-                                style="padding: 13px 25px; margin: 0px 10px;">Checkout</a>
-                            @if (session()->get('quotation_to_sale') == null)
-                                <button href="" class="btn btn-success" id="quotation_add"
-                                    style="padding: 13px 25px;">Quotation</button>
-                            @endif
-
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     {{-- modal here --}}
@@ -266,8 +259,8 @@
                             <button type="submit" class="btn btn-submit me-2">Submit</button>
                             <a href="" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</a>
                         </div>
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
     </div>
@@ -578,39 +571,39 @@
                 $('#customerDue').text('');
             }
         }
-
-        function PrintMe(DivID) {
-            var disp_setting = "toolbar=yes,location=no,";
-            disp_setting += "directories=yes,menubar=yes,";
-            disp_setting += "scrollbars=yes,width=410, height=600, left=100, top=25";
-            var content_vlue = document.getElementById("print_area_container").innerHTML;
-            var docprint = window.open("", "", disp_setting);
-            docprint.document.open();
-            docprint.document.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"');
-            docprint.document.write('"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
-            docprint.document.write('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">');
-            docprint.document.write('<head><title>My Title</title>');
-            docprint.document.write(`
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
-            <style>
-                .barcode {
-                    font-family: "Libre Barcode 128", system-ui;
-                    font-weight: 400;
-                    font-style: normal;
-                }
-            </style>
-            `);
-            docprint.document.write('<style type="text/css">body{ margin:0px;');
-            docprint.document.write('font-family:verdana,Arial;color:#000;');
-            docprint.document.write('font-family:Verdana, Geneva, sans-serif; font-size:12px;}');
-            docprint.document.write('a{color:#000;text-decoration:none;} </style>');
-            docprint.document.write('</head><body onLoad="self.print()"><center>');
-            docprint.document.write(content_vlue.replace('400px', '405px'));
-            docprint.document.write('</center></body></html>');
-            docprint.document.close();
-            docprint.focus();
-        }
     </script>
 @endsection
+
+{{-- function PrintMe(DivID) {
+    var disp_setting = "toolbar=yes,location=no,";
+    disp_setting += "directories=yes,menubar=yes,";
+    disp_setting += "scrollbars=yes,width=410, height=600, left=100, top=25";
+    var content_vlue = document.getElementById("print_area_container").innerHTML;
+    var docprint = window.open("", "", disp_setting);
+    docprint.document.open();
+    docprint.document.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"');
+    docprint.document.write('"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
+    docprint.document.write('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">');
+    docprint.document.write('<head><title>My Title</title>');
+    docprint.document.write(`
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
+    <style>
+        .barcode {
+            font-family: "Libre Barcode 128", system-ui;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+    `);
+    docprint.document.write('<style type="text/css">body{ margin:0px;');
+    docprint.document.write('font-family:verdana,Arial;color:#000;');
+    docprint.document.write('font-family:Verdana, Geneva, sans-serif; font-size:12px;}');
+    docprint.document.write('a{color:#000;text-decoration:none;} </style>');
+    docprint.document.write('</head><body onLoad="self.print()"><center>');
+    docprint.document.write(content_vlue.replace('400px', '405px'));
+    docprint.document.write('</center></body></html>');
+    docprint.document.close();
+    docprint.focus();
+} --}}

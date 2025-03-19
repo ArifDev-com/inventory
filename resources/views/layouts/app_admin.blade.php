@@ -139,7 +139,7 @@
 
 
 		.form-select {
-			background-color: linear-gradient(45deg, red, #000058) !important;
+			background-color: ) !important;
 			color: #d7dadd !important;
 			border-radius: 50px !important;
 		}
@@ -147,18 +147,18 @@
 		/* button color change  */
 
 		.page-header .btn-added {
-			background: linear-gradient(45deg, red, #000058);
+			background: #b10505);
 
 		}
 
 		.btn-info {
 			color: #fff;
-			background-color: linear-gradient(45deg, red, #000058);
+			background-color: #b10505);
 
 		}
 
 		.btn-submit {
-			background: linear-gradient(45deg, red, #000058);
+			background: #b10505);
 
 		}
 
