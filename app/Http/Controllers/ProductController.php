@@ -51,7 +51,21 @@ class ProductController extends Controller
 
     public function product_quantity_update(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
+
+        foreach ($request->product_id as $key => $value) {
+            $product = Product::find($value);
+            if ($product) { // Ensure the product exists
+                $changeQty = $request->product_qty[$key]; // Get quantity from request
+
+                // Update quantity dynamically (add if positive, subtract if negative)
+                $product->quantity += $changeQty;
+
+                $product->save(); // Save the updated quantity
+            }
+        }
+
+        return back(); // Return
     }
 
     public function indexShowroom()

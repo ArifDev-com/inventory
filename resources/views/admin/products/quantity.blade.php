@@ -132,6 +132,7 @@
                                         </th>
                                         <th>{{ trans('table.thead.product_name') }}</th>
                                         <th>{{ trans('table.thead.qty') }}</th>
+                                        <th>Current Quantity</th>
                                         <th>Stock Alert </th>
                                         <th>{{ trans('table.thead.purchaseprice') }}</th>
                                         <th>Wholesale Price</th>
@@ -163,6 +164,10 @@
                                                 <input type="hidden" name="product_id[]" value="{{ $product->id }}">
                                                 {{-- <span class="badge bg-danger text-white"
                                                     style="font-size: 15px;">{{ $product->quantity }}</span> --}}
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger text-white"
+                                                    style="font-size: 15px;">{{ $product->quantity }}</span>
                                             </td>
                                             <td>{{ $product->alert_quantity }}</td>
                                             <td>{{ $product->purchase_price }}</td>
