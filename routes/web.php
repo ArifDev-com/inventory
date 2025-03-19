@@ -196,6 +196,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Product here
     Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
 
+    Route::get('/products/quantity', [App\Http\Controllers\ProductController::class, 'product_quantity'])->name('product.quantity');
+    Route::post('/products/quantity', [App\Http\Controllers\ProductController::class, 'product_quantity_update'])->name('product.quantity.update');
+
     Route::get('/products/showroom', [App\Http\Controllers\ProductController::class, 'indexShowroom'])->name('product.showroom');
 
     Route::get('/products/godown', [App\Http\Controllers\ProductController::class, 'indexGodown'])->name('product.godown');

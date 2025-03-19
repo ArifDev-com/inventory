@@ -20,6 +20,11 @@ class Quotation extends Model
         'grandtotal',
         'status',
         'description',
+        'paid_amount',
+        'due_amount',
+        'payment_type',
+        'due_date',
+        'note'
     ];
 
 

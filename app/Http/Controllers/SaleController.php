@@ -345,7 +345,12 @@ class SaleController extends Controller
             'warehouse_id' => $request->warehouse_id ?? 0,
             'description' => $request->description ?? '',
             'ref_code' => $request->ref_code ?? 0,
-            'status' => 'pending'
+            'status' => 'pending',
+            'paid_amount' => $request->paid_amount ?? 0,
+            'due_amount' => $request->due_amount ?? 0,
+            'payment_type' => $request->payment_type,
+            'due_date' => $request->due_date ?? null,
+            'note' => $request->note ?? '',
         ]);
 
         $quotationItem = new QuotationItem;

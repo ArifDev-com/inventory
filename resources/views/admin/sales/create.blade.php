@@ -151,7 +151,7 @@
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.payment type') }}</label>
-                                <select class="select2" name="payment_type" required="true">
+                                <select class="select2" name="payment_type" id="payment_type" required="true">
 
                                     <option value="cash">Cash</option>
                                     <option value="bkash">bKash</option>
@@ -165,7 +165,7 @@
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.paid amount') }}</label>
-                                <input type="text" name="paid_amount" class="paid_amount"
+                                <input type="text" name="paid_amount" class="paid_amount" id="paid_amount"
                                     placeholder="{{ trans('form.sale.enter paid amount') }}" required>
                             </div>
                         </div>
@@ -188,7 +188,7 @@
                         <div class="col-lg-12 mt-4">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.note') }}</label>
-                                <textarea class="form-control" name="note" placeholder="{{ trans('form.sale.enter note') }}"></textarea>
+                                <textarea class="form-control" id="note" name="note" placeholder="{{ trans('form.sale.enter note') }}"></textarea>
                             </div>
                         </div>
 
@@ -454,7 +454,20 @@
             if (quotationData) {
                 console.log("Quotation Details:", quotationData);
                 customer_id = quotationData.customer_id;
+                discount = quotationData.discount;
+                paymentType = quotationData.payment_type;
+                paidAmount = quotationData.paid_amount;
+                dueAmount = quotationData.due_amount;
+                dueDate = quotationData.due_date;
+                note = quotationData.note;
+
                 $('#selectpicker').val(customer_id).change();
+                $('#discount_val').val(discount);
+                $('#payment_type').val(paymentType);
+                $('#paid_amount').val(paidAmount);
+                $('#due_amount').val(dueAmount);
+                $('#due_date').val(dueDate);
+                $("#note").val(note);
 
                 items = quotationData.items;
 

@@ -36,6 +36,24 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products', 'category', 'subCategory', 'brand', 'unit', 'warehouses', 'suppliers'));
     }
 
+    public function product_quantity()
+    {
+        $category = Category::latest()->get();
+        $subCategory = SubCategory::latest()->get();
+        $brand = Brand::latest()->get();
+        $unit = Unit::latest()->get();
+        $warehouses = Warehouse::latest()->get();
+        $suppliers = Supplier::latest()->get();
+        $authId = Auth::user()->id;
+        $products = Product::with('user')->latest()->get();
+        return view('admin.products.quantity', compact('products', 'category', 'subCategory', 'brand', 'unit', 'warehouses', 'suppliers'));
+    }
+
+    public function product_quantity_update(Request $request)
+    {
+        dd($request->all());
+    }
+
     public function indexShowroom()
     {
         $category = Category::latest()->get();
@@ -96,9 +114,9 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $imag = $request->file('image');
 
-            $name_gen = hexdec(uniqid()).'.'.$imag->getClientOriginalExtension();
-            Image::make($imag)->resize(270, 270)->save(public_path('upload/product/'.$name_gen));
-            $img_url = 'upload/product/'.$name_gen;
+            $name_gen = hexdec(uniqid()) . '.' . $imag->getClientOriginalExtension();
+            Image::make($imag)->resize(270, 270)->save(public_path('upload/product/' . $name_gen));
+            $img_url = 'upload/product/' . $name_gen;
         } else {
             $img_url = null;
         }
@@ -109,10 +127,10 @@ class ProductController extends Controller
         //     $data['image'] = 'upload/product/'.$name_gen;
 
         // make barcode
-        $barCodeName = $request->product_code.'.png';
+        $barCodeName = $request->product_code . '.png';
         // $barcodeFile = base64_decode(DNS1D::getBarcodePNG($request->product_code, "C39+"));
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($request->product_code, 'C128'));
-        $barCodeSavePath = 'upload/barcode/'.$barCodeName;
+        $barCodeSavePath = 'upload/barcode/' . $barCodeName;
         Storage::disk('public_uploads')->put($barCodeName, $barcodeFile);
 
         Product::create([
@@ -145,7 +163,6 @@ class ProductController extends Controller
         ]);
 
         return Redirect()->route('product.index')->with('success', 'Product Added');
-
     }
 
     public function edit($pro_id)
@@ -177,10 +194,9 @@ class ProductController extends Controller
             //  Image::make($imag->getRealPath())->resize(468,249)->save($path);
             //  $data['image'] = 'upload/product/'.$name_gen;
 
-            $name_gen = hexdec(uniqid()).'.'.$imag->getClientOriginalExtension();
-            Image::make($imag)->resize(270, 270)->save(public_path('upload/product/'.$name_gen));
-            $img_url = 'upload/product/'.$name_gen;
-
+            $name_gen = hexdec(uniqid()) . '.' . $imag->getClientOriginalExtension();
+            Image::make($imag)->resize(270, 270)->save(public_path('upload/product/' . $name_gen));
+            $img_url = 'upload/product/' . $name_gen;
         } else {
             $img_url = $product->image;
         }
@@ -237,7 +253,6 @@ class ProductController extends Controller
     public function export()
     {
         return Excel::download(new ProductsExport, 'products.csv');
-
     }
 
     // Import data
