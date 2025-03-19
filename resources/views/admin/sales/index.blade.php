@@ -162,6 +162,13 @@
                                                     alt="img">Print Challan</a>
                                         </li>
 
+                                        @if(!$sale->returns->count())
+                                        <li>
+                                            <a href="{{ route('sale.return', [$sale->id]) }}"
+                                                class="dropdown-item">
+                                                Sale Return</a>
+                                        </li>
+                                        @endif
                                         @if(!$sale->cancel_requested && auth()->user()->id == $sale->user_id)
                                         <li>
                                             <a href="{{ route('sale.cancel', [$sale->id]) }}"

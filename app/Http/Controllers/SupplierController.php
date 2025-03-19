@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Models\City;
-
-use App\Models\Country;
-
-use App\Models\Supplier;
-
 use App\Models\Brand;
-
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Supplier;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SupplierController extends Controller
@@ -22,34 +17,39 @@ class SupplierController extends Controller
         $authId = Auth::user()->id;
         $city = City::latest()->get();
         $country = Country::latest()->get();
-        $suppliers = Supplier::with(['purchases' =>function($q){
+        $suppliers = Supplier::with(['purchases' => function ($q) {
             $q->select('grandtotal',
-            'paid_amount',
-            'due_amount');
-        }])->orderBy('id', 'DESC')->where('user_id',$authId)->get();
+                'paid_amount',
+                'due_amount');
+        }])->orderBy('id', 'DESC')->where('user_id', $authId)->get();
+
         return view('admin.supplier.index', compact('city', 'country', 'suppliers'));
     }
 
     public function create()
     {
-        $brands=Brand::latest()->get();
+        $brands = Brand::latest()->get();
         $cities = City::latest()->get();
         $countries = Country::latest()->get();
         $suppliers = Supplier::latest()->get();
-        return view('admin.supplier.create', compact('cities', 'countries', 'suppliers','brands'));
+
+        return view('admin.supplier.create', compact('cities', 'countries', 'suppliers', 'brands'));
     }
 
     public function store(Request $request)
     {
         $this->supplierInsertCommon($request);
-        return Redirect()->route('supplier.index')->with('success', 'Supplier Added');
+
+        return redirect()->route('supplier.index')->with('success', 'Supplier Added');
     }
 
-    //custome store with modal 
+    // custome store with modal
 
-    public function storeModal(Request $request){
+    public function storeModal(Request $request)
+    {
 
         $this->supplierInsertCommon($request);
+
         return redirect()->back();
     }
 
@@ -77,8 +77,8 @@ class SupplierController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        return Redirect()->back()->with('success', 'Supplier Added');
-       
+        return redirect()->back()->with('success', 'Supplier Added');
+
     }
 
     public function edit($supp_id)
@@ -87,7 +87,8 @@ class SupplierController extends Controller
         $cities = City::latest()->get();
         $countries = Country::latest()->get();
         $supplier = Supplier::findOrFail($supp_id);
-        return view('admin.supplier.edit', compact('countries', 'cities', 'supplier','brands'));
+
+        return view('admin.supplier.edit', compact('countries', 'cities', 'supplier', 'brands'));
     }
 
     public function update(Request $request, $supp_id)
@@ -105,31 +106,30 @@ class SupplierController extends Controller
             'update_at' => Carbon::now(),
         ]);
 
-        return Redirect()->route('supplier.index')->with('success', 'Supplier successfully Updated');
+        return redirect()->route('supplier.index')->with('success', 'Supplier successfully Updated');
     }
 
     // public function destroy($supp_id)
     // {
     //     Supplier::findOrFail($supp_id)->delete();
-    //     return Redirect()->back()->with('delete', 'successfully Deleted');
+    //     return redirect()->back()->with('delete', 'successfully Deleted');
     // }
 
     public function destroy(Supplier $supplier)
-{
-    $supplier->delete();
-    return Redirect()->back()->with('delete', 'successfully Deleted');
-}
+    {
+        $supplier->delete();
 
-    public function details(){
+        return redirect()->back()->with('delete', 'successfully Deleted');
+    }
+
+    public function details()
+    {
         return view('admin.supplier.supplier-details');
     }
 
     // public function detailsSup($id){
 
-
     //     // return Customer::where('id',$cusId)->with('cus_items.product')->first();
-
-    
 
     //     // return $customer->with('sales')->first();
     //     return view('admin.supplier.supplier-detailssup',[

@@ -31,6 +31,10 @@ class Sale extends Model
         'cancel_requested',
     ];
 
+    public function returns(){
+        return $this->hasMany(SaleReturn::class);
+    }
+
     public function customer(){
         return $this->belongsTo(Customer::class);
     }

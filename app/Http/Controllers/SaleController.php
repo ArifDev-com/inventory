@@ -69,7 +69,7 @@ class SaleController extends Controller
             'search' => 'required',
         ]);
 
-        $products = Product::where('name', 'LIKE', '%' . $request->search . '%')->paginate(10);
+        $products = Product::where('name', 'LIKE', '%'.$request->search.'%')->paginate(10);
 
         return view('admin.search-result', compact('products'));
     }
@@ -84,9 +84,9 @@ class SaleController extends Controller
         $authId = Auth::user()->id;
 
         $products = Product::where(function ($query) use ($request) {
-            $query->where('product_code', 'LIKE', '%' . $request->search . '%');
+            $query->where('product_code', 'LIKE', '%'.$request->search.'%');
         })->orWhere(function ($query) use ($request) {
-            $query->where('name', 'LIKE', '%' . $request->search . '%')
+            $query->where('name', 'LIKE', '%'.$request->search.'%')
                 ->where('quantity', '>', 0);
         })
             ->where('status', 'active')
@@ -120,9 +120,9 @@ class SaleController extends Controller
         // dd($request->all());
         // make barcode
         $ref_code = 100 + Sale::count();
-        $barCodeName = $ref_code . '.png';
+        $barCodeName = $ref_code.'.png';
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($ref_code, 'C39+'));
-        $barCodeSavePath = 'upload/barcode/' . $barCodeName;
+        $barCodeSavePath = 'upload/barcode/'.$barCodeName;
         Storage::disk('public_uploads')->put($barCodeName, $barcodeFile);
 
         $sale = Sale::create([
@@ -179,12 +179,12 @@ class SaleController extends Controller
 
             Product::where('id', $request->product_id[$i])->decrement('quantity', $request->quantity[$i]);
         }
-        if($sale->customer->phone) {
-            SMSApi::send($sale->customer->phone, 'A Sale of ' . $sale->grandtotal . ' is recorded. Ref: ' . $sale->ref_code);
+        if ($sale->customer->phone) {
+            SMSApi::send($sale->customer->phone, 'A Sale of '.$sale->grandtotal.' is recorded. Ref: '.$sale->ref_code);
         }
         session()->flash('sale_id', $sale->id);
 
-        return Redirect()->route('sale.index')->with('success', 'Sale Added');
+        return redirect()->route('sale.index')->with('success', 'Sale Added');
     }
 
     public function cancel(Sale $sale)
@@ -192,12 +192,14 @@ class SaleController extends Controller
         // dd(Auth::user()->id, $sale->user_id, $sale->cancel_requested, 403, 'Unauthorized');
         abort_if(Auth::user()->id != $sale->user_id || $sale->cancel_requested, 403, 'Unauthorized');
         $sale->update(['cancel_requested' => now()]);
+
         return back()->with('success', 'Cancellation request sent');
     }
 
     public function cancelUndo(Sale $sale)
     {
         $sale->update(['cancel_requested' => null]);
+
         return back()->with('success', 'Cancellation request has been undone');
     }
 
@@ -229,9 +231,9 @@ class SaleController extends Controller
         // dd($request->all());
 
         // make barcode
-        $barCodeName = $request->ref_code . '.png';
+        $barCodeName = $request->ref_code.'.png';
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($request->ref_code, 'C39+'));
-        $barCodeSavePath = 'upload/barcode/' . $barCodeName;
+        $barCodeSavePath = 'upload/barcode/'.$barCodeName;
         Storage::disk('public_uploads')->put($barCodeName, $barcodeFile);
 
         Sale::findOrFail($id)->update([
@@ -265,7 +267,7 @@ class SaleController extends Controller
             Product::where('id', $request->product_id[$i])->decrement('quantity', $request->quantity[$i]);
         }
 
-        return Redirect()->route('sale.index')->with('success', 'Sale successfully Updated');
+        return redirect()->route('sale.index')->with('success', 'Sale successfully Updated');
     }
 
     public function destroy($sale_id)
@@ -278,7 +280,7 @@ class SaleController extends Controller
         CutomerPayment::where('sale_id', $sale_id)->delete();
         Order_emi::where('order_id', $sale_id)->delete();
 
-        return Redirect()->back()->with('delete', 'successfully Deleted');
+        return redirect()->back()->with('delete', 'successfully Deleted');
     }
 
     public function generatePDF(Sale $sale)
@@ -299,7 +301,7 @@ class SaleController extends Controller
 
             'items.product' => function ($query) {
                 $query->select('id', 'name');
-            }
+            },
         ])->first();
 
         $pdf = Pdf::loadView('admin.sales.print-page', compact('sale', 'randomNumber'));
@@ -328,12 +330,12 @@ class SaleController extends Controller
 
             'items.product' => function ($query) {
                 $query->select('id', 'name');
-            }
+            },
         ])->first();
         // return view('admin.sales.print-challan-page', compact('sale'));
         $pdf = Pdf::loadView('admin.sales.print-challan-page', compact('sale'));
 
-        return $pdf->download('challan - ' . $sale->ref_code . '.pdf');
+        return $pdf->download('challan - '.$sale->ref_code.'.pdf');
 
         // return $pdf->download('codesolutionstuff.pdf');
         // return view('admin.sales.print-page');
@@ -363,7 +365,7 @@ class SaleController extends Controller
             'warehouse_id' => $request->warehouse_id ?? 0,
             'description' => $request->description ?? '',
             'ref_code' => $request->ref_code ?? 0,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         $quotationItem = new QuotationItem;

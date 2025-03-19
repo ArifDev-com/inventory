@@ -145,7 +145,7 @@ class ProductController extends Controller
             'alert_quantity' => $request->alert_quantity ?: 0,
         ]);
 
-        return Redirect()->route('product.index')->with('success', 'Product Added');
+        return redirect()->route('product.index')->with('success', 'Product Added');
 
     }
 
@@ -211,19 +211,20 @@ class ProductController extends Controller
             'update_at' => Carbon::now(),
         ]);
 
-        return Redirect()->route('product.index')->with('success', 'Product successfully Updated');
+        return redirect()->route('product.index')->with('success', 'Product successfully Updated');
     }
 
     public function destroy(Product $product)
     {
         try {
-            $img = $product->image . '';
+            $img = $product->image.'';
             $product->delete();
             @unlink($img);
-            return Redirect()->back()->with('delete', 'successfully Deleted');
+
+            return redirect()->back()->with('delete', 'successfully Deleted');
         } catch (\Throwable $th) {
 
-            return Redirect()->back()->with('error', 'The product is used in other places. Not deletable.');
+            return redirect()->back()->with('error', 'The product is used in other places. Not deletable.');
         }
     }
 
@@ -269,6 +270,7 @@ class ProductController extends Controller
     public function stock()
     {
         $products = Product::latest()->get();
+
         return view('admin.products.stock', compact('products'));
     }
 
@@ -292,7 +294,7 @@ class ProductController extends Controller
                 'user_id' => Auth::user()->id,
                 'prev_quantity' => $product->current_stock,
                 'type' => 'stock_update',
-                'note' => 'Stock updated by ' . Auth::user()->name,
+                'note' => 'Stock updated by '.Auth::user()->name,
             ]);
         }
 
@@ -303,6 +305,7 @@ class ProductController extends Controller
     {
         $stockUpdates = ProductStockUpdate::with('product', 'user')->latest()
             ->get();
+
         return view('admin.products.stock-history', compact('stockUpdates'));
     }
 }

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\ExpenseCategory;
 use App\Models\ExtraExpenseCategory;
-
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ExpenseCategoryController extends Controller
@@ -15,13 +13,15 @@ class ExpenseCategoryController extends Controller
     public function index()
     {
         $authId = Auth::user()->id;
-        $expenseCategories = ExpenseCategory::orderBy('id', 'DESC')->where('user_id',$authId)->get();
+        $expenseCategories = ExpenseCategory::orderBy('id', 'DESC')->where('user_id', $authId)->get();
+
         return view('admin.expCategory.index', compact('expenseCategories'));
     }
 
     public function create()
     {
         $expenseCategories = ExpenseCategory::latest()->get();
+
         return view('admin.expCategory.create', compact('expenseCategories'));
     }
 
@@ -36,12 +36,14 @@ class ExpenseCategoryController extends Controller
             'name' => $request->name,
             'created_at' => Carbon::now(),
         ]);
-        return Redirect()->route('expense.category.index')->with('success', 'Expense Category Added');
+
+        return redirect()->route('expense.category.index')->with('success', 'Expense Category Added');
     }
 
     public function edit($expCat_id)
     {
         $expenseCategory = ExpenseCategory::findOrFail($expCat_id);
+
         return view('admin.expCategory.edit', compact('expenseCategory'));
     }
 
@@ -54,25 +56,27 @@ class ExpenseCategoryController extends Controller
             'update_at' => Carbon::now(),
         ]);
 
-        return Redirect()->route('expense.category.index')->with('success', 'Expense Category successfully Updated');
+        return redirect()->route('expense.category.index')->with('success', 'Expense Category successfully Updated');
     }
 
     // public function destroy($expCat_id)
     // {
     //     ExpenseCategory::findOrFail($expCat_id)->delete();
-    //     return Redirect()->back()->with('delete', 'successfully Deleted');
+    //     return redirect()->back()->with('delete', 'successfully Deleted');
     // }
 
     public function destroy(ExpenseCategory $expCategory)
     {
         $expCategory->delete();
-        return Redirect()->back()->with('delete', 'successfully Deleted');
+
+        return redirect()->back()->with('delete', 'successfully Deleted');
     }
 
     // Extra Expense Category
     public function extraCategoryList()
     {
         $extraexpenseCategories = ExtraExpenseCategory::orderBy('id', 'DESC')->get();
+
         return view('admin.extra_expCategory.index', compact('extraexpenseCategories'));
     }
 
@@ -92,12 +96,14 @@ class ExpenseCategoryController extends Controller
             'name' => $request->name,
             'created_at' => Carbon::now(),
         ]);
-        return Redirect()->route('extra.expense.category.index')->with('success', 'Expense Category Added');
+
+        return redirect()->route('extra.expense.category.index')->with('success', 'Expense Category Added');
     }
 
     public function editExtra($id)
     {
         $edit_extraexpenseCategory = ExtraExpenseCategory::findOrFail($id);
+
         return view('admin.extra_expCategory.edit', compact('edit_extraexpenseCategory'));
     }
 
@@ -110,6 +116,6 @@ class ExpenseCategoryController extends Controller
             'update_at' => Carbon::now(),
         ]);
 
-        return Redirect()->route('extra.expense.category.index')->with('success', 'Extra Expense Category successfully Updated');
+        return redirect()->route('extra.expense.category.index')->with('success', 'Extra Expense Category successfully Updated');
     }
 }

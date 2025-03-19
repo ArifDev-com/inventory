@@ -7152,11 +7152,13 @@ span.select2-container.select2-container--default.select2-container--open {
   color: #6E6B7B;
   font-size: 14px;
 }
+
 .table-product tr td {
   font-weight: 600;
   color: #6E6B7B;
   font-size: 14px;
 }
+
 
 .btn-totallabel {
   color: #fff;
@@ -7967,4 +7969,15 @@ span.select2-container.select2-container--default.select2-container--open {
   right: 10px;
 }
 
-/*# sourceMappingURL=style.css.map */
+table tr:nth-child(even) {background-color: #ebebeb !important;}
+
+table.dataTable th{
+  text-align: center !important;
+}
+
+table.dataTable tbody td{
+  padding: 8px 10px;
+  text-align: center;
+}
+
+

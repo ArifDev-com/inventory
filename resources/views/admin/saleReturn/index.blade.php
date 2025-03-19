@@ -116,7 +116,7 @@
                                 <th>Sl</th>
                                 <th>Date</th>
                                 <th>Customer</th>
-                              
+
                                 <th>Paid Amount (৳)</th>
                                 <th>Action</th>
                             </tr>
@@ -132,11 +132,11 @@
                                 </td>
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $saleReturn->date }}</td>
-                                <td>{{ $saleReturn->customer->name }}</td>
-                               
+                                <td>{{ $saleReturn->customer?->name }}</td>
+
                                 <td>{{ $saleReturn->grandtotal }}</td>
                                 {{-- <td>
-                                     
+
                                     <a class="me-3" href="{{ route('saleReturn.edit',$saleReturn->id) }}">
                                         <img src="{{asset('backend')}}/img/icons/edit.svg" alt="img">
                                     </a>
@@ -165,10 +165,12 @@
                                         <li>
                                             <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="{{asset('backend')}}/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
                                         </li> --}}
-                                       
+
                                         <li>
-                                            <a href="{{ route('saleReturn.delete',$saleReturn->id) }}" class="dropdown-item confirm-text"><img src="{{asset('backend')}}/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-                                        </li>								
+                                            <a href="{{ route('saleReturn.delete',$saleReturn->id) }}" class="dropdown-item confirm-text" onclick="return confirm('Are you sure you want to delete this return?')">
+                                                <img src="{{asset('backend')}}/img/icons/delete1.svg" class="me-2" alt="img">Delete Return
+                                            </a>
+                                        </li>
                                     </ul>
                                 </td>
                             </tr>

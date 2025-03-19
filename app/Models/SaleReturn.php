@@ -20,15 +20,16 @@ class SaleReturn extends Model
         'grandtotal',
         'paid_amount',
         'status',
-        'note'
+        'note',
+        'sale_id'
     ];
 
-    public function customer(){
+    public function customer() {
         return $this->belongsTo(Customer::class,'customer_id');
     }
 
-    public function warehouse(){
-        return $this->belongsTo(Warehouse::class,'warehouse_id');
+    public function sale() {
+        return $this->belongsTo(Sale::class, 'sale_id');
     }
 
     public function items(){

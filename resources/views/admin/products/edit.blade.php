@@ -34,7 +34,7 @@
                             </div>
 
 
-                            <div class="col-lg-3 col-sm-6 col-12 ">
+                            <div class="col-lg-4 col-sm-6 col-12 ">
                                 <div class="form-group">
                                     <label>Stock Alert</label>
                                     <input type="text" name="alert_quantity" value="{{ $product->alert_quantity }}">

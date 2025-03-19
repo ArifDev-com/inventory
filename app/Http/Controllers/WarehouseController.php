@@ -2,19 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\City;
-
-use App\Models\Product;
-
-use App\Models\Customer;
-
-use App\Models\Sale;
-
 use App\Models\Warehouse;
-
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
@@ -22,6 +13,7 @@ class WarehouseController extends Controller
     {
         $cities = City::latest()->get();
         $warehouses = Warehouse::orderBy('id', 'DESC')->get();
+
         return view('admin.warehouse.index', compact('cities', 'warehouses'));
     }
 
@@ -29,6 +21,7 @@ class WarehouseController extends Controller
     {
         $cities = City::latest()->get();
         $warehouses = Warehouse::latest()->get();
+
         return view('admin.warehouse.create', compact('cities', 'warehouses'));
     }
 
@@ -52,14 +45,16 @@ class WarehouseController extends Controller
             'address' => $request->address,
             'created_at' => Carbon::now(),
         ]);
-       // return Redirect()->route('warehouse.index')->with('success', 'Warehouse Added');
-        return Redirect()->back()->with('success', 'Warehouse Added');
+
+        // return redirect()->route('warehouse.index')->with('success', 'Warehouse Added');
+        return redirect()->back()->with('success', 'Warehouse Added');
     }
 
     public function edit($whouse_id)
     {
         $cities = City::latest()->get();
         $warehouse = Warehouse::findOrFail($whouse_id);
+
         return view('admin.warehouse.edit', compact('warehouse', 'cities'));
     }
 
@@ -77,25 +72,25 @@ class WarehouseController extends Controller
             'update_at' => Carbon::now(),
         ]);
 
-        return Redirect()->route('warehouse.index')->with('success', 'Warehouse successfully Updated');
+        return redirect()->route('warehouse.index')->with('success', 'Warehouse successfully Updated');
     }
 
     // public function destroy($whouse_id)
     // {
     //     Warehouse::findOrFail($whouse_id)->delete();
-    //     return Redirect()->back()->with('delete', 'successfully Deleted');
+    //     return redirect()->back()->with('delete', 'successfully Deleted');
     // }
 
     public function destroy(Warehouse $warehouse)
     {
         $warehouse->delete();
-        return Redirect()->back()->with('delete', 'successfully Deleted');
+
+        return redirect()->back()->with('delete', 'successfully Deleted');
     }
 
     // public function details($id){
-   
+
     //  return view('admin.warehouse.warehouse-details');
 
-    
     // }
 }

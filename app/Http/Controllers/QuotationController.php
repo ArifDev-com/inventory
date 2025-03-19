@@ -44,7 +44,7 @@ class QuotationController extends Controller
             'search' => 'required',
         ]);
 
-        $products = Product::where('name', 'LIKE', '%' . $request->search . '%')
+        $products = Product::where('name', 'LIKE', '%'.$request->search.'%')
             ->paginate(5);
 
         return view('admin.search-result', compact('products'));
@@ -56,7 +56,7 @@ class QuotationController extends Controller
             'search' => 'required',
         ]);
 
-        $products = Product::where('name', 'LIKE', '%' . $request->search . '%')->take(5)->get();
+        $products = Product::where('name', 'LIKE', '%'.$request->search.'%')->take(5)->get();
 
         return view('admin.search-product', compact('products'));
     }
@@ -103,7 +103,7 @@ class QuotationController extends Controller
             ]);
         }
 
-        return Redirect()->route('quotation.index')->with('success', 'Quotation Added');
+        return redirect()->route('quotation.index')->with('success', 'Quotation Added');
     }
 
     public function edit($quo_id)
@@ -144,14 +144,14 @@ class QuotationController extends Controller
             ]);
         }
 
-        return Redirect()->route('quotation.index')->with('success', 'Quotation successfully Updated');
+        return redirect()->route('quotation.index')->with('success', 'Quotation successfully Updated');
     }
 
     public function destroy($quo_id)
     {
         Quotation::findOrFail($quo_id)->delete();
 
-        return Redirect()->back()->with('delete', 'successfully Deleted');
+        return redirect()->back()->with('delete', 'successfully Deleted');
     }
 
     public function generatePDF(Quotation $quotation)
@@ -172,7 +172,7 @@ class QuotationController extends Controller
 
             'items.product' => function ($query) {
                 $query->select('id', 'name');
-            }
+            },
         ])->first();
 
         $pdf = Pdf::loadView('admin.quotation.print-page', compact('quotation', 'randomNumber'));

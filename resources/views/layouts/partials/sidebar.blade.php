@@ -64,9 +64,17 @@
                         <li><a href="{{ route('sale.index') }}"
                                 class="{{ request()->is('admin/sales') ? 'active' : '' }}">{{
                                 trans('sidebar.sale.sale_list') }}</a></li>
-
-
-
+                    </ul>
+                </li>
+                <li class="submenu ">
+                    <a href="javascript:void(0);"
+                        class="{{ request()->is('admin/sale/return/list') ? 'active' : '' }}"><img
+                            src="{{asset('backend')}}/img/icons/sales1.svg" alt="img"><span>
+                                Returns</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{{ route('sale.return.list') }}"
+                                class="{{ request()->is('admin/sale/return/list') ? 'active' : '' }}">
+                                Return List</a></li>
                     </ul>
                 </li>
 
@@ -211,10 +219,8 @@
                         <li><a href="{{ route('shopDocument.index') }}"
                                 class="{{ request()->is('admin/shopDocuments') ? 'active' : '' }}">Shop Setup </a></li>
 
-
                         <li><a href="{{ route('supplier.index') }}"
                                 class="{{ request()->is('admin/suppliers') ? 'active' : '' }}">Supplier</a></li>
-
                     </ul>
                 </li>
                 @endif

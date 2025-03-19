@@ -126,7 +126,7 @@ class AdminController extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        //  return Redirect()->route('login')->with('success', 'Register Added');
+        //  return redirect()->route('login')->with('success', 'Register Added');
         return back()->with('success', 'Your Register has been Successfull, Our team will contact with you.');
     }
 }

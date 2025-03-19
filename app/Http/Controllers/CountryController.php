@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Country;
-
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class CountryController extends Controller
 {
     public function index()
     {
         $countries = Country::orderBy('id', 'DESC')->get();
+
         return view('admin.country.index', compact('countries'));
     }
 
     public function create()
     {
         $countries = Country::latest()->get();
+
         return view('admin.country.create', compact('countries'));
     }
 
@@ -32,12 +32,14 @@ class CountryController extends Controller
             'name' => $request->name,
             'created_at' => Carbon::now(),
         ]);
-        return Redirect()->route('country.index')->with('success', 'Country Added');
+
+        return redirect()->route('country.index')->with('success', 'Country Added');
     }
 
     public function edit($con_id)
     {
         $country = Country::findOrFail($con_id);
+
         return view('admin.country.edit', compact('country'));
     }
 
@@ -50,18 +52,19 @@ class CountryController extends Controller
             'update_at' => Carbon::now(),
         ]);
 
-        return Redirect()->route('country.index')->with('success', 'Country successfully Updated');
+        return redirect()->route('country.index')->with('success', 'Country successfully Updated');
     }
 
     // public function delete($con_id)
     // {
     //     Country::findOrFail($con_id)->delete();
-    //     return Redirect()->back()->with('delete', 'successfully Deleted');
+    //     return redirect()->back()->with('delete', 'successfully Deleted');
     // }
 
     public function destroy(Country $country)
     {
         $country->delete();
-        return Redirect()->back()->with('delete', 'successfully Deleted');
+
+        return redirect()->back()->with('delete', 'successfully Deleted');
     }
 }

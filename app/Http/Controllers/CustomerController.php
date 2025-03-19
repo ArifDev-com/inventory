@@ -33,6 +33,7 @@ class CustomerController extends Controller
                 'paid_amount',
                 'due_amount');
         }])->orderBy('id', 'DESC')->get();
+
         // dd($customers);
         // return $customers;
         return view('admin.customer.index', compact('city', 'country', 'customers'));
@@ -51,7 +52,8 @@ class CustomerController extends Controller
     {
         $customer = $this->customerInsertCommon($request);
         session()->flash('auto_customer_id', $customer->id);
-        return Redirect()->route('customer.index')->with('success', 'Customer Added');
+
+        return redirect()->route('customer.index')->with('success', 'Customer Added');
     }
 
     // custome store with modal
@@ -121,14 +123,14 @@ class CustomerController extends Controller
             'update_at' => Carbon::now(),
         ]);
 
-        return Redirect()->route('customer.index')->with('success', 'Customer successfully Updated');
+        return redirect()->route('customer.index')->with('success', 'Customer successfully Updated');
     }
 
     public function destroy($cus_id)
     {
         Customer::findOrFail($cus_id)->delete();
 
-        return Redirect()->back()->with('delete', 'successfully Deleted');
+        return redirect()->back()->with('delete', 'successfully Deleted');
     }
 
     public function details($cusId)

@@ -90,10 +90,15 @@ class Product extends Model
         return $this->hasMany(SaleItem::class);
     }
 
+    public function saleReturns()
+    {
+        return $this->hasMany(SaleReturnItem::class);
+    }
+
     function getCurrentStockAttribute()
     {
         // add stock from return amount later
-        return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity') - $this->saleItems()->sum('quantity');
+        return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity') - $this->saleItems()->sum('quantity') + $this->saleReturns()->sum('quantity');
     }
 
     public function stockQuantityAtStartOf($date): int
@@ -110,7 +115,11 @@ class Product extends Model
             ->whereDate('created_at', '<', $date)
             ->sum('quantity');
 
-        return $this->quantity + $purchasesBefore + $stockUpdatesBefore - $salesBefore;
+        $saleReturnsBefore = $this->saleReturns()
+            ->whereDate('created_at', '<', $date)
+            ->sum('quantity');
+
+        return $this->quantity + $purchasesBefore + $stockUpdatesBefore - $salesBefore + $saleReturnsBefore;
     }
     public function stockQuantityAtEndOf($date): int
     {
@@ -126,8 +135,12 @@ class Product extends Model
             ->whereDate('created_at', '<=', $date)
             ->sum('quantity');
 
+        $saleReturnsUpToDate = $this->saleReturns()
+            ->whereDate('created_at', '<=', $date)
+            ->sum('quantity');
+
         // dump($this->quantity , $purchasesUpToDate , $stockUpdatesUpToDate , $salesUpToDate);
-        return $this->quantity + $purchasesUpToDate + $stockUpdatesUpToDate - $salesUpToDate;
+        return $this->quantity + $purchasesUpToDate + $stockUpdatesUpToDate - $salesUpToDate + $saleReturnsUpToDate;
     }
 
 }

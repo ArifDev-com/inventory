@@ -127,7 +127,7 @@ class PurchaseController extends Controller
             ]);
         }
 
-        return Redirect()->route('purchase.index')->with('success', 'Purchase Added');
+        return redirect()->route('purchase.index')->with('success', 'Purchase Added');
     }
 
     public function edit($purch_id)
@@ -172,7 +172,7 @@ class PurchaseController extends Controller
             // Product::where('id',$request->product_id[$i])->increment('quantity',$request->quantity[$i]);
         }
 
-        return Redirect()->route('purchase.index')->with('success', 'Purchase successfully Updated');
+        return redirect()->route('purchase.index')->with('success', 'Purchase successfully Updated');
     }
 
     public function destroy($purch_id)
@@ -220,7 +220,7 @@ class PurchaseController extends Controller
                           $query->select('id', 'name');
                       }])->first();
 
-        $pdf = Pdf::loadView('admin.purchase.print-page',compact('purchase','randomNumber'));
+        $pdf = Pdf::loadView('admin.purchase.print-page', compact('purchase', 'randomNumber'));
 
         return $pdf->download('invoice.pdf');
 

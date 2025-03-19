@@ -146,7 +146,6 @@
                                 </th>
                                 <th>{{ trans('table.thead.product_name') }}</th>
                                 <th>Current Stock</th>
-                                <th>Stock Alert </th>
                                 @if(auth()->user()->user_role == 'admin')
                                 <th>{{ trans('table.thead.purchaseprice') }}</th>
                                 @endif
@@ -179,11 +178,10 @@
                                     <span @if ($product->current_stock <= $product->alert_quantity)
                                             class="badge bg-danger text-white"
                                             @else
-                                            class="badge bg-success text-white"
+                                            class="text-primary"
                                             @endif
                                             style="font-size: 15px;">{{ $product->current_stock }}</span>
                                 </td>
-                                <td>{{ $product->alert_quantity }}</td>
                                 @if(auth()->user()->user_role == 'admin')
                                 <td>{{ $product->purchase_price }}</td>
                                 @endif

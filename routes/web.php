@@ -408,8 +408,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/sale/cancel/undo/{sale}', [App\Http\Controllers\SaleController::class, 'cancelUndo'])->name('sale.cancel.undo');
     Route::get('/sale/edit/{sale_id}', [App\Http\Controllers\SaleController::class, 'edit'])->name('sale.edit');
 
-    Route::get('/sale/return/{sale}', [App\Http\Controllers\SaleController::class, 'return'])->name('sale.return');
+    Route::get('/sale/return/list', [App\Http\Controllers\SaleReturnController::class, 'index'])->name('sale.return.list');
+    Route::get('/sale/return/{sale}', [App\Http\Controllers\SaleReturnController::class, 'create'])->name('sale.return');
+    Route::post('/sale/return/store', [App\Http\Controllers\SaleReturnController::class, 'store'])->name('sale.return.store');
 
+    
     Route::post('/sale/update/{id}', [App\Http\Controllers\SaleController::class, 'update'])->name('sale.update');
 
     Route::get('/sale/delete/{sale_id}', [App\Http\Controllers\SaleController::class, 'destroy'])->name('sale.delete');
