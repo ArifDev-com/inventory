@@ -1,19 +1,18 @@
 @extends('layouts.app')
 @section('content')
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+        crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 
-<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
-
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 
     <div class="page-wrapper">
         <div class="content">
@@ -23,9 +22,10 @@
                     <h6>{{ trans('sidebar.product.body.manage your products') }}</h6>
                 </div>
                 <div class="page-btn">
-                    @if(auth()->user()->user_role == 'admin')
-                    <a href="{{ route('product.create') }}" class="btn btn-added"><img
-                            src="{{ asset('backend') }}/img/icons/plus.svg" alt="img" class="me-1">{{ trans('sidebar.product.body.add new product') }}</a>
+                    @if (auth()->user()->user_role == 'admin')
+                        <a href="{{ route('product.create') }}" class="btn btn-added"><img
+                                src="{{ asset('backend') }}/img/icons/plus.svg" alt="img"
+                                class="me-1">{{ trans('sidebar.product.body.add new product') }}</a>
                     @endif
                 </div>
             </div>
@@ -145,36 +145,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $key=> $product)
+                                @foreach ($products as $key => $product)
                                     <tr>
-                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>
                                             {{ $product->code }}
                                         </td>
 
                                         <td class="productimgname">
                                             <a href="javascript:void(0);" class="product-img">
-                                                @if($product->image)
-                                                <img src="{{ asset($product->image) }}" alt="product">
+                                                @if ($product->image)
+                                                    <img src="{{ asset($product->image) }}" alt="product">
                                                 @else
-                                                <img src="{{ asset('backend\img\img-01.jpg')}}" alt="product">
+                                                    <img src="{{ asset('backend\img\img-01.jpg') }}" alt="product">
                                                 @endif
                                             </a>
                                             <a href="javascript:void(0);">{{ $product->name }}</a>
                                         </td>
-                                        <td><span class="badge bg-danger text-white" style="font-size: 15px;">{{ $product->quantity }}</span></td>
+                                        <td><span class="badge bg-danger text-white"
+                                                style="font-size: 15px;">{{ $product->quantity }}</span></td>
                                         <td>{{ $product->alert_quantity }}</td>
                                         <td>{{ $product->purchase_price }}</td>
                                         <td>{{ $product->wholesale_price }}</td>
                                         <td>{{ $product->retail_price }}</td>
                                         <td>{{ $product->price }}</td>
 
-                                        <td>{{ $product->user->first_name .' '. $product->user->last_name}}</td>
+                                        <td>{{ $product->user?->first_name . ' ' . $product->user?->last_name }}</td>
                                         <td>
                                             <a class="me-3" href="{{ route('product.details', $product->id) }}">
                                                 <img src="{{ asset('backend') }}/img/icons/eye.svg" alt="img">
                                             </a>
-                                            @if(auth()->user()->user_role == 'admin')
+                                            @if (auth()->user()->user_role == 'admin')
                                                 <a class="me-3" href="{{ route('product.edit', $product->id) }}">
                                                     <img src="{{ asset('backend') }}/img/icons/edit.svg" alt="img">
                                                 </a>
@@ -188,9 +189,10 @@
                                                 <form method="POST" action="{{ route('product.delete', $product->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="show_confirm"  data-toggle="tooltip" title='Delete'>
+                                                    <button type="submit" class="show_confirm" data-toggle="tooltip"
+                                                        title='Delete'>
                                                         <img src="{{ asset('backend') }}/img/icons/delete.svg"
-                                                        alt="img">
+                                                            alt="img">
                                                     </button>
                                                 </form>
                                             @endif
@@ -203,7 +205,7 @@
 
                         {{-- table footer  --}}
 
-                    {{-- <div class="dataTables_length" ><label><select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div>
+                        {{-- <div class="dataTables_length" ><label><select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div>
 
                         <div class="dataTables_paginate paging_numbers">
                             <ul class="pagination">
@@ -224,15 +226,11 @@
     </div>
 
     <script>
-
-        $('#example').DataTable( {
+        $('#example').DataTable({
             dom: 'Bfrtip',
             buttons: [
-                'csv', 'excel', 'pdf' , 'print'
+                'csv', 'excel', 'pdf', 'print'
             ]
-        } );
+        });
     </script>
 @endsection
-
-
-
