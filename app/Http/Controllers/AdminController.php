@@ -33,6 +33,8 @@ class AdminController extends Controller
                 $query->select('id', 'name');
             }])->where('quantity', '<', '5')->get(['id', 'brand_id', 'category_id', 'product_code', 'name', 'quantity', 'image']);
 
+        $cancellationRequests = Sale::whereNotNull('cancel_requested')->get();
+
         return view('admin.home',
             [
                 'purchaseDue' => $purchaseDue,
@@ -48,7 +50,7 @@ class AdminController extends Controller
                 'saleCount' => $sales->count(),
                 'recentProducts' => $recentProducts,
                 'stockLess' => $stockLess,
-
+                'cancellationRequests' => $cancellationRequests,
             ],
         );
     }

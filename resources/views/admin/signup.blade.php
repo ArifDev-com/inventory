@@ -29,7 +29,7 @@
     @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
 
     body {
-      background: #242b77;
+      background: linear-gradient(45deg, red, #020285);
       /* background-image: url("{{ asset('image/background_two.png') }}");
   background-repeat: no-repeat;
   background-size: cover; */
@@ -74,16 +74,16 @@
     .login input[type=submit] {
       border: none;
       /* background: #EF5350; */
-      background: #4370b7;
+      background: linear-gradient(45deg, red, #020285);
       color: white;
       font-weight: bold;
-      transition: 0.2s;
+      transition: background 0.2s linear;
       margin: 20px 0px;
     }
 
     .login input[type=submit]:hover {
       /* background: #F44336;   */
-      background: #242b77;
+      background: linear-gradient(45deg, #020285, red);
     }
 
     .login h2 {
@@ -220,7 +220,8 @@
     <input type="submit" value="Register" />
 
     <center>
-      <a href="{{ route('login')}}" style="color: #242b77; font-size: 16px; font-weight: bold;">Login</a>
+      <a href="{{ route('login')}}"
+        style="color: #666;); font-size: 16px; font-weight: bold;">Login</a>
     </center>
     <br>
 
@@ -228,7 +229,8 @@
 
     <div class="links">
       <br>
-      <center> Developed By: <a href="#" target="_blank" style="color: #4370b7; font-size: 18px;">
+      <center> Developed By: <a href="#" target="_blank"
+          style="color: red; font-size: 18px;">
           Capital Lift Ltd.</a></center>
 
     </div>

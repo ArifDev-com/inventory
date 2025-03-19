@@ -132,7 +132,13 @@
                                         <td>{{ $sale->paid_amount }}</td>
                                         <td class="text-red">{{ $sale->due_amount }}</td>
                                         <td>{{ $sale->due_date }}</td>
-                                        <td>{{ $sale->user?->first_name . ' ' . $sale->user?->last_name }}</td>
+                                        <td>
+                                            {{ $sale->user?->first_name . ' ' . $sale->user?->last_name }}
+                                            @if($sale->cancel_requested)
+                                                <br>
+                                                <span class="badge bg-danger">Requested to Cancel</span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
                                                 aria-expanded="true">
@@ -151,9 +157,19 @@
                                                             src="{{ asset('backend') }}/img/icons/download.svg"
                                                             class="me-2" alt="img">Print Challan</a>
                                                 </li>
+
+                                                @if(!$sale->cancel_requested && auth()->user()->id == $sale->user_id)
+                                                <li>
+                                                    <a href="{{ route('sale.cancel', [$sale->id]) }}"
+                                                        onclick="return confirm('Are you sure you want to request cancellation?')"
+                                                        class="dropdown-item confirm-text">
+                                                        Request Cancellation</a>
+                                                </li>
+                                                @endif
                                                 @if (auth()->user()->user_role == 'admin')
                                                     <li>
                                                         <a href="{{ route('sale.delete', $sale->id) }}"
+                                                            onclick="return confirm('Are you sure you want to delete this sale?')"
                                                             class="dropdown-item confirm-text"><img
                                                                 src="{{ asset('backend') }}/img/icons/delete1.svg"
                                                                 class="me-2"

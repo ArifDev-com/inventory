@@ -125,9 +125,6 @@ class PurchaseController extends Controller
                 'quantity' => $request->quantity[$i],
                 'sub_total' => $request->sub_total[$i],
             ]);
-
-            Product::where('id', $request->product_id[$i])->increment('quantity', $request->quantity[$i]);
-
         }
 
         return Redirect()->route('purchase.index')->with('success', 'Purchase Added');

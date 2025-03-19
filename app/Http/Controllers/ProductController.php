@@ -216,11 +216,15 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        try {
+            $img = $product->image . '';
+            $product->delete();
+            @unlink($img);
+            return Redirect()->back()->with('delete', 'successfully Deleted');
+        } catch (\Throwable $th) {
 
-        @unlink($product->image);
-        $product->delete();
-
-        return Redirect()->back()->with('delete', 'successfully Deleted');
+            return Redirect()->back()->with('error', 'The product is used in other places. Not deletable.');
+        }
     }
 
     public function product_details($pro_id)

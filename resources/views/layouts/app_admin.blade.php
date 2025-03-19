@@ -108,7 +108,7 @@
 		}
 
 		.header {
-			background: #192171;
+			background: linear-gradient(45deg, red, #000058);
 			;
 		}
 
@@ -116,16 +116,17 @@
 			overflow: hidden;
 			width: 100%;
 			height: 416px;
-			background: rgb(4, 6, 91);
+			background: #bb1717;
 		}
 
 		.sidebar .sidebar-menu>ul>li>a {
 			padding: 10px 15px;
 			position: relative;
 			/* color: #212B36; */
-			border: solid 0.5px #34383b;
+			border-bottom: solid 0.5px #34383b;
 			/* background: black; */
-			border-radius: 50px;
+			border-radius: 5px;
+			background: #ffffff47;
 		}
 
 
@@ -138,7 +139,7 @@
 
 
 		.form-select {
-			background-color: #192171 !important;
+			background-color: linear-gradient(45deg, red, #000058) !important;
 			color: #d7dadd !important;
 			border-radius: 50px !important;
 		}
@@ -146,18 +147,18 @@
 		/* button color change  */
 
 		.page-header .btn-added {
-			background: #192171;
+			background: linear-gradient(45deg, red, #000058);
 
 		}
 
 		.btn-info {
 			color: #fff;
-			background-color: #192171;
+			background-color: linear-gradient(45deg, red, #000058);
 
 		}
 
 		.btn-submit {
-			background: #192171;
+			background: linear-gradient(45deg, red, #000058);
 
 		}
 

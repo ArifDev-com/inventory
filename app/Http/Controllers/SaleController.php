@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SMSApi;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Customer;
@@ -178,9 +179,26 @@ class SaleController extends Controller
 
             Product::where('id', $request->product_id[$i])->decrement('quantity', $request->quantity[$i]);
         }
+        if($sale->customer->phone) {
+            SMSApi::send($sale->customer->phone, 'A Sale of ' . $sale->grandtotal . ' is recorded. Ref: ' . $sale->ref_code);
+        }
         session()->flash('sale_id', $sale->id);
 
         return Redirect()->route('sale.index')->with('success', 'Sale Added');
+    }
+
+    public function cancel(Sale $sale)
+    {
+        // dd(Auth::user()->id, $sale->user_id, $sale->cancel_requested, 403, 'Unauthorized');
+        abort_if(Auth::user()->id != $sale->user_id || $sale->cancel_requested, 403, 'Unauthorized');
+        $sale->update(['cancel_requested' => now()]);
+        return back()->with('success', 'Cancellation request sent');
+    }
+
+    public function cancelUndo(Sale $sale)
+    {
+        $sale->update(['cancel_requested' => null]);
+        return back()->with('success', 'Cancellation request has been undone');
     }
 
     public function edit($sale_id)

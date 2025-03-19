@@ -4480,6 +4480,7 @@ span.select2-container.select2-container--default.select2-container--open {
 .sidebar .sidebar-menu > ul > li > a img {
   width: 18px;
   color: #637381;
+  filter: brightness(0) invert(1);
 }
 .sidebar .sidebar-menu > ul > li > a:hover {
   background: #3E458E;

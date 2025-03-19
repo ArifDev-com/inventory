@@ -100,7 +100,7 @@
                     </ul>
                 </li>
                 @endif
-                @if(auth()->user()->user_role == 'admin')
+                {{-- @if(auth()->user()->user_role == 'admin')
                 <li class="submenu ">
                     <a href="javascript:void(0);"
                         class="{{ request()->is('admin/roles') ? 'active' : '' }}"><img
@@ -129,7 +129,7 @@
                         </li>
                     </ul>
                 </li>
-                @endif
+                @endif --}}
 
 
                 {{-- // Customer // --}}
@@ -162,7 +162,7 @@
                 @endif
 
                 {{-- // Expenses // --}}
-                @if(auth()->user()->user_role == 'admin')
+                {{-- @if(auth()->user()->user_role == 'admin')
                 <li class="submenu ">
                     <a href="javascript:void(0);"
                         class="{{ request()->is('admin/expense/create') || request()->is('admin/expenses') || request()->is('admin/expenseCategory/create') || request()->is('admin/expenseCategories')  ? 'active' : '' }}"><img
@@ -178,12 +178,12 @@
                                 trans('sidebar.expense.expense_list') }}</a></li>
                     </ul>
                 </li>
-                @endif
+                @endif --}}
 
                 @if(auth()->user()->user_role == 'admin')
                 <li>
                     <a href="{{ route('reportssummary') }}"><img src="{{asset('backend')}}/img/icons/time.svg"
-                            alt="img"><span> Reports Module</span> </a>
+                            alt="img"><span> Reports </span> </a>
                 </li>
 
                 <li class="submenu">

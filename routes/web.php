@@ -404,7 +404,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/sale/create', [App\Http\Controllers\SaleController::class, 'create'])->name('sale.create');
 
     Route::post('/sale/store', [App\Http\Controllers\SaleController::class, 'store'])->name('sale.store');
-
+    Route::get('/sale/cancel/{sale}', [App\Http\Controllers\SaleController::class, 'cancel'])->name('sale.cancel');
+    Route::get('/sale/cancel/undo/{sale}', [App\Http\Controllers\SaleController::class, 'cancelUndo'])->name('sale.cancel.undo');
     Route::get('/sale/edit/{sale_id}', [App\Http\Controllers\SaleController::class, 'edit'])->name('sale.edit');
 
     Route::get('/sale/return/{sale}', [App\Http\Controllers\SaleController::class, 'return'])->name('sale.return');

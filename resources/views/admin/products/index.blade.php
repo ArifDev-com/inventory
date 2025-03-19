@@ -30,6 +30,17 @@
                 </div>
             </div>
 
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             <!-- /product list -->
             <div class="card">
@@ -134,9 +145,11 @@
                                         Code
                                     </th>
                                     <th>{{ trans('table.thead.product_name') }}</th>
-                                    <th>{{ trans('table.thead.qty') }}</th>
+                                    <th>Current Stock</th>
                                     <th>Stock Alert </th>
-                                    <th>{{ trans('table.thead.purchaseprice') }}</th>
+                                    @if(auth()->user()->user_role == 'admin')
+                                        <th>{{ trans('table.thead.purchaseprice') }}</th>
+                                    @endif
                                     <th>Wholesale Price</th>
                                     <th>Retail Price</th>
                                     <th>{{ trans('table.thead.price') }}</th>
@@ -162,40 +175,64 @@
                                             </a>
                                             <a href="javascript:void(0);">{{ $product->name }}</a>
                                         </td>
-                                        <td><span class="badge bg-danger text-white"
-                                                style="font-size: 15px;">{{ $product->quantity }}</span></td>
+                                        <td>
+                                            <span
+                                                @if ($product->current_stock <= $product->alert_quantity)
+                                                    class="badge bg-danger text-white"
+                                                @else
+                                                    class="badge bg-success text-white"
+                                                @endif
+                                                style="font-size: 15px;">{{ $product->current_stock }}</span>
+                                        </td>
                                         <td>{{ $product->alert_quantity }}</td>
-                                        <td>{{ $product->purchase_price }}</td>
+                                        @if(auth()->user()->user_role == 'admin')
+                                            <td>{{ $product->purchase_price }}</td>
+                                        @endif
                                         <td>{{ $product->wholesale_price }}</td>
                                         <td>{{ $product->retail_price }}</td>
                                         <td>{{ $product->price }}</td>
 
                                         <td>{{ $product->user?->first_name . ' ' . $product->user?->last_name }}</td>
                                         <td>
-                                            <a class="me-3" href="{{ route('product.details', $product->id) }}">
-                                                <img src="{{ asset('backend') }}/img/icons/eye.svg" alt="img">
+                                            <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                                aria-expanded="true">
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                             </a>
-                                            @if (auth()->user()->user_role == 'admin')
-                                                <a class="me-3" href="{{ route('product.edit', $product->id) }}">
-                                                    <img src="{{ asset('backend') }}/img/icons/edit.svg" alt="img">
-                                                </a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="{{ route('product.details', $product->id) }}"
+                                                        class="dropdown-item"><img
+                                                            src="{{ asset('backend') }}/img/icons/eye.svg"
+                                                            class="me-2" alt="img">
+                                                            View
+                                                        </a>
+                                                </li>
 
-                                                {{-- ekhane form submit diye delete korte hobe.. evabe korle direct requrest chole jabe.. tai delete hobe.. --}}
-                                                {{-- <a class="show_confirm" href="{{ route('product.delete', $product->id) }}">
-                                                    <img src="{{ asset('backend') }}/img/icons/delete.svg"
-                                                    alt="img">
-                                                </a> --}}
-
-                                                <form method="POST" action="{{ route('product.delete', $product->id) }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="show_confirm" data-toggle="tooltip"
-                                                        title='Delete'>
-                                                        <img src="{{ asset('backend') }}/img/icons/delete.svg"
-                                                            alt="img">
-                                                    </button>
-                                                </form>
-                                            @endif
+                                                @if (auth()->user()->user_role == 'admin')
+                                                <li>
+                                                    <a href="{{ route('product.edit', $product->id) }}"
+                                                        class="dropdown-item"><img
+                                                            src="{{ asset('backend') }}/img/icons/edit.svg"
+                                                            class="me-2" alt="img">
+                                                            Edit
+                                                        </a>
+                                                </li>
+                                                <li>
+                                                    <form method="POST" action="{{ route('product.delete', $product->id) }}" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <span class="show_confirm text-danger dropdown-item"
+                                                            style="cursor: pointer;"
+                                                        data-toggle="tooltip"
+                                                            title='Delete'>
+                                                            <img src="{{ asset('backend') }}/img/icons/delete.svg"
+                                                                alt="img">
+                                                                Delete
+                                                        </span>
+                                                    </form>
+                                                </li>
+                                                @endif
+                                            </ul>
                                         </td>
                                     </tr>
                                 @endforeach

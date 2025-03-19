@@ -80,9 +80,14 @@ class Product extends Model
         return $this->hasMany(ProductStockUpdate::class);
     }
 
+    public function purchaseItems()
+    {
+        return $this->hasMany(PurchaseItem::class);
+    }
+
     function getCurrentStockAttribute()
     {
         // add stock from return amount later
-        return $this->quantity + $this->stockUpdates()->sum('quantity');
+        return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity');
     }
 }

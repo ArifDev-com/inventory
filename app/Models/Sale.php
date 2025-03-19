@@ -28,6 +28,7 @@ class Sale extends Model
         'due_date',
         'other_cost',
         'price_type',
+        'cancel_requested',
     ];
 
     public function customer(){
