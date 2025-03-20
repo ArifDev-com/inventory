@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CutomerPayment extends Model
 {
     use HasFactory;
+    protected $casts = [
+        'affected_sales' => 'array',
+    ];
     protected $fillable=[
        'date',
        'reference',
@@ -15,5 +18,13 @@ class CutomerPayment extends Model
         'paying_amount',
         'sale_id',
         'down_payment',
+        'customer_id',
+        'payment_method',
+        'note',
+        'affected_sales',
     ];
+
+    public function customer() {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
 }

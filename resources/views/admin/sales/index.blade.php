@@ -143,6 +143,14 @@
                                     <br>
                                     <span class="badge bg-danger">Requested to Cancel</span>
                                     @endif
+                                    @if($sale->returns->count())
+                                    <br>
+                                        @if ($sale->returns->first()->status == 'approved')
+                                        <span class="badge bg-info">Returned</span>
+                                        @else
+                                        <span class="badge bg-warning">Return Requested</span>
+                                        @endif
+                                    @endif
                                 </td>
                                 <td class="text-center">
                                     <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
@@ -165,6 +173,12 @@
                                         @if(!$sale->returns->count())
                                         <li>
                                             <a href="{{ route('sale.return', [$sale->id]) }}"
+                                                class="dropdown-item">
+                                                Sale Return</a>
+                                        </li>
+                                        @else
+                                        <li>
+                                            <a href="{{ route('sale.return.pdf', [$sale->returns->first()->id]) }}"
                                                 class="dropdown-item">
                                                 Sale Return</a>
                                         </li>

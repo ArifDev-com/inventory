@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SMSApi;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Customer;
@@ -11,6 +12,34 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
+    function searchCustomer(Request $request)
+    {
+        $customers = Customer::query()
+            ->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%'.$request->search.'%')
+                    ->where('name', '!=', '')
+                    ->whereNotNull('name');
+            })
+            ->orWhere(function ($query) use ($request) {
+                $query->where('phone', 'like', '%'.$request->search.'%')
+                    ->where('phone', '!=', '')
+                    ->whereNotNull('phone');
+            })
+            ->orWhere(function ($query) use ($request) {
+                $query->where('email', 'like', '%'.$request->search.'%')
+                    ->where('email', '!=', '')
+                    ->whereNotNull('email');
+            })
+            ->orWhere(function ($query) use ($request) {
+                $query->where('company_name', 'like', '%'.$request->search.'%')
+                    ->where('company_name', '!=', '')
+                    ->whereNotNull('company_name');
+            })
+            ->orderBy('name', 'ASC')
+            // ->limit(10)
+            ->get();
+        return response()->json(['data' => $customers], 200);
+    }
     public function dueResponse($cusId)
     {
         $customer = Customer::where('id', $cusId)->with(['sales' => function ($q) {
@@ -143,5 +172,44 @@ class CustomerController extends Controller
             'customer' => Customer::where('id', $cusId)->with('cus_items.product')->first(),
         ]);
 
+    }
+
+    public function bulkSms()
+    {
+        return view('admin.customer.bulk-sms', [
+            'customers' => Customer::latest()->get(),
+        ]);
+    }
+
+    public function sendBulkSms(Request $request)
+    {
+        $request->validate([
+            'message' => 'required',
+            'phones' => 'required|array',
+        ]);
+
+        $message = $request->message;
+        $phones = $request->phones;
+        // dd($phones, $message);
+        foreach ($phones as $phone) {
+            $phone = str_replace(' ', '', $phone);
+            $phone = str_replace('-', '', $phone);
+            $phone = str_replace('+', '', $phone);
+            $phone = str_replace('(', '', $phone);
+            $phone = str_replace(')', '', $phone);
+            $phone = str_replace(' ', '', $phone);
+            $phone = str_replace('-', '', $phone);
+            $phone = str_replace('+', '', $phone);
+            $phone = str_replace('(', '', $phone);
+            $phone = str_replace(')', '', $phone);
+            $phone = str_replace(' ', '', $phone);
+            $phone = str_replace('-', '', $phone);
+            $phone = str_replace('+', '', $phone);
+            $phone = str_replace('(', '', $phone);
+            $phone = str_replace(')', '', $phone);
+            $phone = str_replace(' ', '', $phone);
+            SMSApi::send($phone, $message);
+        }
+        return redirect()->back()->with('success', 'SMS Sent Successfully');
     }
 }

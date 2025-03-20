@@ -105,11 +105,10 @@
                                 </th>
                                 <th>Sl</th>
                                 <th>Profile</th>
-                                <th>First name </th>
-                                <th>Last name </th>
+                                <th>Full name</th>
                                 <th>Phone</th>
                                 <th>email</th>
-                                <th>role Name</th>
+                                <th>User Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -132,11 +131,10 @@
                                         @endif
                                     </a>
                                 </td>
-                                <td>{{ $user->first_name }}</td>
-                                <td>{{ $user->last_name }}</td>
+                                <td>{{ $user->name }}</td>
                                 <td>{{ $user->phone }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->role->name }}</td>
+                                <td>{{ $user->user_role }}</td>
                                 {{-- <td>
                                     <div class="status-toggle d-flex justify-content-between align-items-center">
                                         <input type="checkbox" id="user1" class="check" >

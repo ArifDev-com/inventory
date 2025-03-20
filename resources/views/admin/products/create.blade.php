@@ -254,7 +254,9 @@
                                     <div class="col-lg-10 col-sm-10 col-10">
                                         <div class="form-group">
                                             <input type="text" name="purchase_price"
-                                                placeholder="{{ trans('form.form.enter purchase price') }}">
+                                                placeholder="{{ trans('form.form.enter purchase price') }}"
+                                                onkeyup="updateOtherPrices(this)"
+                                                >
                                         </div>
                                     </div>
                                 </div>
@@ -266,7 +268,7 @@
                                 <div class="row">
                                     <div class="col-lg-10 col-sm-10 col-10">
                                         <div class="form-group">
-                                            <input type="text" name="wholesale_price" placeholder="">
+                                            <input type="text" name="wholesale_price" placeholder="" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -278,7 +280,7 @@
                                 <div class="row">
                                     <div class="col-lg-10 col-sm-10 col-10">
                                         <div class="form-group">
-                                            <input type="text" name="retail_price" placeholder="">
+                                            <input type="text" name="retail_price" placeholder="" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -293,7 +295,7 @@
                                         <div class="form-group">
 
                                             <input type="text" name="price"
-                                                placeholder="{{ trans('form.form.enter price') }}">
+                                                placeholder="{{ trans('form.form.enter price') }}" readonly>
                                         </div>
                                     </div>
 
@@ -633,14 +635,23 @@
 
 <script>
     function randomNumber(len) {
-    var randomNumber;
-    var n = '';
+        var randomNumber;
+        var n = '';
 
-    for (var count = 0; count < len; count++) {
-        randomNumber = Math.floor(Math.random() * 10);
-        n += randomNumber.toString();
+        for (var count = 0; count < len; count++) {
+            randomNumber = Math.floor(Math.random() * 10);
+            n += randomNumber.toString();
+        }
+        return n;
     }
-    return n;
+    function updateOtherPrices(input) {
+        var wholesalePrice = document.querySelector("input[name='wholesale_price']");
+        var retailPrice = document.querySelector("input[name='retail_price']");
+        var price = document.querySelector("input[name='price']");
+
+        wholesalePrice.value = (Number(input.value) + (input.value * (10/100))).toFixed(2);
+        retailPrice.value = (Number(input.value) + (input.value * (15/100))).toFixed(2);
+        price.value = (Number(input.value) + (input.value * (20/100))).toFixed(2);
     }
 
     document.getElementById("ACCOUNT").value = randomNumber(9);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSaleIdToReturnsTable extends Migration
+class AddUserToSaleReturnsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,7 @@ class AddSaleIdToReturnsTable extends Migration
     public function up()
     {
         Schema::table('sale_returns', function (Blueprint $table) {
-            $table->foreignId('sale_id')->nullable()->constrained('sales');
-        });
-        Schema::table('sale_return_items', function (Blueprint $table) {
-            $table->double('price')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
         });
     }
 
@@ -29,11 +26,7 @@ class AddSaleIdToReturnsTable extends Migration
     public function down()
     {
         Schema::table('sale_returns', function (Blueprint $table) {
-            $table->dropForeign(['sale_id']);
-            $table->dropColumn('sale_id');
-        });
-        Schema::table('sale_return_items', function (Blueprint $table) {
-            $table->dropColumn('price');
+            $table->dropColumn('user_id');
         });
     }
 }

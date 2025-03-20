@@ -263,8 +263,6 @@ class SaleController extends Controller
             //   'sub_total' => $request->sub_total[$i],
             //   'update_at' => Carbon::now(),
             // ]);
-
-            Product::where('id', $request->product_id[$i])->decrement('quantity', $request->quantity[$i]);
         }
 
         return redirect()->route('sale.index')->with('success', 'Sale successfully Updated');
@@ -303,10 +301,10 @@ class SaleController extends Controller
                 $query->select('id', 'name');
             },
         ])->first();
-
+        // return view('admin.sales.print-page', compact('sale', 'randomNumber'));
         $pdf = Pdf::loadView('admin.sales.print-page', compact('sale', 'randomNumber'));
 
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf', ['Attachment' => false]);
 
         // return $pdf->download('codesolutionstuff.pdf');
         // return view('admin.sales.print-page');
@@ -335,7 +333,7 @@ class SaleController extends Controller
         // return view('admin.sales.print-challan-page', compact('sale'));
         $pdf = Pdf::loadView('admin.sales.print-challan-page', compact('sale'));
 
-        return $pdf->download('challan - '.$sale->ref_code.'.pdf');
+        return $pdf->stream('challan - '.$sale->ref_code.'.pdf', ['Attachment' => false]);
 
         // return $pdf->download('codesolutionstuff.pdf');
         // return view('admin.sales.print-page');

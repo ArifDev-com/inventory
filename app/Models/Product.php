@@ -94,11 +94,17 @@ class Product extends Model
     {
         return $this->hasMany(SaleReturnItem::class);
     }
+    public function approvedSaleReturns()
+    {
+        return $this->saleReturns()->whereHas('saleReturn', function($query) {
+            $query->where('status', 'received');
+        });
+    }
 
     function getCurrentStockAttribute()
     {
         // add stock from return amount later
-        return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity') - $this->saleItems()->sum('quantity') + $this->saleReturns()->sum('quantity');
+        return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity') - $this->saleItems()->sum('quantity') + $this->approvedSaleReturns()->sum('quantity');
     }
 
     public function stockQuantityAtStartOf($date): int
@@ -115,11 +121,11 @@ class Product extends Model
             ->whereDate('created_at', '<', $date)
             ->sum('quantity');
 
-        $saleReturnsBefore = $this->saleReturns()
+        $approvedSaleReturnsBefore = $this->approvedSaleReturns()
             ->whereDate('created_at', '<', $date)
             ->sum('quantity');
 
-        return $this->quantity + $purchasesBefore + $stockUpdatesBefore - $salesBefore + $saleReturnsBefore;
+        return $this->quantity + $purchasesBefore + $stockUpdatesBefore - $salesBefore + $approvedSaleReturnsBefore;
     }
     public function stockQuantityAtEndOf($date): int
     {
@@ -135,12 +141,12 @@ class Product extends Model
             ->whereDate('created_at', '<=', $date)
             ->sum('quantity');
 
-        $saleReturnsUpToDate = $this->saleReturns()
+        $approvedSaleReturnsUpToDate = $this->approvedSaleReturns()
             ->whereDate('created_at', '<=', $date)
             ->sum('quantity');
 
         // dump($this->quantity , $purchasesUpToDate , $stockUpdatesUpToDate , $salesUpToDate);
-        return $this->quantity + $purchasesUpToDate + $stockUpdatesUpToDate - $salesUpToDate + $saleReturnsUpToDate;
+        return $this->quantity + $purchasesUpToDate + $stockUpdatesUpToDate - $salesUpToDate + $approvedSaleReturnsUpToDate;
     }
 
 }

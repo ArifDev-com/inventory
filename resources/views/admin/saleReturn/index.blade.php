@@ -21,9 +21,6 @@
                 <h4>Sales Return List</h4>
                 <h6>Manage your Returns</h6>
             </div>
-            <div class="page-btn">
-                <a href="{{ route('saleReturn.create') }}" class="btn btn-added"><img src="{{asset('backend')}}/img/icons/plus.svg" alt="img" class="me-2">Add New Sales Return</a>
-            </div>
         </div>
 
 

@@ -32,26 +32,30 @@ class UserController extends Controller
     {
         $request->validate([
             'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'email' => 'required|max:255',
+            'last_name' => 'nullable|max:255',
+            'email' => 'nullable|max:255',
             'password' => 'required|max:255',
             'phone' => 'required|max:255',
-            'role_id' => 'required|max:255',
-            'image' => 'required|mimes:jpg,jpeg,png,gif',
+            'user_role' => 'nullable|max:255',
+            'image' => 'nullable|mimes:jpg,jpeg,png,gif',
         ]);
 
         $imag = $request->file('image');
-        $name_gen = hexdec(uniqid()).'.'.$imag->getClientOriginalExtension();
-        Image::make($imag)->resize(270, 270)->save(public_path('upload/user/'.$name_gen));
-        $img_url = 'upload/user/'.$name_gen;
+        if($imag){
+            $name_gen = hexdec(uniqid()).'.'.$imag->getClientOriginalExtension();
+            Image::make($imag)->resize(270, 270)->save(public_path('upload/user/'.$name_gen));
+            $img_url = 'upload/user/'.$name_gen;
+        }else{
+            $img_url = null;
+        }
 
         User::insert([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
+            'last_name' => $request->last_name ?: '',
+            'email' => $request->email ?: \Illuminate\Support\Str::random(10) . User::count() . '@gmail.com',
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
-            'role_id' => $request->role_id,
+            'user_role' => $request->user_role,
             'image' => $img_url,
             'created_at' => Carbon::now(),
         ]);
@@ -85,7 +89,7 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'role_id' => $request->role_id,
+                'user_role' => $request->user_role,
             'image' => $img_url,
         ]);
 
@@ -116,4 +120,5 @@ class UserController extends Controller
 
         return view('admin.profile', compact('user'));
     }
+
 }

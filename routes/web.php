@@ -245,6 +245,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/find-products', [App\Http\Controllers\BarcodeController::class, 'findProducts'])->name('find.products');
 
     // User here
+    Route::get('/customer/bulk-sms', [App\Http\Controllers\CustomerController::class, 'bulkSms'])->name('customer.bulk.sms');
+    Route::post('/customer/bulk-sms', [App\Http\Controllers\CustomerController::class, 'sendBulkSms'])->name('customer.bulk.sms.send');
+    Route::get('/customer/search', [App\Http\Controllers\CustomerController::class, 'searchCustomer'])->name('customer.search');
+
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
 
     Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');
@@ -393,8 +397,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/customer/details/{customer}', [App\Http\Controllers\CustomerController::class, 'details'])->name('customer.details');
 
-    Route::get('/customer/due/{customer}', [App\Http\Controllers\CustomerController::class, 'dueResponse'])->name('customer.due');
-    Route::post('/customer/due/pay', [App\Http\Controllers\PaymentController::class, 'duePay'])->name('due.payment');
+    // Route::get('/customer/due/{customer}', [App\Http\Controllers\CustomerController::class, 'dueResponse'])->name('customer.due');
+
+    Route::get('/customer/due/pay', [App\Http\Controllers\PaymentController::class, 'createDuePay'])->name('due.payment');
+    Route::post('/customer/due/pay', [App\Http\Controllers\PaymentController::class, 'duePay']);
+    Route::get('/customer/due/pay/list', [App\Http\Controllers\PaymentController::class, 'duePayList'])->name('due.payments');
+
     Route::post('/customer/sup/pay', [App\Http\Controllers\PaymentController::class, 'supPay'])->name('sup.payment');
 
     // Sale here
@@ -411,8 +419,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/sale/return/list', [App\Http\Controllers\SaleReturnController::class, 'index'])->name('sale.return.list');
     Route::get('/sale/return/{sale}', [App\Http\Controllers\SaleReturnController::class, 'create'])->name('sale.return');
     Route::post('/sale/return/store', [App\Http\Controllers\SaleReturnController::class, 'store'])->name('sale.return.store');
+    Route::get('/sale/return/pdf/{saleReturn}', [App\Http\Controllers\SaleReturnController::class, 'generatePDF'])->name('sale.return.pdf');
+    Route::get('/sale/return/delete/{saleReturn}', [App\Http\Controllers\SaleReturnController::class, 'destroy'])->name('sale.return.delete');
+    Route::get('/sale/return/approve/{saleReturn}', [App\Http\Controllers\SaleReturnController::class, 'approve'])->name('sale.return.approve');
 
-    
     Route::post('/sale/update/{id}', [App\Http\Controllers\SaleController::class, 'update'])->name('sale.update');
 
     Route::get('/sale/delete/{sale_id}', [App\Http\Controllers\SaleController::class, 'destroy'])->name('sale.delete');
@@ -563,7 +573,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/invoice-reports', [App\Http\Controllers\ReportController::class, 'invoiceReport'])->name('invoice.report');
 
     Route::get('/reports', [App\Http\Controllers\ReportController::class, 'report'])->name('total.report');
-
+    Route::get('/return-reports', [App\Http\Controllers\ReportController::class, 'returnReport'])->name('return.report');
     Route::get('/profit/loss', [App\Http\Controllers\ReportController::class, 'profitLoss'])->name('profit.loss');
 
     // Payment Gateway Process Open Link

@@ -166,10 +166,10 @@
                                         </li>
 
 
-                                        <li>
+                                        {{-- <li>
                                             <a href="javascript:void(0);" data-id="{{ $customer->id }}" class="dropdown-item oprenCreateModal"
                                             ><img src="{{asset('backend')}}/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-                                        </li>
+                                        </li> --}}
 
 
                                         {{-- <li>

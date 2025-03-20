@@ -84,11 +84,14 @@
                                         <td class="">
                                             <a href="javascript:void(0);">{{ $item->product->name }}</a>
                                         </td>
-                                        <td class="price">{{ $item->product->price }}</td>
-                                        <td>{{ $item->quantity }}</td>
+                                        <td class="price">
+                                            {{ $item->price }}
+                                            <input type="hidden" name="price[]" value="{{ $item->price }}">
+                                        </td>
+                                        <td>{{ $item->product->current_stock }}</td>
                                         <td>
                                             <input type="number" name="quantity[]" class="form-control quantity"
-                                                placeholder="quantity" value="1" style="width:100px;">
+                                                placeholder="quantity" value="{{ $item->quantity }}" style="width:100px;">
                                         </td>
 
                                         <td class="text-end">

@@ -92,6 +92,7 @@ class SaleReturnController extends Controller
             'status' => $request->status,
             'note' => $request->note,
             'sale_id' => $sale->id,
+            'user_id' => auth()->user()->id,
         ]);
 
         $pcount = count($request->product_id);
@@ -101,10 +102,11 @@ class SaleReturnController extends Controller
                 'product_id' => $request->product_id[$i],
                 'quantity' => $request->quantity[$i],
                 'sub_total' => $request->sub_total[$i],
+                'price' => $request->price[$i],
             ]);
         }
 
-        return redirect()->route('saleReturn.index')->with('success', 'Sale Report Added');
+        return redirect()->route('sale.index')->with('success', 'Sale return request sent');
     }
 
     public function edit($saleRet_id)
@@ -139,44 +141,34 @@ class SaleReturnController extends Controller
                 'product_id' => $request->product_id[$i],
                 'quantity' => $request->quantity[$i],
                 'sub_total' => $request->sub_total[$i],
+                'price' => $request->price[$i],
             ]);
 
-            Product::where('id', $request->product_id[$i])->increment('quantity', $request->quantity[$i]);
+            Product::where('id', $request->product_id[$i])
+                ->increment('quantity', $request->quantity[$i]);
         }
 
         return redirect()->route('saleReturn.index')->with('success', 'Sale Return successfully Updated');
     }
 
-    public function destroy($saleRet_id)
+    public function destroy(SaleReturn $saleReturn)
     {
-        SaleReturnItem::where('sale_return_id', $saleRet_id)->delete();
-        SaleReturn::findOrFail($saleRet_id)->delete();
+        SaleReturnItem::where('sale_return_id', $saleReturn->id)->delete();
+        $saleReturn->delete();
         return redirect()->back()->with('delete', 'Sale Return successfully Deleted');
     }
 
     public function generatePDF(SaleReturn $saleReturn)
     {
-        $randomNumber = random_int(100000, 999999);
-
-        $saleReturn->
-                    with(['customer' => function ($query) {
-                        $query->select('id', 'name', 'email', 'address');
-                    },
-                        'warehouse' => function ($query) {
-                            $query->select('id', 'name', 'email', 'address');
-                        },
-
-                        'items' => function ($query) {
-                            $query->select('id', 'sale_return_id', 'product_id', 'quantity', 'sub_total');
-                        },
-
-                        'items.product' => function ($query) {
-                            $query->select('id', 'name');
-                        }])->first();
-
-        $pdf = Pdf::loadView('admin.saleReturn.print-page', compact('saleReturn', 'randomNumber'));
-
-        return $pdf->download('invoice.pdf');
+        $pdf = Pdf::loadView('admin.saleReturn.print-page', compact('saleReturn'));
+        return $pdf->stream('invoice.pdf', ['Attachment' => false]);
 
     }
+
+    public function approve(SaleReturn $saleReturn)
+    {
+        $saleReturn->update(['status' => 'received']);
+        return redirect()->back()->with('success', 'Sale return approved');
+    }
+
 }

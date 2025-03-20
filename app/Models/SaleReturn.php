@@ -21,7 +21,8 @@ class SaleReturn extends Model
         'paid_amount',
         'status',
         'note',
-        'sale_id'
+        'sale_id',
+        'status'
     ];
 
     public function customer() {
@@ -34,5 +35,9 @@ class SaleReturn extends Model
 
     public function items(){
         return $this->hasMany(SaleReturnItem::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

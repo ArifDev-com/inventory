@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Sale;
+use App\Models\SaleReturn;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,9 +32,12 @@ class AdminController extends Controller
         },
             'category' => function ($query) {
                 $query->select('id', 'name');
-            }])->where('quantity', '<', '5')->get(['id', 'brand_id', 'category_id', 'product_code', 'name', 'quantity', 'image']);
+            }])
+            ->where('quantity', '<', '5')
+            ->get(['id', 'brand_id', 'category_id', 'product_code', 'name', 'quantity', 'image']);
 
         $cancellationRequests = Sale::whereNotNull('cancel_requested')->get();
+        $saleReturns = SaleReturn::whereNull('status')->get();
 
         return view('admin.home',
             [
@@ -41,6 +45,7 @@ class AdminController extends Controller
                 'purchaseTotal' => $purchaseTotal,
                 'saleDue' => $saleDue,
                 'saleTotal' => $saleTotal,
+                'saleReturns' => $saleReturns,
                 // 'saleTotal' =>$sales->sum('grandtotal'),
                 // 'salePaid' => $sales->sum('paid_amount'),
                 // 'saleDue' => $sales->sum('due_amount'),

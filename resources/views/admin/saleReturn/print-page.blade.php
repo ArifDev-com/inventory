@@ -1,175 +1,264 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sale Return Pdf</title>
-</head>
-<style type="text/css">
-    body{
-        font-family: 'Roboto Condensed', sans-serif;
-    }
-    .m-0{
-        margin: 0px;
-    }
-    .p-0{
-        padding: 0px;
-    }
-    .pt-5{
-        padding-top:5px;
-    }
-    .mt-10{
-        margin-top:10px;
-    }
-    .text-center{
-        text-align:center !important;
-    }
-    .w-100{
-        width: 100%;
-    }
-    .w-50{
-        width:50%;   
-    }
-    .w-85{
-        width:85%;   
-    }
-    .w-15{
-        width:15%;   
-    }
-    .logo img{
-        width:200px;
-        height:60px;        
-    }
-    .gray-color{
-        color:#5D5D5D;
-    }
-    .text-bold{
-        font-weight: bold;
-    }
-    .border{
-        border:1px solid black;
-    }
-    table tr,th,td{
-        border: 1px solid #d2d2d2;
-        border-collapse:collapse;
-        padding:7px 8px;
-    }
-    table tr th{
-        background: #F4F4F4;
-        font-size:15px;
-    }
-    table tr td{
-        font-size:13px;
-    }
-    table{
-        border-collapse:collapse;
-    }
-    .box-text p{
-        line-height:10px;
-    }
-    .float-left{
-        float:left;
-    }
-    .total-part{
-        font-size:16px;
-        line-height:12px;
-    }
-    .total-right p{
-        padding-right:20px;
-    }
-</style>
-<body>
-<div class="head-title">
-    <h1 class="text-center m-0 p-0">Invoice</h1>
+@extends('layouts.pdf')
 
-</div>
-<div class="add-detail mt-10">
-    <div class="w-50 float-left mt-10">
-        <p class="m-0 pt-5 text-bold w-100">Invoice Id - <span class="gray-color">{{ $randomNumber }}</span></p>
-        {{-- <p class="m-0 pt-5 text-bold w-100">Order Id - <span class="gray-color">AB123456A</span></p> --}}
-        <p class="m-0 pt-5 text-bold w-100">Order Date - <span class="gray-color">{{ Carbon\Carbon::parse($saleReturn->created_at)->format('d-m-Y') }}</span></p>
-    </div>
-   
-    <div style="clear: both;"></div>
-</div>
-<div class="table-section bill-tbl w-100 mt-10">
-    <table class="table w-100 mt-10">
-        <tr>
-            <th class="w-50">Shop Info</th>
-            <th class="w-50">Customer Info</th>
-        </tr>
+@section('name', 'Sale Return')
+
+@section('content')
+    <table>
         <tr>
             <td>
-                <div class="box-text">
-                    <p>{{ $saleReturn->warehouse->name }}</p>
-                    <p>{{ $saleReturn->warehouse->email }}</p>
-                    <p>{{ $saleReturn->warehouse->address }}</p>
-                  
+                <div>
+                    <p style="padding-left: 8pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Cell No. : {{ $saleReturn->customer?->phone }}</p>
+
+                    <p style="padding-left: 9pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Customer Name : <span class="s1">{{ $saleReturn->customer?->name }} </p>
+                    <p style="padding-left: 9pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Company Name : <span class="s1"> {{ $saleReturn->customer->company_name }} </span></p>
+                    <p style="padding-bottom: 1pt; padding-left: 10pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Address : <span class="s1">{{ $saleReturn->customer->address }}</span></p>
                 </div>
             </td>
-            <td>
-                <div class="box-text">
-					<p>{{ $saleReturn->customer->name }}</p>
-                    <p>{{ $saleReturn->customer->email }}</p>
-                    <p>{{ $saleReturn->customer->address }}</p>
+            <td style="">
+                <div style="
+                    display: inline-block;
+                    padding-left: 300px
+                ">
+                    <div>
+                        Return No. : {{ $saleReturn->ref_code }}
+                    </div>
+                    <div>
+                        Bill No. : {{ $saleReturn->sale?->ref_code }}
+                    </div>
+                    <div>
+                        Date: {{ \Carbon\Carbon::parse($saleReturn->date)->format('d-m-Y') }}
+                    </div>
+                    <div>
+                        Time: {{ $saleReturn->created_at->format('H:i') }}
+                    </div>
                 </div>
             </td>
         </tr>
     </table>
-</div>
-<div class="table-section bill-tbl w-100 mt-10">
-    <table class="table w-100 mt-10">
-        <tr>
-            <th class="w-50">Payment Method</th>
-            <th class="w-50">Payment Status</th>
-        </tr>
-        <tr>
-            <td>{{ $saleReturn->payment_type }}</td>
-            <td>{{ $saleReturn->payment_status }}</td>
-        </tr>
+    <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 20px" cellspacing="0" class="border">
+        <tbody>
+            <tr style="height: 20pt;">
+                <td
+                    style="
+                        width: 43pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding-top: 3pt; text-indent: 0pt; text-align: center;">SL No.</p>
+                </td>
+                <td
+                    style="
+                        width: 56pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding-top: 3pt; text-indent: 0pt; text-align: center;">Item Code</p>
+                </td>
+                <td
+                    style="
+                        width: 218pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding-top: 3pt; text-indent: 0pt; text-align: center;">Particulars</p>
+                </td>
+                <td
+                    style="
+                        width: 46pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding-top: 3pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit</p>
+                </td>
+                <td
+                    style="
+                        width: 46pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding-top: 3pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit Amount</p>
+                </td>
+                <td
+                    style="
+                        width: 100pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding-top: 3pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">Total Amount(Tk)</p>
+                </td>
+            </tr>
+            @foreach ($saleReturn->items as $item)
+                <tr style="height: 17pt;">
+                    <td
+                    >
+                        <p class="s2" style="padding-top: 1pt; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+                    </td>
+                    <td
+                    >
+                        <p class="s2" style="padding-top: 1pt; text-indent: 0pt; text-align: center;">
+                            {{ $item->product->code }}
+                        </p>
+                    </td>
+                    <td
+                    >
+                        <p class="s2" style="padding-top: 1pt; padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                            {{ $item->product->name }}
+                        </p>
+                    </td>
+                    <td
+                    >
+                        <p class="s2" style="padding-top: 1pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                            {{ $item->quantity }}
+                        </p>
+                    </td>
+                    <td
+                    >
+                        <p class="s2" style="padding-top: 1pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                            {{ $item->price }}
+                        </p>
+                    </td>
+                    <td
+                    >
+                        <p class="s2" style="padding-top: 1pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                            {{ $item->sub_total }}
+                        </p>
+                    </td>
+                </tr>
+            @endforeach
+            {{-- <tr>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td>
+                    Sub Amount
+                </td>
+                <td style="text-align: center;">
+                    {{ $saleReturn->items->sum('sub_total') }}
+                </td>
+            </tr> --}}
+            <tr>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td>
+                    Total
+                </td>
+                <td style="text-align: center;">
+                    {{ $saleReturn->grandtotal }}
+                </td>
+            </tr>
+            {{-- <tr>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td style="border: none;"></td>
+                <td>
+                    Paid Amount
+                </td>
+                <td style="text-align: center;">
+                    {{ $saleReturn->paid_amount }}
+                </td>
+            </tr> --}}
+        </tbody>
     </table>
-</div>
-<div class="table-section bill-tbl w-100 mt-10">
-    <table class="table w-100 mt-10">
-        <tr>
-          
-            <th class="w-50">Product Name</th>
-            <th class="w-50">Price</th>
-            <th class="w-50">Qty</th>
-            <th class="w-50">Subtotal</th>
-            {{-- <th class="w-50">Tax Amount</th>
-            <th class="w-50">Grand Total</th> --}}
-        </tr>
+    <h1 style="padding-top: 1pt; padding-left: 10pt; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($saleReturn->grandtotal) }} Taka Only</h1>
 
-	@foreach ($saleReturn->items as $item)
+    @if ($saleReturn->note)
+        <p>
+            Note: {{ $saleReturn->note }}
+        </p>
+    @endif
+@endsection
+@section('footer')
+    <td style="text-align: center;">
+        _______________
+        <br>
+        Received by
+    </td>
+    <td style="text-align: center;">
+        SOLD GOODS ARE NOT TAKEN BACK
+    </td>
+    <td style="text-align: center;">
+        {{ $saleReturn->user?->name }}
+        <br>
+        _______________
+        <br>
+        for CAPITAL LIFT
+    </td>
+@endsection
 
-        <tr align="center">
-         
-            <td>{{ $item->product->name }}</td>
-            <td>{{ $item->product->price }}</td>
-            <td>{{ $item->quantity }}</td>
-            <td>{{ $item->sub_total }}</td>
-            {{-- <td>$50</td>
-            <td>$1550.20</td> --}}
-        </tr>
 
-	@endforeach
-       
-        <tr>
-            <td colspan="7">
-                <div class="total-part">
-                    <div class="total-left w-85 float-left" align="right">
-                        <p>Total</p>
-                        {{-- <p>Due</p>
-                        <p>Paid</p> --}}
-                    </div>
-                    <div class="total-right w-15 float-left text-bold" align="right">
-                        <p>{{ $saleReturn->grandtotal}}</p>
-                        {{-- <p>{{ $saleReturn->due_amount }}</p>
-                        <p>{{ $saleReturn->paid_amount }}</p> --}}
-                    </div>
-                    <div style="clear: both;"></div>
-                </div> 
-            </td>
-        </tr>
-    </table>
-</div>
-</html>

@@ -183,7 +183,7 @@
                                             style="font-size: 15px;">{{ $product->current_stock }}</span>
                                 </td>
                                 @if(auth()->user()->user_role == 'admin')
-                                <td>{{ $product->purchase_price }}</td>
+                                    <td>{{ $product->purchase_price }}</td>
                                 @endif
                                 <td>{{ $product->wholesale_price }}</td>
                                 <td>{{ $product->retail_price }}</td>

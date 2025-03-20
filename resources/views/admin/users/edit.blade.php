@@ -19,16 +19,16 @@
 
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
-                            <label>First Name</label>
+                            <label>Full Name</label>
                             <input type="text" name="first_name" value="{{ $user->first_name }}">
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 col-12">
+                    {{-- <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Last Name</label>
                             <input type="text" name="last_name" value="{{ $user->last_name }}">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Phone</label>
@@ -44,12 +44,9 @@
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Role</label>
-                            <select class="select" name="role_id">
-                                @foreach ($roles as $role)
-                                <option value="{{ $role->id }}"
-                                    {{ $role->id == $user->role_id ? 'selected' : '' }}>
-                                    {{ $role->name }}</option>
-                            @endforeach
+                            <select class="select" name="user_role">
+                                <option {{ $user->user_role == 'admin' ? 'selected' : '' }} value="admin">Admin</option>
+                                <option {{ $user->user_role == 'salesman' ? 'selected' : '' }} value="salesman">Salesman</option>
                             </select>
                         </div>
                     </div>

@@ -13,10 +13,11 @@ class SaleReturnItem extends Model
         'sale_return_id',
         'product_id',
         'quantity',
-        'sub_total'
+        'sub_total',
+        'price',
     ];
 
-    
+
     public function saleReturn(){
         return $this->belongsTo(SaleReturn::class);
     }

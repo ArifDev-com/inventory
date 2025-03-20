@@ -24,13 +24,14 @@
                     <ul>
                         <li><a href="{{ route('product.index') }}"
                                 class="{{ request()->is('admin/products') ? 'active' : '' }}">All Product List</a></li>
-
-                        <li><a href="{{ route('product.stock') }}"
-                                class="{{ request()->is('admin/product/stock') ? 'active' : '' }}">Stock Update</a>
-                        </li>
-                        <li><a href="{{ route('product.stock.history') }}"
-                                class="{{ request()->is('admin/product/stock/history') ? 'active' : '' }}">Stock History</a>
-                        </li>
+                        @if(auth()->user()->user_role == 'admin')
+                            <li><a href="{{ route('product.stock') }}"
+                                    class="{{ request()->is('admin/product/stock') ? 'active' : '' }}">Stock Update</a>
+                            </li>
+                            <li><a href="{{ route('product.stock.history') }}"
+                                    class="{{ request()->is('admin/product/stock/history') ? 'active' : '' }}">Stock History</a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
 
@@ -66,17 +67,6 @@
                                 trans('sidebar.sale.sale_list') }}</a></li>
                     </ul>
                 </li>
-                <li class="submenu ">
-                    <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/sale/return/list') ? 'active' : '' }}"><img
-                            src="{{asset('backend')}}/img/icons/sales1.svg" alt="img"><span>
-                                Returns</span> <span class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="{{ route('sale.return.list') }}"
-                                class="{{ request()->is('admin/sale/return/list') ? 'active' : '' }}">
-                                Return List</a></li>
-                    </ul>
-                </li>
 
                 <li class="submenu ">
                     <a href="javascript:void(0);"
@@ -94,7 +84,7 @@
                 @if(auth()->user()->user_role == 'admin')
                 <li class="submenu ">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/users') ? 'active' : '' }}"><img
+                        class="{{ request()->is('admin/users') || request()->is('admin/users/bulk-sms') ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/sales1.svg" alt="img"><span>
                             Users</span> <span class="menu-arrow"></span></a>
                     <ul>
@@ -144,6 +134,31 @@
                     <a href="{{ route('customer.index') }}"><img src="{{asset('backend')}}/img/icons/users1.svg"
                             alt="img"><span> Customer </span></a>
                 </li> --}}
+                <li class="submenu ">
+                    <a href="javascript:void(0);"
+                        class="{{ request()->is('admin/customer/due/pay') ? 'active' : '' }}"><img
+                            src="{{asset('backend')}}/img/icons/users1.svg" alt="img"><span>Due Payment</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{{ route('due.payment') }}"
+                            class="{{ request()->is('admin/customer/due/pay') ? 'active' : '' }}">Due Payment</a>
+                        </li>
+                        <li><a href="{{ route('due.payments') }}"
+                            class="{{ request()->is('admin/customer/due/pay/list') ? 'active' : '' }}">Due Payment List</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu ">
+                    <a href="javascript:void(0);"
+                        class="{{ request()->is('admin/customer/bulk-sms') ? 'active' : '' }}"><img
+                            src="{{asset('backend')}}/img/icons/users1.svg" alt="img"><span>Bulk SMS</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{{ route('customer.bulk.sms') }}"
+                            class="{{ request()->is('admin/customer/bulk-sms') ? 'active' : '' }}">Send SMS</a>
+                        </li>
+                    </ul>
+                </li>
 
                 @if(auth()->user()->user_role == 'admin')
                 <li class="submenu ">
@@ -168,7 +183,7 @@
                 @endif
 
                 {{-- // Expenses // --}}
-                {{-- @if(auth()->user()->user_role == 'admin')
+                @if(auth()->user()->user_role == 'admin')
                 <li class="submenu ">
                     <a href="javascript:void(0);"
                         class="{{ request()->is('admin/expense/create') || request()->is('admin/expenses') || request()->is('admin/expenseCategory/create') || request()->is('admin/expenseCategories')  ? 'active' : '' }}"><img
@@ -184,9 +199,8 @@
                                 trans('sidebar.expense.expense_list') }}</a></li>
                     </ul>
                 </li>
-                @endif --}}
+                @endif
 
-                @if(auth()->user()->user_role == 'admin')
                 {{-- <li>
                     <a href="{{ route('reportssummary') }}"><img src="{{asset('backend')}}/img/icons/time.svg"
                             alt="img"><span> Reports </span> </a>
@@ -207,9 +221,11 @@
                                 class="{{ request()->is('admin/report/product-wise-report') ? 'active' : '' }}">Product Wise</a></li>
                         <li><a href="{{ route('reports.product-list') }}"
                                 class="{{ request()->is('admin/report/product-list') ? 'active' : '' }}">Product List</a></li>
+                        <li><a href="{{ route('return.report') }}"
+                                class="{{ request()->is('admin/report/return-list') ? 'active' : '' }}">Return List</a></li>
                     </ul>
                 </li>
-
+                @if(auth()->user()->user_role == 'admin')
                 <li class="submenu">
                     <a href="javascript:void(0);"
                         class="{{ request()->is('admin/shopDocuments') || request()->is('admin/warehouses') || request()->is('admin/warehouse/create') || request()->is('admin/categories') || request()->is('admin/category/create')  || request()->is('admin/subCategories') || request()->is('admin/subCategory/create') || request()->is('admin/brands') || request()->is('admin/brand/create') || request()->is('admin/suppliers') || request()->is('admin/supplier/create') || request()->is('admin/units') || request()->is('admin/unit/create')   ? 'active' : '' }}"><img

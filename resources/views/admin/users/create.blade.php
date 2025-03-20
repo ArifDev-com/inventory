@@ -27,16 +27,16 @@
                 <div class="row">
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
-                            <label>First Name</label>
+                            <label>Full Name</label>
                             <input type="text" name="first_name" required>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 col-12">
+                    {{-- <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Last Name</label>
                             <input type="text" name="last_name" required>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Phone</label>
@@ -46,18 +46,17 @@
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="text" name="email" required>
+                            <input type="text" name="email" >
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
-                            <label>Role</label>
-                            <select class="select" name="role_id">
-                                <option>Select Role</option>
-                                @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
-                            @endforeach
+                            <label>User Role</label>
+                            <select class="select" name="user_role">
+                                <option>Select User Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="salesman">Salesman</option>
                             </select>
                         </div>
                     </div>
@@ -75,7 +74,7 @@
                             <div class="image-upload">
                                 <input type="file" name="image">
                                 <div class="image-uploads">
-                                    <img src="{{asset('backend')}}/img/icons/upload.svg" alt="img" required>
+                                    <img src="{{asset('backend')}}/img/icons/upload.svg" alt="img" >
                                     <h4>Drag and drop a file to upload</h4>
                                 </div>
                             </div>

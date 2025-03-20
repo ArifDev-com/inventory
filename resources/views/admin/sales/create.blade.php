@@ -28,21 +28,23 @@
                         <div class="row">
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label>{{ trans('form.sale.customer') }}</label>
+                                    <label>{{ trans('form.sale.sale date') }}</label>
+                                    <div class="input-groupicon">
+                                        <input type="date" class="form-control" name="date" placeholder="Choose Date"
+                                            value="<?php echo date('Y-m-d'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="">
+                                    {{-- <label>{{ trans('form.sale.customer') }}</label> --}}
                                     <div class="row">
                                         <div class="col-lg-10 col-sm-10 col-10">
-                                            <select class="select2" id="selectpicker" name="customer_id" required
-                                                onchange="showCustomerDue()" onclick="showCustomerDue()">
-                                                <option value="">Select Customer</option>
-                                                @foreach ($customers as $customer)
-                                                    <option value="{{ $customer->id }}"
-                                                        @if (session('auto_customer_id') == $customer->id) selected @endif>{{ $customer->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <div id="customerDue" class="mt-1 text-danger"></div>
+                                            @include('common.customer')
                                         </div>
-                                        <div class="col-lg-2 col-sm-2 col-2 ps-0">
+                                        <div class="col-lg-2 col-sm-2 col-2 ps-0 mt-2">
+                                            <label for="customer_id_due">&nbsp;</label>
+                                            <label for="customer_id_due">&nbsp;</label>
                                             <div class="add-icon">
                                                 <span><img src="{{ asset('backend') }}/img/icons/plus1.svg"
                                                         data-bs-toggle="modal" data-bs-target="#create" alt="img"></span>
@@ -50,18 +52,6 @@
                                                 data-bs-target="#create"><i class="fa fa-plus me-2"></i></a> --}}
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label>{{ trans('form.sale.sale date') }}</label>
-                                    <div class="input-groupicon">
-                                        <input type="date" class="form-control" name="date" placeholder="Choose Date"
-                                            value="<?php echo date('Y-m-d'); ?>">
-                                        {{-- <a class="addonset">
-                                        <img src="{{asset('backend')}}/img/icons/calendars.svg" alt="img">
-                                    </a> --}}
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +104,7 @@
                                         <li>
                                             <h4>Other Cost</h4>
                                             <h5>
-                                                <input type="number" value="0" name="other_cost" class="other_cost"
+                                                <input type="number" value="0" name="other_cost" class="form-control other_cost"
                                                     placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
                                                     onblur="updateGrandTotal();">
                                             </h5>
@@ -123,7 +113,7 @@
 
                                         <li class="total">
                                             <h4>{{ trans('form.sale.grand total') }}</h4>
-                                            <input type="text" readonly class="total_val" name="grand_total"
+                                            <input type="number" readonly class="total_val form-control" name="grand_total"
                                                 style="margin-left:30px;">
                                         </li>
                                     </ul>
@@ -135,7 +125,7 @@
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>Discount Amount <code>(Optional)</code></label>
-                                    <input type="text" name="discount" class="discount" id="discount_val" min="1"
+                                    <input type="number" name="discount" class="discount form-control" id="discount_val" min="1"
                                         placeholder="Enter Your Discount">
                                 </div>
                             </div>
@@ -144,7 +134,7 @@
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>{{ trans('form.sale.payment type') }}</label>
-                                    <select class="select2" name="payment_type" required="true">
+                                    <select class="select2 form-control" name="payment_type" required="true">
 
                                         <option value="cash">Cash</option>
                                         <option value="bkash">bKash</option>
@@ -158,7 +148,7 @@
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>{{ trans('form.sale.paid amount') }}</label>
-                                    <input type="text" name="paid_amount" class="paid_amount"
+                                    <input type="number" name="paid_amount" class="paid_amount form-control"
                                         placeholder="{{ trans('form.sale.enter paid amount') }}" required>
                                 </div>
                             </div>
@@ -166,7 +156,7 @@
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>{{ trans('form.sale.due amount') }}</label>
-                                    <input type="text" name="due_amount" class="due_amount" id="due_amount"
+                                    <input type="number" name="due_amount" class="due_amount form-control" id="due_amount"
                                         value="0">
                                 </div>
                             </div>
@@ -307,7 +297,10 @@
         });
 
         function testClick(product) {
-            var htmldata = `<tr>
+            if ($(`#product_${product.id}`).length > 0) {
+                return;
+            }
+            var htmldata = `<tr id="product_${product.id}">
 						<input type="hidden" name="product_id[]"  class="form-control product_id"  value="${product.id}">
 
 						<td class="productimgname">
@@ -320,15 +313,13 @@
 
 
 						<td>
-						<input type="text" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;" >
+						<input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;" >
 						</td>
 
                         <input type="hidden" name="purchase_price[]" class="purchase_price" value="${product.price}" style="width:100px;">
 
-
-
                         <td class="price_td" mrp="${product.price}" retail="${product.retail_price}" purchase="${product.purchase_price}" wholesale="${product.wholesale_price}">
-                            <input type="text" name="price[]" class="form-control price"  placeholder="price" value="${product.price}" style="width:100px;"
+                            <input type="number" name="price[]" class="form-control price"  placeholder="price" value="${product.price}" style="width:100px;"
                                 onkeyup="$(this).next().val('').trigger('change');"
                             >
 
@@ -341,7 +332,7 @@
                             </select>
                         </td>
 						<td class="text-end" >
-                            <input type="text" class="inline_total" readonly name="sub_total[]" value="${product.price}" style="width:100px;">
+                            <input type="number" class="inline_total" readonly name="sub_total[]" value="${product.price}" style="width:100px;">
                         </td>
 						<td>
 							<a class="remove"><img src="{{ asset('backend') }}/img/icons/delete.svg" alt="svg"></a>
@@ -571,6 +562,12 @@
                 $('#customerDue').text('');
             }
         }
+        setInterval(() => {
+            $('.table .tbody tr').each(function() {
+                totalOfSubTotal($(this));
+            });
+            updateGrandTotal();
+        }, 1000);
     </script>
 @endsection
 

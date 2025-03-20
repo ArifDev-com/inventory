@@ -44,28 +44,32 @@
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>{{ trans('edit-form.form.purchase_price') }}</label>
-                                    <input type="text" name="purchase_price" value="{{ $product->purchase_price }}">
+                                    <input type="text" name="purchase_price" value="{{ $product->purchase_price }}"
+                                        onkeyup="updateOtherPrices(this)">
                                 </div>
                             </div>
 
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>Wholesale Price</label>
-                                    <input type="text" name="wholesale_price" value="{{ $product->wholesale_price }}">
+                                    <input type="text" name="wholesale_price" value="{{ $product->wholesale_price }}" readonly
+                                    >
                                 </div>
                             </div>
 
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>Retail Price</label>
-                                    <input type="text" name="retail_price" value="{{ $product->retail_price }}">
+                                    <input type="text" name="retail_price" value="{{ $product->retail_price }}" readonly
+                                    >
                                 </div>
                             </div>
 
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>MRP Price</label>
-                                    <input type="text" name="price" value="{{ $product->price }}">
+                                    <input type="text" name="price" value="{{ $product->price }}" readonly
+                                    >
                                 </div>
                             </div>
 
@@ -156,5 +160,14 @@
         $(document).ready(function() {
             $(".select2").select2();
         });
+        function updateOtherPrices(input) {
+            var wholesalePrice = document.querySelector("input[name='wholesale_price']");
+            var retailPrice = document.querySelector("input[name='retail_price']");
+            var price = document.querySelector("input[name='price']");
+
+            wholesalePrice.value = (Number(input.value) + (input.value * (10/100))).toFixed(2);
+            retailPrice.value = (Number(input.value) + (input.value * (15/100))).toFixed(2);
+            price.value = (Number(input.value) + (input.value * (20/100))).toFixed(2);
+        }
     </script>
 @endsection

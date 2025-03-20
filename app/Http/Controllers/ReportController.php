@@ -13,6 +13,7 @@ use App\Models\PurchaseItem;
 use App\Models\PurchaseReturn;
 use App\Models\Sale;
 use App\Models\SaleItem;
+use App\Models\SaleReturn;
 use App\Models\SubCategory;
 use App\Models\Supplier;
 use App\Models\Unit;
@@ -479,5 +480,21 @@ class ReportController extends Controller
     {
         $products = Product::latest()->get();
         return view('admin.reports.product-list', compact('products'));
+    }
+
+    public function returnReport(Request $request)
+    {
+        $fromDate = '';
+        $toDate = '';
+        if (($request->from_date) && ($request->to_date)) {
+            $fromDate = Carbon::parse($request->from_date)->format('Y-m-d');
+            $toDate = Carbon::parse($request->to_date)->format('Y-m-d');
+        }
+        $saleReturns = SaleReturn::latest()
+            ->when($fromDate && $toDate, function ($q) use ($fromDate, $toDate) {
+                return $q->whereBetween('date', [$fromDate, $toDate]);
+            })
+            ->get();
+        return view('admin.reports.return-list', compact('saleReturns', 'fromDate', 'toDate'));
     }
 }
