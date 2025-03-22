@@ -18,7 +18,7 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Active Products</h4>
+                <h4>Inactive Products</h4>
                 <h6>{{ trans('sidebar.product.body.manage your products') }}</h6>
             </div>
             <div class="page-btn">

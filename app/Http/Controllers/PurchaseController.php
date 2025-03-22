@@ -61,17 +61,16 @@ class PurchaseController extends Controller
             'search' => 'required',
         ]);
 
-        // $products = Product::where("name", "LIKE", "%" .$request->search. "%")->where('quantity','>',0)->take(5)->get();
-
-        //  $products = Product::where("name", "LIKE", "%" .$request->search. "%")->where('quantity','>',0)->take(5)->get();
-        $authId = Auth::user()->id;
-
         $products = Product::where(function ($query) use ($request) {
             $query->where('product_code', 'LIKE', '%'.$request->search.'%');
         })->orWhere(function ($query) use ($request) {
-            $query->where('name', 'LIKE', '%'.$request->search.'%')
-                ->where('quantity', '>', 0);
-        })->take(5)->get();
+            $query->where('name', 'LIKE', '%'.$request->search.'%');
+        })
+        ->get()
+        ->filter(function ($p) {
+            return $p->current_stock > 0;
+        })
+        ->take(5);
 
         // return response()->json($products);
 

@@ -82,16 +82,10 @@
                     <table class="table" id="myTable">
                         <thead>
                             <tr>
-                                <th>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
-                                </th>
                                 <th>Sl</th>
+                                <th>ID</th>
                                 <th>Customer Name</th>
                                 <th>Phone</th>
-                                <th>Email</th>
                                 {{-- <th>Country</th>
                                 <th>City</th> --}}
                                 <th>Address</th>
@@ -99,6 +93,7 @@
                                 <th>Total</th>
                                 <th>Paid</th>
                                 <th>Due</th>
+                                <th>Dealer</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -106,16 +101,10 @@
                             @foreach($customers as $key => $customer)
                             <tr>
                                 <td>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
+                                    {{ $loop->iteration }}
                                 </td>
-                                <td>{{ $key+1 }}</td>
+                                <td>{{ $customer->id }}</td>
                                 <td class="productimgname">
-                                    {{-- <a href="javascript:void(0);" class="product-img">
-                                        <img src="{{ asset('backend') }}/img/customer/customer1.jpg" alt="product">
-                                    </a> --}}
                                     <a href="javascript:void(0);" id="cus_name">{{ $customer->name }}</a>
                                 </td>
                                 @if($customer->phone)
@@ -124,11 +113,6 @@
                                     <td>Null</td>
                                 @endif
 
-                                @if($customer->email)
-                                    <td>{{ $customer->email }}</td>
-                                @else
-                                    <td>Null</td>
-                                @endif
                                 {{-- <td>{{ $customer->country->name }} </td>
                                 <td>{{ $customer->city->name }}</td> --}}
 
@@ -145,6 +129,9 @@
                                 <td id="grand_total">{{ $customer->sales()->sum('grandtotal') ?? 'N/A' }}</td>
                                 <td id="paid_amount">{{ $customer->sales()->sum('paid_amount') ?? 'N/A'}}</td>
                                 <td id="due_amount">{{ $customer->sales()->sum('due_amount') ?? 'N/A' }}</td>
+                                <td>
+                                    {{ $customer->creator?->first_name }}
+                                </td>
                                 <td class="text-center">
                                     {{-- <a class="me-3" href="{{ route('customer.edit',$customer->id) }}">
                                         <img src="{{asset('backend')}}/img/icons/edit.svg" alt="img">

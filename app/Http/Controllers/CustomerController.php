@@ -150,6 +150,7 @@ class CustomerController extends Controller
             'dob' => $request->dob,
             'company_name' => $request->company_name ?: '',
             'update_at' => Carbon::now(),
+            'user_id' => $request->user_id,
         ]);
 
         return redirect()->route('customer.index')->with('success', 'Customer successfully Updated');

@@ -131,7 +131,7 @@
                                 <td class="" style="font-size: 13px;">{{ $sale->ref_code }}</td>
                                 <td>{{ $sale->date }}</td>
                                 <td>{{ $sale->customer?->name }}</td>
-                                <td><span class="badges bg-lightgreen" type="{{ $sale->payment_type }}">{{ $sale->payment_type }}</span></td>
+                                <td><span class="badges bg-lightgreen">{{ $sale->payment_type }}</span></td>
                                 <td>{{ $sale->grandtotal }}</td>
                                 <td>{{ $sale->discount }}</td>
                                 <td>{{ $sale->paid_amount }}</td>

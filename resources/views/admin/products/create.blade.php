@@ -45,7 +45,7 @@
 
                     <div class="row">
 
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-lg-5 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>
                                     {{ trans('form.form.product_name') }}
@@ -232,7 +232,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-sm-6 col-12">
+                        <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>Stock Alert</label>
                                 <div class="row">
@@ -654,7 +654,7 @@
         price.value = (Number(input.value) + (input.value * (20/100))).toFixed(2);
     }
 
-    document.getElementById("ACCOUNT").value = randomNumber(9);
+    document.getElementById("ACCOUNT").value = randomNumber(6);
 </script>
 
 

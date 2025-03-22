@@ -46,7 +46,7 @@
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="text" name="email" >
+                            <input type="text" name="email" autocomplete="new-password">
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                     <div class="col-lg-3 col-sm-6 col-12">
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" name="password" required>
+                            <input type="password" name="password" required autocomplete="new-password">
                         </div>
                     </div>
 

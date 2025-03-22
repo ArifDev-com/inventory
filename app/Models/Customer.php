@@ -20,6 +20,9 @@ class Customer extends Model
         'dob',
         'company_name',
     ];
+    protected $with = [
+        'creator'
+    ];
 
     public function city()
     {
@@ -37,5 +40,8 @@ class Customer extends Model
 
     public function cus_items(){
         return $this->hasManyThrough(SaleItem::class, Sale::class);
+    }
+    function creator() {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

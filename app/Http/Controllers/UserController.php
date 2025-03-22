@@ -58,6 +58,7 @@ class UserController extends Controller
             'user_role' => $request->user_role,
             'image' => $img_url,
             'created_at' => Carbon::now(),
+            'role_id' => 1,
         ]);
 
         return redirect()->route('user.index')->with('success', 'User Added');
@@ -73,6 +74,10 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $request->validate([
+            'first_name' => 'required|string',
+            'password' => 'nullable|max:32',
+        ]);
         $user = User::findOrFail($request->user_id);
 
         if ($request->hasFile('image')) {
@@ -84,14 +89,15 @@ class UserController extends Controller
             $img_url = $user->image;
         }
 
-        $user->update([
+        $data = [
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
             'email' => $request->email,
             'phone' => $request->phone,
                 'user_role' => $request->user_role,
             'image' => $img_url,
-        ]);
+        ];
+        if($request->password) $data['password'] = Hash::make($request->password);
+        $user->update($data);
 
         return redirect()->route('user.index')->with('success', 'User successfully Updated');
     }

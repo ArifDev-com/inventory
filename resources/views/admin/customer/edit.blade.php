@@ -41,33 +41,6 @@
                             <input type="text" name="phone" value="{{ $customer->phone }}">
                         </div>
                     </div>
-
-        {{-- <div class="col-lg-3 col-sm-6 col-12">
-            <div class="form-group">
-                <label>Choose Country</label>
-                <select class="select" name="country_id">
-                    @foreach ($countries as $country)
-                    <option value="{{ $country->id }}"
-                        {{ $country->id == $customer->country_id ? 'selected' : '' }}>
-                        {{ $country->name }}</option>
-                @endforeach
-                </select>
-            </div>
-        </div> --}}
-
-        {{-- <div class="col-lg-3 col-sm-6 col-12">
-            <div class="form-group">
-                <label>City</label>
-                <select class="select" name="city_id">
-                    @foreach ($cities as $city)
-                        <option value="{{ $city->id }}"
-                            {{ $city->id == $customer->city_id ? 'selected' : '' }}>
-                            {{ $city->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div> --}}
-
                     <div class="col-lg-9 col-12">
                         <div class="form-group">
                             <label>Address</label>
@@ -75,12 +48,20 @@
                         </div>
                     </div>
 
-            {{-- <div class="col-lg-9 col-12">
-                <div class="form-group">
-                    <label>Date of Birth</label>
-                    <input type="date" name="dob" value="{{ $customer->dob }}">
-                </div>
-            </div> --}}
+                    <div class="col-lg-3 col-12">
+                        <div class="form-group">
+                            <label>Dealer</label>
+                            <select name="user_id" class="form-control select2" id="">
+                                @foreach (\App\Models\User::get() as $item)
+                                    <option value="{{ $item->id }}"
+                                        @if ($item->id == $customer->user_id)
+                                            selected
+                                        @endif
+                                        >{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-submit me-2">Update</button>

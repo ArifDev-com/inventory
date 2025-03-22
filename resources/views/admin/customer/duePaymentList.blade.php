@@ -23,33 +23,85 @@
                         <thead>
                             <tr>
                                 <th>Sl</th>
-                                <th>Date</th>
-                                <th>Created At</th>
                                 <th>Customer Name</th>
                                 <th>Phone</th>
                                 <th>Company Name</th>
+                                <th>Total</th>
                                 <th>Paid</th>
-                                <th>Payment</th>
+                                <th>Due</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($payments as $key => $payment)
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>
-                                    {{ $payment->date }}
-                                </td>
-                                <td>
-                                    {{ $payment->created_at->format('d M, Y') }}
-                                </td>
                                 <td class="productimgname">
-                                    {{ $payment->customer?->name }}
+                                    {{ $payment->customer->name }}
                                 </td>
-                                <td>{{ $payment->customer?->phone }}</td>
-                                <td>{{ $payment->customer?->company_name }}</td>
-                                <td>{{ $payment->paying_amount }}</td>
-                                <td>
-                                    <span class="badges bg-lightgreen" type="{{ $payment->payment_method }}">{{ $payment->payment_method }}</span>
+                                @if($payment->customer->phone)
+                                    <td>{{ $payment->customer->phone }}</td>
+                                @else
+                                    <td>Null</td>
+                                @endif
+
+                                @if($customer->email)
+                                    <td>{{ $customer->email }}</td>
+                                @else
+                                    <td>Null</td>
+                                @endif
+                                {{-- <td>{{ $customer->country->name }} </td>
+                                <td>{{ $customer->city->name }}</td> --}}
+
+                                @if($customer->address)
+                                    <td>{{ $customer->address }}</td>
+                                @else
+                                    <td>Null</td>
+                                @endif
+                                @if($customer->company_name)
+                                    <td>{{ $customer->company_name }}</td>
+                                @else
+                                    <td>Null</td>
+                                @endif
+                                <td id="grand_total">{{ $customer->sales()->sum('grandtotal') ?? 'N/A' }}</td>
+                                <td id="paid_amount">{{ $customer->sales()->sum('paid_amount') ?? 'N/A'}}</td>
+                                <td id="due_amount">{{ $customer->sales()->sum('due_amount') ?? 'N/A' }}</td>
+                                <td class="text-center">
+                                    {{-- <a class="me-3" href="{{ route('customer.edit',$customer->id) }}">
+                                        <img src="{{asset('backend')}}/img/icons/edit.svg" alt="img">
+                                    </a>
+                                    <a class="me-3 confirm-text" href="{{ route('customer.delete',$customer->id) }}">
+                                        <img src="{{asset('backend')}}/img/icons/delete.svg" alt="img">
+                                    </a> --}}
+                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu"  >
+
+                                        {{-- <li>
+                                            <a href="{{route('customer.details', $customer->id)}}" class="dropdown-item"><img src="{{asset('backend')}}/img/icons/eye1.svg" class="me-2" alt="img">Customer Details</a>
+                                        </li> --}}
+
+                                        <li>
+                                            <a href="{{ route('customer.edit',$customer->id) }}" class="dropdown-item"><img src="{{asset('backend')}}/img/icons/edit.svg" class="me-2" alt="img">Customer Edit</a>
+                                        </li>
+
+
+                                        {{-- <li>
+                                            <a href="javascript:void(0);" data-id="{{ $customer->id }}" class="dropdown-item oprenCreateModal"
+                                            ><img src="{{asset('backend')}}/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
+                                        </li> --}}
+
+
+                                        {{-- <li>
+                                            <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="{{asset('backend')}}/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
+                                        </li> --}}
+
+
+                                        <li>
+                                            <a href="{{ route('customer.delete',$customer->id) }}" class="dropdown-item confirm-text"><img src="{{asset('backend')}}/img/icons/delete1.svg" class="me-2" alt="img">Customer Delete</a>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                          @endforeach

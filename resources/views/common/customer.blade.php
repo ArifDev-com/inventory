@@ -40,7 +40,10 @@
         if (customer_id) {
             let cus = all_customers.find(c => c.id == customer_id);
             if (cus) {
-                $('#customer_id_error').text('Due: ' + cus.sales.reduce((acc, curr) => acc + curr.due_amount, 0));
+                $('#customer_id_error').text(
+                    'Due: ' + cus.sales.reduce((acc, curr) => acc + curr.due_amount, 0) +
+                    ' Tk | Dealer: ' + (cus.creator?.first_name || 'Admin')
+                );
                 $('#_company_name').val(cus.company_name);
                 $('#_name').val(cus.name);
                 $('#_phone').val(cus.phone);

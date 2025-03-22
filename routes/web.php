@@ -194,6 +194,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Route::get('/supplier/details/{id}',[App\Http\Controllers\SupplierController::class,'detailsSup'])->name('supplier.details');
 
     // Product here
+    Route::get('/products/inactive', [App\Http\Controllers\ProductController::class, 'inactive'])->name('product.inactive');
     Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
 
     Route::get('/products/showroom', [App\Http\Controllers\ProductController::class, 'indexShowroom'])->name('product.showroom');

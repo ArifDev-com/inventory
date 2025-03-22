@@ -96,10 +96,13 @@
                             <div class="col-lg-12 float-md-right">
                                 <div class="total-order">
                                     <ul>
-
                                         <li>
-                                            <h4>{{ trans('form.sale.discount') }}</h4>
-                                            <h5 id="discount">৳ 0.00</h5>
+                                            <h4>Discount</h4>
+                                            <h5>
+                                                <input type="number" value="0" name="discount" class="form-control discount"
+                                                    placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
+                                                    onblur="updateGrandTotal();">
+                                            </h5>
                                         </li>
                                         <li>
                                             <h4>Other Cost</h4>
@@ -121,25 +124,16 @@
                             </div>
                         </div>
                         <div class="row">
-
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label>Discount Amount <code>(Optional)</code></label>
-                                    <input type="number" name="discount" class="discount form-control" id="discount_val" min="1"
-                                        placeholder="Enter Your Discount">
-                                </div>
-                            </div>
-
-
                             <div class="col-lg-3 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label>{{ trans('form.sale.payment type') }}</label>
                                     <select class="select2 form-control" name="payment_type" required="true">
+
                                         <option value="cash">Cash</option>
                                         <option value="bkash">bKash</option>
                                         <option value="rocket">Rocket</option>
                                         <option value="nagad">Nagad</option>
-                                        <option value="bank">Bank</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -296,6 +290,7 @@
         });
 
         function testClick(product) {
+            // console.log(product);
             if ($(`#product_${product.id}`).length > 0) {
                 return;
             }
@@ -304,12 +299,10 @@
 
 						<td class="productimgname">
 
-						<a href="javascript:void(0);">${product.name}</a>-<a href="javascript:void(0);">${product.product_code}</a>
+						<a href="javascript:void(0);">${product.name}</a>-<a href="javascript:void(0);">${product.code}</a>
 					   </td>
 
-                        <td >${product.quantity}</td>
-
-
+                        <td >${product.current_stock}</td>
 
 						<td>
 						<input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;" >
@@ -395,6 +388,7 @@
                 total += inlineTotal;
             });
             total += parseFloat($(".other_cost").val()) || 0;
+            total -= parseFloat($(".discount").val()) || 0;
             var formattedTotal = total.toFixed(2);
             $(".total_val").val(formattedTotal);
         }
@@ -419,11 +413,11 @@
 
             $(".due_amount").val(dueAmount);
 
-            if (dueAmount != 0) {
-                $('#due_date').attr('required', true);
-            } else {
+            // if (dueAmount != 0) {
+            //     $('#due_date').attr('required', true);
+            // } else {
                 $('#due_date').attr('required', false);
-            }
+            // }
         });
 
         $(document).ready(function() {
@@ -549,17 +543,17 @@
 
         function showCustomerDue() {
             var customerId = $('#selectpicker').val();
-            // console.log(customerId);
-            if (customerId) {
-                const customer = customers.find(customer => customer.id == customerId);
-                // console.log(customer);
-                $('#customerDue').text(
-                    'Due: ' + customer.sales.reduce((acc, sale) => acc + sale.due_amount, 0) +
-                    ' Tk'
-                );
-            } else {
-                $('#customerDue').text('');
-            }
+            // // alert(customerId);
+            // if (customerId) {
+            //     const customer = customers.find(customer => customer.id == customerId);
+            //     // console.log(customer);
+            //     $('#customerDue').text(
+            //         'Due: ' + customer.sales.reduce((acc, sale) => acc + sale.due_amount, 0) +
+            //         ' Tk | Dealer: ' + (customer.creator?.first_name || 'Admin')
+            //     );
+            // } else {
+            //     $('#customerDue').text('');
+            // }
         }
         setInterval(() => {
             $('.table .tbody tr').each(function() {

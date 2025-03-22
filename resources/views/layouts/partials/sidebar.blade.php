@@ -24,6 +24,8 @@
                     <ul>
                         <li><a href="{{ route('product.index') }}"
                                 class="{{ request()->is('admin/products') ? 'active' : '' }}">All Product List</a></li>
+                        <li><a href="{{ route('product.inactive') }}"
+                                class="{{ request()->is('admin/products/inactive') ? 'active' : '' }}">Inactive Product List</a></li>
                         @if(auth()->user()->user_role == 'admin')
                             <li><a href="{{ route('product.stock') }}"
                                     class="{{ request()->is('admin/product/stock') ? 'active' : '' }}">Stock Update</a>

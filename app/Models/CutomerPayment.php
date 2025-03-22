@@ -23,8 +23,4 @@ class CutomerPayment extends Model
         'note',
         'affected_sales',
     ];
-
-    public function customer() {
-        return $this->belongsTo(Customer::class, 'customer_id');
-    }
 }

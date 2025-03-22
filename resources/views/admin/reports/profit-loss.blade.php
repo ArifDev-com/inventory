@@ -21,9 +21,9 @@
                 <h4>Profit or Lost List</h4>
                 <h6></h6>
             </div>
-
+            
         </div>
-
+        
 
         <!-- /product list -->
         <div class="card">
@@ -99,7 +99,7 @@
                                 <th>{{ trans('table.sale.date') }}</th>
                                <th>{{ trans('table.sale.customer') }}</th>
                                  <th>{{ trans('table.sale.reference') }}</th>
-
+                          
                                   <th>{{ trans('table.sale.payment') }}</th>
                                 <th>{{ trans('table.sale.total') }}</th>
                                 <th>{{ trans('table.sale.paid') }}</th>
@@ -110,8 +110,8 @@
                               <th>Qty</th>
                               <th>Prurchase Price * Qty</th> --}}
                               <th>Profit/Loss Amount</th>
-
-
+                              
+                              
                             </tr>
                         </thead>
                         <tbody>
@@ -127,8 +127,8 @@
                                 <td>{{ $sale->date }}</td>
                                <td>{{ $sale->customer->name }}</td>
                                <td>{{ $sale->ref_code}}</td>
-
-                               <td><span class="badges bg-lightgreen" type="{{ $sale->payment_type }}">{{ $sale->payment_type }}</span></td>
+                            
+                               <td><span class="badges bg-lightgreen">{{ $sale->payment_type }}</span></td>
                                   <td>{{ $sale->grandtotal }}</td>
                                 <td>{{ $sale->paid_amount }}</td>
                                  <td class="text-red">{{ $sale->due_amount }}</td>
@@ -139,7 +139,7 @@
                               <td>{{ ($sale->purchase_price*$sale->quantity) }}</td> --}}
                               <td class="badges bg-danger text-white" style="font-size: 14px;">{{ ($sale->grandtotal-($sale->purchase_price*$sale->quantity)) }}</td>
 
-
+                              
 
 
                          @endforeach

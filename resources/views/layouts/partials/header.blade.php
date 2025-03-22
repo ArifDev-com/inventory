@@ -102,16 +102,17 @@
 
   @php
   $authId = Auth::user()->id;
+  $logo = App\Models\ShopDocument::where('user_id',$authId)->get();
   @endphp
 
   <!-- Logo -->
   <div class="header-left active">
     <a href="{{ route('home') }}" class="logo logo-normal">
-      {{-- <img src="{{asset('backend')}}/img/sherazi pos.png" style="height:55px; margin-left: 15px;" alt=""> --}}
-      {{-- <img src="{{ asset($item->image) }}" style="height:55px; margin-left: 15px;" alt=""> --}}
-      <p style="font-weight: bold; font-family: 'Roboto', sans-serif; padding-top: 6px; font-size: 18px;">
+
+      <p style="color: #fff; font-weight: bold; font-family: 'Roboto', sans-serif; padding-top: 6px; font-size: 18px;">
         Capital Lift Ltd.
-      </p>
+        </p>
+
     </a>
     {{-- <a href="{{ route('home') }}" class="logo logo-white">
       <img src="{{asset('backend')}}/img/logo-white.png" alt="">

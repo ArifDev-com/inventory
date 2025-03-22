@@ -9,10 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'status' => 'boolean',
+    protected $appends = [
+        'current_stock'
     ];
-
     protected $fillable = [
         'name',
         'product_size',

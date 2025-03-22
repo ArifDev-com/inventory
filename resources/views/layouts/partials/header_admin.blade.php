@@ -109,6 +109,7 @@ $admin = \Auth::check() && \Auth::id() == 2;
 
   @php
   $authId = Auth::user()->id;
+  $logo = App\Models\ShopDocument::where('user_id',$authId)->get();
   @endphp
 
   <!-- Logo -->
@@ -118,6 +119,7 @@ $admin = \Auth::check() && \Auth::id() == 2;
         Capital Lift Ltd.
       </p>
 
+      @endforeach
     </a>
 
     <a id="toggle_btn" href="javascript:void(0);">

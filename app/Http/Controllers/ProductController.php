@@ -23,6 +23,24 @@ use Milon\Barcode\DNS1D;
 
 class ProductController extends Controller
 {
+    public function inactive()
+    {
+        $category = Category::latest()->get();
+        $subCategory = SubCategory::latest()->get();
+        $brand = Brand::latest()->get();
+        $unit = Unit::latest()->get();
+        $warehouses = Warehouse::latest()->get();
+        $suppliers = Supplier::latest()->get();
+        $authId = Auth::user()->id;
+        $products = Product::with('user')
+            ->where('status', '!=', 'active')
+            ->orWhereNull('status')
+            // ->latest()
+            ->orderBy('code', 'asc')
+            ->get();
+
+        return view('admin.products.inactive', compact('products', 'category', 'subCategory', 'brand', 'unit', 'warehouses', 'suppliers'));
+    }
     public function index()
     {
         $category = Category::latest()->get();
@@ -32,7 +50,9 @@ class ProductController extends Controller
         $warehouses = Warehouse::latest()->get();
         $suppliers = Supplier::latest()->get();
         $authId = Auth::user()->id;
-        $products = Product::with('user')->latest()->get();
+        $products = Product::with('user')->where('status', 'active')
+            ->orderBy('code', 'asc')
+            ->get();
 
         return view('admin.products.index', compact('products', 'category', 'subCategory', 'brand', 'unit', 'warehouses', 'suppliers'));
     }
