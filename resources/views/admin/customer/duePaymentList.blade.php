@@ -29,6 +29,7 @@
                                 <th>Phone</th>
                                 <th>Company Name</th>
                                 <th>Paid</th>
+                                <th>Payment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,6 +48,9 @@
                                 <td>{{ $payment->customer?->phone }}</td>
                                 <td>{{ $payment->customer?->company_name }}</td>
                                 <td>{{ $payment->paying_amount }}</td>
+                                <td>
+                                    <span class="badges bg-lightgreen" type="{{ $payment->payment_method }}">{{ $payment->payment_method }}</span>
+                                </td>
                             </tr>
                          @endforeach
                         </tbody>

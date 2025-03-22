@@ -6883,19 +6883,25 @@ span.select2-container.select2-container--default.select2-container--open {
   text-align: center;
   min-width: 80px;
 }
-.badges.bg-lightgreen {
+.badges.bg-lightgreen,
+.badges.bg-lightgreen[type="cash"]
+{
   background: #28C76F;
 }
-.badges.bg-lightred {
+.badges.bg-lightred,
+.badges.bg-lightgreen[type="nagad"]{
   background: #EA5455;
 }
-.badges.bg-lightyellow {
+.badges.bg-lightyellow,
+.badges.bg-lightgreen[type="bkash"]{
   background: #FF9900;
 }
-.badges.bg-lightpurple {
+.badges.bg-lightpurple,
+.badges.bg-lightgreen[type="rocket"]{
   background: #7367f0;
 }
-.badges.bg-lightgrey {
+.badges.bg-lightgrey,
+.badges.bg-lightgreen[type="back"]{
   background: #637381;
 }
 

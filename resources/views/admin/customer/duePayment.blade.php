@@ -69,7 +69,7 @@
                                     <option value="bank">Bank</option>
                                     <option value="bkash">Bkash</option>
                                     <option value="rocket">Rocket</option>
-                                    <option value="mobile_banking">Mobile Banking</option>
+                                    <option value="nagad">Nagad</option>
                                 </select>
                             </div>
                         </div>

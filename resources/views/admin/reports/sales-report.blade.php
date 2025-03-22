@@ -58,7 +58,7 @@
                     <div class="card-body pb-0">
                         <form action="{{ route('sale.report') }}" method="get">
                         <div class="row">
-                         
+
                             <div class="col-lg-2 col-sm-6 col-12">
                                 <div class="form-group">
                                     <div class="input-groupicon">
@@ -103,7 +103,7 @@
                                 <th>Date</th>
                                 <th>Customer</th>
                                 <th>Reference</th>
-                        
+
                                 <th>Payment</th>
                                 <th>Total</th>
                                 <th>Paid</th>
@@ -124,12 +124,12 @@
                                 <td>{{ $sale->date }}</td>
                                 <td>{{ $sale->customer->name }}</td>
                                 <td>{{ $sale->ref_code}}</td>
-                              
-                                <td><span class="badges bg-lightgreen">{{ $sale->payment_type }}</span></td>
+
+                                <td><span class="badges bg-lightgreen" type="{{ $sale->payment_type }}">{{ $sale->payment_type }}</span></td>
                                 <td>{{ $sale->grandtotal }}</td>
                                 <td>{{ $sale->paid_amount }}</td>
                                 <td class="text-red">{{ $sale->due_amount }}</td>
-{{--                               
+{{--
                                 <td class="text-center">
                                     <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -141,18 +141,18 @@
                                         <li>
                                             <a href="{{ route('sale.edit',$sale->id) }}" class="dropdown-item"><img src="{{asset('backend')}}/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
                                         </li>
-                                     
+
                                         <li>
                                             <a href="javascript:void(0);" class="dropdown-item"><img src="{{asset('backend')}}/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-                                        </li>	
+                                        </li>
                                         <li>
                                             <a href="{{ route('sale.delete',$sale->id) }}" class="dropdown-item confirm-text"><img src="{{asset('backend')}}/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-                                        </li>								
+                                        </li>
                                     </ul>
                                 </td> --}}
                             </tr>
                          @endforeach
-                           
+
                         <tfoot>
                             <td></td>
                             <td></td>
@@ -160,7 +160,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                          
+
                             <td>
                                 <b>
                                      {{ $grandtotalSum }}

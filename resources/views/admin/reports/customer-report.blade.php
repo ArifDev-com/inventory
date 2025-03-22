@@ -43,7 +43,7 @@
                     <div class="card-body pb-0">
                         <form action="{{ route('customer.report') }}" method="get">
                             <div class="row">
-                             
+
                                 <div class="col-lg-2 col-sm-6 col-12">
                                     <div class="form-group">
                                         <div class="input-groupicon">
@@ -93,7 +93,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                            @foreach ($sales as $sale)
                            <tr>
                             <td>
@@ -102,20 +102,20 @@
                                     <span class="checkmarks"></span>
                                 </label>
                             </td>
-                           
+
                             <td>{{ $sale->customer->name }}</td>
                             <td>{{ $sale->grandtotal }}</td>
                             <td>{{ $sale->paid_amount }}</td>
                             <td>{{ $sale->due_amount }}</td>
                             <td><span class="badges bg-lightgreen">{{ $sale->payment_status }}</span></td>
-                            <td><span class="badges bg-lightgreen">{{ $sale->payment_type }}</span></td>
+                            <td><span class="badges bg-lightgreen" type="{{ $sale->payment_type }}">{{ $sale->payment_type }}</span></td>
                         </tr>
                            @endforeach
-               
+
                            <tfoot>
                             <td></td>
                             <td></td>
-                           
+
 
                             <td>
                                 <b>

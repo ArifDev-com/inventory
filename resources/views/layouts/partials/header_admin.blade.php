@@ -109,19 +109,15 @@ $admin = \Auth::check() && \Auth::id() == 2;
 
   @php
   $authId = Auth::user()->id;
-  $logo = App\Models\ShopDocument::where('user_id',$authId)->get();
   @endphp
 
   <!-- Logo -->
   <div class="header-left active">
     <a href="{{ route('super.home') }}" class="logo logo-normal">
+      <p style="font-weight: bold; font-family: 'Roboto', sans-serif; padding-top: 6px; font-size: 18px;">
+        Capital Lift Ltd.
+      </p>
 
-      @foreach($logo as $item)
-
-      <p style="color: beige; font-weight: bold; font-family: 'Roboto', sans-serif; padding-top: 6px; font-size: 18px;">
-        {{ $item->name }}</p>
-
-      @endforeach
     </a>
 
     <a id="toggle_btn" href="javascript:void(0);">

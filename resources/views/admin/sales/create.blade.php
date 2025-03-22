@@ -135,12 +135,11 @@
                                 <div class="form-group">
                                     <label>{{ trans('form.sale.payment type') }}</label>
                                     <select class="select2 form-control" name="payment_type" required="true">
-
                                         <option value="cash">Cash</option>
                                         <option value="bkash">bKash</option>
                                         <option value="rocket">Rocket</option>
                                         <option value="nagad">Nagad</option>
-
+                                        <option value="bank">Bank</option>
                                     </select>
                                 </div>
                             </div>

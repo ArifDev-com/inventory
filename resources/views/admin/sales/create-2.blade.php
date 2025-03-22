@@ -153,7 +153,7 @@
                                 <option value="bkash">bKash</option>
                                 <option value="rocket">Rocket</option>
                                 <option value="nagad">Nagad</option>
-
+                                <option value="bank">Bank</option>
                             </select>
                         </div>
                     </div>
