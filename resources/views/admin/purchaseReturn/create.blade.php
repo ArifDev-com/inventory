@@ -246,7 +246,7 @@ $('.inline_total').each(function(i, e) {
     console.log(i);
     console.log(e);
 });
-var formattedTotal = total.toFixed(2); // Fixed a typo: 'num' should be 'total'
+var formattedTotal = total.toFixed(0); // Fixed a typo: 'num' should be 'total'
 
 $('.total_val').val(formattedTotal);
 

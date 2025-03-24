@@ -93,6 +93,7 @@ class SaleReturnController extends Controller
             'note' => $request->note,
             'sale_id' => $sale->id,
             'user_id' => auth()->user()->id,
+            'payment_type' => $request->payment_type,
         ]);
 
         $pcount = count($request->product_id);

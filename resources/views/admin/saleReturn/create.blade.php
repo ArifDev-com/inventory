@@ -15,14 +15,14 @@
             <a href="{{ route('sale.return.list') }}" class="btn btn-info">Back</a>
         </div>
         @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
         @endif
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
         @endif
         <div class="card">
             <div class="card-body">
@@ -58,7 +58,7 @@
 
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
-                                <label>Reference No.</label>
+                                <label>Invoice No.</label>
                                 <input type="text" name="ref_code" value="{{ $sale->ref_code }}" readonly>
                             </div>
                         </div>
@@ -91,7 +91,10 @@
                                         <td>{{ $item->product->current_stock }}</td>
                                         <td>
                                             <input type="number" name="quantity[]" class="form-control quantity"
-                                                placeholder="quantity" value="{{ $item->quantity }}" style="width:100px;">
+                                                placeholder="quantity" value="{{ $item->quantity }}"
+                                                style="width:100px;"
+                                                onchange="updateSubTotal($(this).parent().parent())"
+                                                >
                                         </td>
 
                                         <td class="text-end">
@@ -123,12 +126,40 @@
                         </div>
                     </div>
                     <div class="row">
-
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Return Amount</label>
+                                <input type="text" name="return_amount" class="return_amount"
+                                    placeholder="Enter Return Amount" required min="0"
+                                    sale_grandtotal="{{ $sale->grandtotal }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.paid amount') }}</label>
                                 <input type="text" name="paid_amount" class="paid_amount"
-                                    placeholder="{{ trans('form.sale.enter paid amount') }}" required>
+                                    placeholder="{{ trans('form.sale.enter paid amount') }}" required min="0">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>Amount Left</label>
+                                <input type="text" name="amount_left" class="amount_left" readonly min="0">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>{{ trans('form.sale.payment type') }}</label>
+                                <select class="select2 form-control" name="payment_type" required="true">
+                                    <option value="cash">Cash</option>
+                                    <option value="card">Card</option>
+                                    <option value="bank">Bank</option>
+                                    <option value="bkash">bKash</option>
+                                    <option value="rocket">Rocket</option>
+                                    <option value="nagad">Nagad</option>
+                                </select>
                             </div>
                         </div>
 
@@ -194,14 +225,17 @@
             console.log(i);
             console.log(e);
         });
-        var formattedTotal = total.toFixed(2); // Fixed a typo: 'num' should be 'total'
+        var formattedTotal = total.toFixed(0); // Fixed a typo: 'num' should be 'total'
         $('.total_val').val(formattedTotal);
+        $('.return_amount').val(
+            $('.return_amount').attr('sale_grandtotal') - formattedTotal
+        );
     }
 
   //tax
   $('#tax_val').keyup(function () {
 
-    var total = 0;
+        var total = 0;
             $('.inline_total').each(function (i, e) {
                 var inlineTotal = $(this).val() - 0;
                 total += inlineTotal;
@@ -261,7 +295,6 @@
             total += inlineTotal;
         });
 
-
         var discount =  $(this).val();
         // var taxPercent =  $('#tax_val').val();
         // var shipping =  $('#shipping_val').val();
@@ -274,7 +307,7 @@
         // var grandtotal = total - discount;
         $('.total_val').val(t);
         //$('#discount').text(discount);
-
+        $('.amount_left').val(t - $(this).val());
     });
 
     //shipping cost

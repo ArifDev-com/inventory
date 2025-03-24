@@ -9,36 +9,45 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Make Due Payment</h4>
-                <h6>Add/Update Due Payment</h6>
+                <h4>Send Bulk SMS</h4>
+                <h6>Send SMS to multiple customers</h6>
             </div>
             {{-- <a href="{{ route('due.payment.list') }}" class="btn btn-info">Back</a> --}}
         </div>
         @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
         @endif
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
         @endif
         <div class="card">
             <div class="card-body">
                 <form action="{{ route('customer.bulk.sms.send') }}" method="post"
-                    onsubmit="$('.btn-submit').text('Sending...');"
-                >
+                    onsubmit="$('.btn-submit').text('Sending...');">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Customer</label>
-                                <select class="form-control select2" name="phones[]" required multiple>
+                                <select class="form-control select-phones select2" name="phones[]" required multiple>
                                     @foreach ($customers as $customer)
-                                        <option value="{{ $customer->phone }}">{{ $customer->phone }} ({{ $customer->name }})</option>
+                                    <option value="{{ $customer->phone }}">{{ $customer->phone }} ({{ $customer->name
+                                        }})</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">&nbsp;</label>
+                                <button class="btn btn-primary btn-sm" type="button" id="select-all-customers"
+                                    onclick="selectAllCustomers()">
+                                    <i class="fa fa-plus"></i> Select all
+                                </button>
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -48,9 +57,7 @@
                             </div>
                         </div>
                         <div class="col-lg-12">
-                            <button type="submit" class="btn btn-submit me-2"
-
-                            >Send</button>
+                            <button type="submit" class="btn btn-submit me-2">Send</button>
                             <a href="{{ route('customer.bulk.sms') }}" class="btn btn-cancel">Cancel</a>
                         </div>
                     </div>
@@ -65,12 +72,21 @@
 
 <script>
     $(document).ready(function () {
-        $(".select2").select2({
+        $(".select-phones.select2").select2({
             multiple: true,
             placeholder: "Select Customer phones",
             allowClear: true,
         });
     });
+
+    function selectAllCustomers() {
+        var allCustomerIds = []
+        $(".select-phones.select2 option").each(function() {
+            allCustomerIds.push($(this).attr('value'));
+        });
+        $(".select-phones.select2").val(allCustomerIds)
+            .trigger('change');
+    }
 </script>
 
 @endsection

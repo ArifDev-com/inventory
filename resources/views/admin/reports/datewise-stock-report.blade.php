@@ -71,7 +71,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $product->code }}</td>
-                                <td>{{ $product->name }}</td>
+                                <td style="text-align: left;">{{ $product->name }}</td>
                                 <td>{{ $product->current_stock }}</td>
                                 {{-- <td>{{ $product->purchase_count }}</td> --}}
                                 <td>{{ $product->sales_count }}</td>

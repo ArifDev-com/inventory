@@ -22,7 +22,8 @@ class SaleReturn extends Model
         'status',
         'note',
         'sale_id',
-        'status'
+        'status',
+        'payment_type',
     ];
 
     public function customer() {

@@ -139,13 +139,15 @@
                                 <td>{{ $sale->due_date }}</td>
                                 <td>
                                     {{ $sale->user?->first_name . ' ' . $sale->user?->last_name }}
+                                    {{-- @dump($sale->cancel_requested) --}}
                                     @if($sale->cancel_requested)
                                     <br>
                                     <span class="badge bg-danger">Requested to Cancel</span>
                                     @endif
+                                    {{-- @dump($sale->returns->first()?->status) --}}
                                     @if($sale->returns->count())
                                     <br>
-                                        @if ($sale->returns->first()->status == 'approved')
+                                        @if ($sale->returns->first()->status == 'received')
                                         <span class="badge bg-info">Returned</span>
                                         @else
                                         <span class="badge bg-warning">Return Requested</span>

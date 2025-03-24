@@ -50,7 +50,7 @@
                             <label>{{ trans('form.sale.sale date') }}</label>
                             <div class="input-groupicon">
                                 <input type="date" class="form-control" name="date" placeholder="Choose Date"
-                                    value="<?php echo date(" Y-m-d");?>" >
+                                    value="<?php echo date("Y-m-d");?>" >
                                 {{-- <a class="addonset">
                                     <img src="{{asset('backend')}}/img/icons/calendars.svg" alt="img">
                                 </a> --}}
@@ -293,7 +293,7 @@
                         <div class="col-lg-6 col-sm-12 col-12 d-none">
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="date" name="dob" value="<?php echo date(" Y-m-d");?>">
+                                <input type="date" name="dob" value="<?php echo date("Y-m-d");?>">
                             </div>
                         </div>
                     </div>

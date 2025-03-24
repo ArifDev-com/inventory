@@ -478,7 +478,7 @@ class ReportController extends Controller
 
     public function productList(Request $request)
     {
-        $products = Product::latest()->get();
+        $products = Product::orderBy("code")->get();
         return view('admin.reports.product-list', compact('products'));
     }
 

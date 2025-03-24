@@ -289,7 +289,7 @@ class ProductController extends Controller
 
     public function stock()
     {
-        $products = Product::latest()->get();
+        $products = Product::orderBy("code")->get();
 
         return view('admin.products.stock', compact('products'));
     }
@@ -298,15 +298,17 @@ class ProductController extends Controller
     {
         $request->validate([
             'quantity' => 'required|array',
-            'quantity.*' => 'required|integer|min:0',
+            'quantity.*' => 'required|integer',
         ], [
             'quantity.required' => 'The quantity field is required.',
             'quantity.*.required' => 'The quantity field is required.',
             'quantity.*.integer' => 'The quantity must be an integer.',
-            'quantity.*.min' => 'The quantity must be at least 0.',
         ]);
 
         foreach ($request->quantity as $productId => $quantity) {
+            if($quantity == 0) {
+                continue;
+            }
             $product = Product::find($productId);
             ProductStockUpdate::create([
                 'product_id' => $productId,
@@ -323,7 +325,8 @@ class ProductController extends Controller
 
     public function stockHistory()
     {
-        $stockUpdates = ProductStockUpdate::with('product', 'user')->latest()
+        $stockUpdates = ProductStockUpdate::with('product', 'user')
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('admin.products.stock-history', compact('stockUpdates'));

@@ -255,8 +255,7 @@
                                         <div class="form-group">
                                             <input type="text" name="purchase_price"
                                                 placeholder="{{ trans('form.form.enter purchase price') }}"
-                                                onkeyup="updateOtherPrices(this)"
-                                                >
+                                                onkeyup="updateOtherPrices(this)">
                                         </div>
                                     </div>
                                 </div>
@@ -649,9 +648,9 @@
         var retailPrice = document.querySelector("input[name='retail_price']");
         var price = document.querySelector("input[name='price']");
 
-        wholesalePrice.value = (Number(input.value) + (input.value * (10/100))).toFixed(2);
-        retailPrice.value = (Number(input.value) + (input.value * (15/100))).toFixed(2);
-        price.value = (Number(input.value) + (input.value * (20/100))).toFixed(2);
+        wholesalePrice.value = (Number(input.value) + (input.value * (10/100))).toFixed(0);
+        retailPrice.value = (Number(input.value) + (input.value * (15/100))).toFixed(0);
+        price.value = (Number(input.value) + (input.value * (20/100))).toFixed(0);
     }
 
     document.getElementById("ACCOUNT").value = randomNumber(6);

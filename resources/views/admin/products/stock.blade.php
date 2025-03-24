@@ -33,6 +33,11 @@
             {{ session('error') }}
         </div>
         @endif
+        @foreach ($errors->all() as $error)
+        <div class="alert alert-danger">
+            {{ $error }}
+        </div>
+        @endforeach
 
         <!-- /product list -->
         <form action="{{ route('product.stock.update') }}" method="POST">
@@ -81,7 +86,7 @@
                                     <td>
                                         <input type="number" class="form-control"
                                             value="{{ old('quantity.' . $product->id, '0') }}"
-                                            name="quantity[{{ $product->id }}]" style="width: 100px;" min="0">
+                                            name="quantity[{{ $product->id }}]" style="width: 100px;" >
                                     </td>
                                     <td>{{ $product->current_stock }}</td>
                                     <td>{{ $product->alert_quantity }}</td>

@@ -117,14 +117,14 @@
                                 <td>{{ $customer->city->name }}</td> --}}
 
                                 @if($customer->address)
-                                    <td>{{ $customer->address }}</td>
+                                    <td style="text-align: left;">{{ $customer->address }}</td>
                                 @else
-                                    <td>Null</td>
+                                    <td></td>
                                 @endif
                                 @if($customer->company_name)
-                                    <td>{{ $customer->company_name }}</td>
+                                    <td style="text-align: left;">{{ $customer->company_name }}</td>
                                 @else
-                                    <td>Null</td>
+                                    <td></td>
                                 @endif
                                 <td id="grand_total">{{ $customer->sales()->sum('grandtotal') ?? 'N/A' }}</td>
                                 <td id="paid_amount">{{ $customer->sales()->sum('paid_amount') ?? 'N/A'}}</td>
@@ -426,7 +426,7 @@ $(document).ready(function () {
 </script>
 
 <script>
-    let table = new DataTable('#myTable');
+    let table = new DataTable('#myTable', {pageLength:50});
 
 </script>
 

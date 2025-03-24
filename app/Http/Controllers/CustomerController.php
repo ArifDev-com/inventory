@@ -61,7 +61,7 @@ class CustomerController extends Controller
             $q->select('grandtotal',
                 'paid_amount',
                 'due_amount');
-        }])->orderBy('id', 'DESC')->get();
+        }])->orderBy('id', 'ASC')->get();
 
         // dd($customers);
         // return $customers;
@@ -193,6 +193,7 @@ class CustomerController extends Controller
         $phones = $request->phones;
         // dd($phones, $message);
         foreach ($phones as $phone) {
+            if(!$phone) continue;
             $phone = str_replace(' ', '', $phone);
             $phone = str_replace('-', '', $phone);
             $phone = str_replace('+', '', $phone);

@@ -49,7 +49,7 @@
                                 <label>Purchase Date </label>
                                 <div class="input-groupicon">
                                     <input type="date" name="date" class="form-control" placeholder="Choose Date"
-                                        value="<?php echo date(" Y-m-d");?>" >
+                                        value="<?php echo date("Y-m-d");?>" >
                                 </div>
                             </div>
                         </div>
@@ -381,7 +381,7 @@
 
 	// 	   });
 
-	// 	   $('.total_val').val(total.toFixed(2));
+	// 	   $('.total_val').val(total.toFixed(0));
 	//    }
     function totalOfSubTotal(tr) {
             var qty = tr.find(".quantity").val();
@@ -401,7 +401,7 @@
             total += inlineTotal;
         });
         total += parseFloat($(".other_cost").val()) || 0;
-        var formattedTotal = total.toFixed(2);
+        var formattedTotal = total.toFixed(0);
         $(".total_val").val(formattedTotal);
     }
 
