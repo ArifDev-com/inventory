@@ -131,7 +131,9 @@
                                 <td class="" style="font-size: 13px;">{{ $sale->ref_code }}</td>
                                 <td>{{ $sale->date }}</td>
                                 <td>{{ $sale->customer?->name }}</td>
-                                <td><span class="badges bg-lightgreen">{{ $sale->payment_type }}</span></td>
+                                <td>
+                                    {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
+                                </td>
                                 <td>{{ $sale->grandtotal }}</td>
                                 <td>{{ $sale->discount }}</td>
                                 <td>{{ $sale->paid_amount }}</td>
@@ -147,7 +149,7 @@
                                     {{-- @dump($sale->returns->first()?->status) --}}
                                     @if($sale->returns->count())
                                     <br>
-                                        @if ($sale->returns->first()->status == 'received')
+                                        @if ($sale->returns()->orderBy('id', 'desc')->first()->status == 'received')
                                         <span class="badge bg-info">Returned</span>
                                         @else
                                         <span class="badge bg-warning">Return Requested</span>
@@ -167,24 +169,28 @@
                                         </li>
                                         <li>
                                             <a href="{{ route('sale.challan.pdf', [$sale->id]) }}"
-                                                class="dropdown-item"><img
+                                                class="dropdown-item">
+                                                <img
                                                     src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
-                                                    alt="img">Print Challan</a>
+                                                    alt="img">
+                                                Print Challan
+                                            </a>
                                         </li>
 
-                                        @if(!$sale->returns->count())
+                                        {{-- @if(!$sale->returns->count()) --}}
                                         <li>
                                             <a href="{{ route('sale.return', [$sale->id]) }}"
                                                 class="dropdown-item">
-                                                Sale Return</a>
+                                                Sale Return
+                                            </a>
                                         </li>
-                                        @else
+                                        {{-- @else
                                         <li>
                                             <a href="{{ route('sale.return.pdf', [$sale->returns->first()->id]) }}"
                                                 class="dropdown-item">
                                                 Sale Return</a>
-                                        </li>
-                                        @endif
+                                        </li> --}}
+                                        {{-- @endif --}}
                                         @if(!$sale->cancel_requested && auth()->user()->id == $sale->user_id)
                                         <li>
                                             <a href="{{ route('sale.cancel', [$sale->id]) }}"

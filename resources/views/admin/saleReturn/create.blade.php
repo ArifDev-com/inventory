@@ -96,7 +96,6 @@
                                                 onchange="updateSubTotal($(this).parent().parent())"
                                                 >
                                         </td>
-
                                         <td class="text-end">
                                             <input type="number" readonly class="inline_total" name="sub_total[]"
                                                 value="{{ $item->price }}" style="width:100px;">
@@ -125,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row d-none" >
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>Return Amount</label>
@@ -182,14 +181,12 @@
 @endsection
 
 @section('scripts')
-
 <script>
     //delete row
     $("table tbody").delegate(".remove", "click",function(){
        $(this).parent().parent().remove();
        updateGrandTotal();
     });
-
 
     // when qty will increment or drecrement.. it will be call automically
     // function updateSubTotal(){
@@ -202,28 +199,19 @@
         var price = tr.find('.price').text();
         var totalAmount = price * qty;
         tr.find('.inline_total').val(totalAmount);
-        // var inlineDiscont = tr.find('.inline_discount').text();
-        // var inlinetax = tr.find('.inline_tax').text();
-
-
-        // var discountAmount =  ( totalAmount -  (parseInt(totalAmount) * parseInt(inlineDiscont)) /100)
-
-        // var inlineSubTotal =  ( discountAmount +  (parseInt(discountAmount) * parseInt(inlinetax)) /100)
 
         // tr.find('.inline_total').val(inlineSubTotal);
         tr.find('.inline_total').val(totalAmount);
         updateGrandTotal();
-
     };
 
     function updateGrandTotal() {
-
         var total = 0;
         $('.inline_total').each(function(i, e) {
             var inlineTotal = $(this).val() - 0;
             total += inlineTotal;
-            console.log(i);
-            console.log(e);
+            // console.log(i);
+            // console.log(e);
         });
         var formattedTotal = total.toFixed(0); // Fixed a typo: 'num' should be 'total'
         $('.total_val').val(formattedTotal);
@@ -236,11 +224,10 @@
   $('#tax_val').keyup(function () {
 
         var total = 0;
-            $('.inline_total').each(function (i, e) {
-                var inlineTotal = $(this).val() - 0;
-                total += inlineTotal;
-            });
-
+        $('.inline_total').each(function (i, e) {
+            var inlineTotal = $(this).val() - 0;
+            total += inlineTotal;
+        });
 
         var taxPercent =  $(this).val();
         var discount =  $('#discount_val').val();

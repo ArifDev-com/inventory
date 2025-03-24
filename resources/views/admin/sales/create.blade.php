@@ -126,9 +126,11 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.payment type') }}</label>
-                                <select class="select2 form-control" name="payment_type" required="true">
+                            <div class="form-group mb-1 first-method">
+                                <label>
+                                    Payment Method
+                                </label>
+                                <select class="form-control" name="payment_type" required="true">
                                     <option value="cash">Cash</option>
                                     <option value="card">Card</option>
                                     <option value="bank">Bank</option>
@@ -146,7 +148,6 @@
                                     placeholder="{{ trans('form.sale.enter paid amount') }}" required>
                             </div>
                         </div>
-
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.due amount') }}</label>
@@ -159,6 +160,18 @@
                                 <label>Due Date </label>
                                 <input type="date" name="due_date" class="form-control due_date" id="due_date" value="">
                             </div>
+                        </div>
+                        <div class="col-12 mt-2 additional-payment-methods">
+                            <div class="list">
+
+                            </div>
+
+                            <button class="btn btn-primary btn-sm"
+                                onclick="addPaymentMethod()" type="button"
+                                id="add_payment_method">
+                                <i class="fa fa-plus"></i>
+                                Add Payment method
+                            </button>
                         </div>
 
                         <div class="col-lg-12 mt-4">
@@ -253,264 +266,321 @@
 @section('scripts')
 <script>
     function checkout() {
-            // Open the current page in a new tab
-            let newTab = window.open(window.location.href, '_blank');
-            // Ensure the new tab opened successfully
-            if (newTab) {
-                // Delay refocusing on the original tab
-                setTimeout(() => {
-                    window.focus();
-                }, 500);
-            } else {
-                alert("Popup blocked! Please allow pop-ups for this site.");
-            }
-        }
-
-        function updateDueDate() {
-            alert('Please wait...');
-        }
-
-        $("body").on("keyup", "#search", function() {
-            let searchData = $("#search").val();
-            let token = "{{ csrf_token() }}";
-            var route = "{{ route('find.products.purchase') }}";
-            if (searchData.length > 0) {
-                $.ajax({
-                    type: "GET",
-                    url: route,
-                    data: {
-                        search: searchData,
-                        // _token:token,
-                    },
-                    success: function(result) {
-                        $("#suggestProduct").html(result);
-                    },
-                });
-            }
-            if (searchData.length < 1) $("#suggestProduct").html(" ");
-        });
-
-        function testClick(product) {
-            // console.log(product);
-            if ($(`#product_${product.id}`).length > 0) {
-                return;
-            }
-            var htmldata = `<tr id="product_${product.id}">
-						<input type="hidden" name="product_id[]"  class="form-control product_id"  value="${product.id}">
-
-						<td class="productimgname">
-
-						<a href="javascript:void(0);">${product.name}</a>-<a href="javascript:void(0);">${product.code}</a>
-					   </td>
-
-                        <td >${product.current_stock}</td>
-
-						<td>
-						<input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;"
-                            min="1" max="${product.current_stock}"
-                        >
-						</td>
-
-                        <input type="hidden" name="purchase_price[]" class="purchase_price" value="${product.price}" style="width:100px;">
-
-                        <td class="price_td" mrp="${product.price}" retail="${product.retail_price}" purchase="${product.purchase_price}" wholesale="${product.wholesale_price}">
-                            <input type="number" name="price[]" class="form-control price"  placeholder="price" value="${product.price}" style="width:100px;"
-                                onkeyup="$(this).next().val('').trigger('change');"
-                            >
-
-
-                            <select name="price_type[]" class="link" onchange="updatePriceTypePrice(this)">
-                                <option value="">Custom price</option>
-                                <option value="mrp" selected>MRP price - ${product.price}</option>
-                                <option value="retail">Retail price - ${product.retail_price}</option>
-                                <option value="wholesale">Wholesale price - ${product.wholesale_price}</option>
-                            </select>
-                        </td>
-						<td class="text-end" >
-                            <input type="number" class="inline_total" readonly name="sub_total[]" value="${product.price}" style="width:100px;">
-                        </td>
-						<td>
-							<a class="remove"><img src="{{ asset('backend') }}/img/icons/delete.svg" alt="svg"></a>
-						</td>
-					</tr>`;
-
-            $(".table .tbody").append(htmldata);
-
-            updateGrandTotal();
-            $('#search').val('');
-            $("#suggestProduct").html('');
-            // subTotalAmount();
-        }
-
-        //delete row
-        $("table tbody").delegate(".remove", "click", function() {
-            $(this).parent().parent().remove();
-        });
-
-        function updatePriceTypePrice(element) {
-            //  console.log($(element), element);
-            var td = $(element).parent();
-            var priceType = $(element).val();
-            var price = td.attr(priceType);
-            if (priceType == "mrp") {
-                td.find(".price").val(price);
-            } else if (priceType == "retail") {
-                td.find(".price").val(price);
-            } else if (priceType == "purchase") {
-                td.find(".price").val(price);
-            } else if (priceType == "wholesale") {
-                td.find(".price").val(price);
-            }
+        // Open the current page in a new tab
+        let newTab = window.open(window.location.href, '_blank');
+        // Ensure the new tab opened successfully
+        if (newTab) {
+            // Delay refocusing on the original tab
             setTimeout(() => {
-                totalOfSubTotal(td.parent());
-            }, 100);
+                window.focus();
+            }, 500);
+        } else {
+            alert("Popup blocked! Please allow pop-ups for this site.");
         }
+    }
 
-        // when qty will increment or drecrement.. it will be call automically
-        function totalOfSubTotal(tr) {
-            var qty = tr.find(".quantity").val();
-            var price = tr.find(".price").val();
-            var totalAmount = price * qty;
-            tr.find(".inline_total").val(totalAmount);
-            updateGrandTotal();
-        }
-        $("table tbody").delegate(".quantity", "keyup", function() {
-            var tr = $(this).parent().parent();
-            totalOfSubTotal(tr);
-        });
+    function updateDueDate() {
+        alert('Please wait...');
+    }
 
-        $("table tbody").delegate(".price", "keyup", function() {
-            var tr = $(this).parent().parent();
-            totalOfSubTotal(tr);
-        });
-
-        function updateGrandTotal() {
-            var total = 0;
-            $(".inline_total").each(function(i, e) {
-                var inlineTotal = parseFloat($(this).val()) || 0;
-                total += inlineTotal;
+    $("body").on("keyup", "#search", function() {
+        let searchData = $("#search").val();
+        let token = "{{ csrf_token() }}";
+        var route = "{{ route('find.products.purchase') }}";
+        if (searchData.length > 0) {
+            $.ajax({
+                type: "GET",
+                url: route,
+                data: {
+                    search: searchData,
+                    // _token:token,
+                },
+                success: function(result) {
+                    $("#suggestProduct").html(result);
+                },
             });
-            total += parseFloat($(".other_cost").val()) || 0;
-            total -= parseFloat($(".discount").val()) || 0;
-            var formattedTotal = total.toFixed(0);
-            $(".total_val").val(formattedTotal);
         }
+        if (searchData.length < 1) $("#suggestProduct").html(" ");
+    });
 
-        // Discount calculation
-        $("#discount_val").keyup(function() {
-            updateGrandTotal();
+    function testClick(product) {
+        // console.log(product);
+        if ($(`#product_${product.id}`).length > 0) {
+            return;
+        }
+        var htmldata = `<tr id="product_${product.id}">
+                    <input type="hidden" name="product_id[]"  class="form-control product_id"  value="${product.id}">
 
-            var total = parseFloat($(".total_val").val()) || 0;
-            var discount = parseFloat($(this).val()) || 0;
-            var t = total - discount;
+                    <td class="productimgname">
 
-            $(".total_val").val(t.toFixed(0)); // Updating total value
-            $("#discount").text(discount.toFixed(0)); // Displaying discount value
+                    <a href="javascript:void(0);">${product.name}</a>-<a href="javascript:void(0);">${product.code}</a>
+                    </td>
+
+                    <td >${product.current_stock}</td>
+
+                    <td>
+                    <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;"
+                        min="1" max="${product.current_stock}"
+                    >
+                    </td>
+
+                    <input type="hidden" name="purchase_price[]" class="purchase_price" value="${product.price}" style="width:100px;">
+
+                    <td class="price_td" mrp="${product.price}" retail="${product.retail_price}" purchase="${product.purchase_price}" wholesale="${product.wholesale_price}">
+                        <input type="number" name="price[]" class="form-control price"  placeholder="price" value="${product.price}" style="width:100px;"
+                            onkeyup="$(this).next().val('').trigger('change');"
+                        >
+
+
+                        <select name="price_type[]" class="link" onchange="updatePriceTypePrice(this)">
+                            <option value="">Custom price</option>
+                            <option value="mrp" selected>MRP price - ${product.price}</option>
+                            <option value="retail">Retail price - ${product.retail_price}</option>
+                            <option value="wholesale">Wholesale price - ${product.wholesale_price}</option>
+                        </select>
+                    </td>
+                    <td class="text-end" >
+                        <input type="number" class="inline_total" readonly name="sub_total[]" value="${product.price}" style="width:100px;">
+                    </td>
+                    <td>
+                        <a class="remove"><img src="{{ asset('backend') }}/img/icons/delete.svg" alt="svg"></a>
+                    </td>
+                </tr>`;
+
+        $(".table .tbody").append(htmldata);
+
+        updateGrandTotal();
+        $('#search').val('');
+        $("#suggestProduct").html('');
+        // subTotalAmount();
+    }
+
+    //delete row
+    $("table tbody").delegate(".remove", "click", function() {
+        $(this).parent().parent().remove();
+    });
+
+    function updatePriceTypePrice(element) {
+        //  console.log($(element), element);
+        var td = $(element).parent();
+        var priceType = $(element).val();
+        var price = td.attr(priceType);
+        if (priceType == "mrp") {
+            td.find(".price").val(price);
+        } else if (priceType == "retail") {
+            td.find(".price").val(price);
+        } else if (priceType == "purchase") {
+            td.find(".price").val(price);
+        } else if (priceType == "wholesale") {
+            td.find(".price").val(price);
+        }
+        setTimeout(() => {
+            totalOfSubTotal(td.parent());
+        }, 100);
+    }
+
+    // when qty will increment or drecrement.. it will be call automically
+    function totalOfSubTotal(tr) {
+        var qty = tr.find(".quantity").val();
+        var price = tr.find(".price").val();
+        var totalAmount = price * qty;
+        tr.find(".inline_total").val(totalAmount);
+        updateGrandTotal();
+    }
+    $("table tbody").delegate(".quantity", "keyup", function() {
+        var tr = $(this).parent().parent();
+        totalOfSubTotal(tr);
+    });
+
+    $("table tbody").delegate(".price", "keyup", function() {
+        var tr = $(this).parent().parent();
+        totalOfSubTotal(tr);
+    });
+
+    function updateGrandTotal() {
+        var total = 0;
+        $(".inline_total").each(function(i, e) {
+            var inlineTotal = parseFloat($(this).val()) || 0;
+            total += inlineTotal;
         });
+        total += parseFloat($(".other_cost").val()) || 0;
+        total -= parseFloat($(".discount").val()) || 0;
+        var formattedTotal = total.toFixed(0);
+        $(".total_val").val(formattedTotal);
+    }
 
-        // Paid amount and due amount calculation
-        $(".paid_amount").keyup(function() {
-            var paidAmount = $(this).val();
-            var grandTotal = $(".total_val").val();
-            var dueAmount = grandTotal - paidAmount;
+    // Discount calculation
+    $("#discount_val").keyup(function() {
+        updateGrandTotal();
 
-            $(".due_amount").val(dueAmount);
+        var total = parseFloat($(".total_val").val()) || 0;
+        var discount = parseFloat($(this).val()) || 0;
+        var t = total - discount;
 
-            // if (dueAmount != 0) {
-            //     $('#due_date').attr('required', true);
-            // } else {
-                $('#due_date').attr('required', false);
-            // }
-        });
+        $(".total_val").val(t.toFixed(0)); // Updating total value
+        $("#discount").text(discount.toFixed(0)); // Displaying discount value
+    });
 
-        $(document).ready(function() {
-            $(".select2").select2();
-        });
+    // Paid amount and due amount calculation
+    $(".paid_amount").keyup(function() {
+        updatePaidAmount();
+    });
+    function updatePaidAmount () {
+        let paidAmount = $('.paid_amount').val()
+        let partials = $('.additional-payment-methods .list [_index]');
+        let grandTotal = $(".total_val").val();
+        if(partials.length > 0) {
+            paidAmount = 0
+            partials.each(function() {
+                paidAmount += parseInt($(this).find('input.amount').val());
+            });
+            $('.paid_amount').val(paidAmount);
+        }
+        let dueAmount = grandTotal - paidAmount;
+        $(".due_amount").val(dueAmount);
+        $('#due_date').attr('required', false);
+    }
+
+    $(document).ready(function() {
+        $(".select2").select2();
+    });
 </script>
 <script>
     var quotationData = @json(session('quotation_to_sale'));
-        $(document).ready(function() {
+    $(document).ready(function() {
 
-            if (quotationData) {
-                console.log("Quotation Details:", quotationData);
-                customer_id = quotationData.customer_id;
-                $('#selectpicker').val(customer_id).change();
+        if (quotationData) {
+            console.log("Quotation Details:", quotationData);
+            customer_id = quotationData.customer_id;
+            $('#selectpicker').val(customer_id).change();
 
-                items = quotationData.items;
+            items = quotationData.items;
 
-                items.forEach(element => {
-                    testClick(element.product);
-                });
+            items.forEach(element => {
+                testClick(element.product);
+            });
+        }
+
+        $('#due_amount').on('blur', function() {
+            let dueAmount = parseFloat($(this).val().trim()); // Get value & convert to number
+
+            if (!isNaN(dueAmount) && dueAmount != 0) {
+                $('#due_date').attr('required', true); // Add required if amount > 0
+            } else {
+                $('#due_date').removeAttr('required'); // Remove required if amount is 0 or empty
+            }
+        });
+
+        $('#quotation_add').on('click', function() {
+            let isValid = true;
+
+            // Loop through all required fields and check if they are empty
+            $('#sale_store').find('[required]').each(function() {
+                if ($(this).val().trim() === '') {
+                    $(this).addClass('is-invalid'); // Add a red border or error styling
+                    isValid = false;
+                } else {
+                    $(this).removeClass('is-invalid'); // Remove error styling if fixed
+                }
+            });
+
+            // If any required field is empty, prevent form submission
+            if (!isValid) {
+                alert("Please fill all required fields before submitting.");
+                return;
             }
 
-            $('#due_amount').on('blur', function() {
-                let dueAmount = parseFloat($(this).val().trim()); // Get value & convert to number
+            // Collect form data
+            let formData = $('#sale_store').serialize(); // Converts form fields into a query string
 
-                if (!isNaN(dueAmount) && dueAmount != 0) {
-                    $('#due_date').attr('required', true); // Add required if amount > 0
-                } else {
-                    $('#due_date').removeAttr('required'); // Remove required if amount is 0 or empty
+            // Send AJAX request
+            $.ajax({
+                url: "{{ route('quotation.store') }}", // Ensure this route exists
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    alert("Form submitted successfully!");
+                    console.log(response);
+
+                    // Redirect to quotation.index route
+                    window.location.href = "{{ route('quotation.index') }}";
+                },
+                error: function(xhr, status, error) {
+                    alert("Error submitting form.");
+                    console.error(xhr.responseText);
                 }
             });
-
-            $('#quotation_add').on('click', function() {
-                let isValid = true;
-
-                // Loop through all required fields and check if they are empty
-                $('#sale_store').find('[required]').each(function() {
-                    if ($(this).val().trim() === '') {
-                        $(this).addClass('is-invalid'); // Add a red border or error styling
-                        isValid = false;
-                    } else {
-                        $(this).removeClass('is-invalid'); // Remove error styling if fixed
-                    }
-                });
-
-                // If any required field is empty, prevent form submission
-                if (!isValid) {
-                    alert("Please fill all required fields before submitting.");
-                    return;
-                }
-
-                // Collect form data
-                let formData = $('#sale_store').serialize(); // Converts form fields into a query string
-
-                // Send AJAX request
-                $.ajax({
-                    url: "{{ route('quotation.store') }}", // Ensure this route exists
-                    type: "POST",
-                    data: formData,
-                    success: function(response) {
-                        alert("Form submitted successfully!");
-                        console.log(response);
-
-                        // Redirect to quotation.index route
-                        window.location.href = "{{ route('quotation.index') }}";
-                    },
-                    error: function(xhr, status, error) {
-                        alert("Error submitting form.");
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-
         });
 
-        $(document).ready(function() {
-            // $("#suggestProduct").click(function() {
-            // 	$("#suggestProduct").slideUp(1400);
-            //     $(this).next('#suggestProduct').slideDown('slide', {direction: 'left'}, 1400);
-            //   ;
-            // });
+    });
 
-            // $("#suggestProduct").click(function() {
-            // 	$("#suggestProduct").slideDown(1400);
-            //     $(this).next('#suggestProduct').slideUp('slide', {direction: 'left'}, 1400);
-            //   ;
-            // });
+    $(document).ready(function() {
+        // $("#suggestProduct").click(function() {
+        // 	$("#suggestProduct").slideUp(1400);
+        //     $(this).next('#suggestProduct').slideDown('slide', {direction: 'left'}, 1400);
+        //   ;
+        // });
 
-            showCustomerDue();
-        });
+        // $("#suggestProduct").click(function() {
+        // 	$("#suggestProduct").slideDown(1400);
+        //     $(this).next('#suggestProduct').slideUp('slide', {direction: 'left'}, 1400);
+        //   ;
+        // });
+
+        showCustomerDue();
+    });
+    function addPaymentMethod(element = null) {
+        console.log(element);
+        if(element) {
+            let index = $(element).attr('index');
+            $('.additional-payment-methods [_index="' + index + '"]').remove();
+        } else {
+            let len = parseInt(Math.random() * 1000000);
+            $('.additional-payment-methods .list').append(`
+                <div class="row" _index="${len}">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <select class="select2 form-control" name="payments[${len}][method]" required="true">
+                                <option value="cash">Cash</option>
+                                <option value="card">Card</option>
+                                <option value="bank">Bank</option>
+                                <option value="bkash">bKash</option>
+                                <option value="rocket">Rocket</option>
+                                <option value="nagad">Nagad</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Payment Amount</label>
+                            <input type="number" class="form-control amount" name="payments[${len}][amount]" required min="0"
+                                onkeyup="updatePaidAmount()"
+                            >
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="">&nbsp;</label>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="addPaymentMethod(this)" index="${len}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `)
+        }
+        // check existing inputs
+        let len = $('.additional-payment-methods .list [_index]').length;
+        $('.paid_amount').attr('readonly', len > 0);
+        if(len > 0) $('.first-method').hide();
+        else $('.first-method').show();
+
+        // let index = $(element).attr('index');
+        // let html = `<div class="row list" _index="${index}">
+        // </div>`;
+        // $('.additional-payment-methods').append(html);
+    }
 </script>
 
 <script>

@@ -144,9 +144,6 @@ class SaleReturnController extends Controller
                 'sub_total' => $request->sub_total[$i],
                 'price' => $request->price[$i],
             ]);
-
-            Product::where('id', $request->product_id[$i])
-                ->increment('quantity', $request->quantity[$i]);
         }
 
         return redirect()->route('saleReturn.index')->with('success', 'Sale Return successfully Updated');

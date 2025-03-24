@@ -39,7 +39,9 @@ class SaleController extends Controller
             }])
             ->get();
         $warehouse = Warehouse::latest()->get();
-        $sales = Sale::with('user')->latest()->get();
+        $sales = Sale::with('user')
+            ->latest()
+            ->get();
 
         return view('admin.sales.index', compact('product', 'customer', 'warehouse', 'sales'));
     }
@@ -80,28 +82,23 @@ class SaleController extends Controller
             'search' => 'required',
         ]);
 
-        // $products = Product::where("name", "LIKE", "%" .$request->search. "%")->take(5)->get();
         $authId = Auth::user()->id;
-
         $products = Product::where(function ($query) use ($request) {
-            $query->where('product_code', 'LIKE', '%'.$request->search.'%');
-        })->orWhere(function ($query) use ($request) {
-            $query->where('name', 'LIKE', '%'.$request->search.'%')
-                ->where('quantity', '>', 0);
-        })
+                $query->where('product_code', 'LIKE', '%'.$request->search.'%');
+            })->orWhere(function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%'.$request->search.'%')
+                    ->where('quantity', '>', 0);
+            })
             ->where('status', 'active')
-            ->take(5)->get();
+            ->take(5)
+            ->get();
 
         return view('admin.search-product', compact('products'));
     }
 
     public function store(Request $request)
     {
-
-        // return $request->all();
-
         // dd($request->all());
-
         // $request->validate([
         // 'customer_id'=> 'required|max:255',
         // 'warehouse_id'=> 'required|max:255',
@@ -144,26 +141,31 @@ class SaleController extends Controller
             'barcode_url' => $barCodeSavePath,
             'note' => $request->note,
         ]);
-
-        DB::table('cutomer_payments')->insert([
-            'user_id' => Auth::id(),
-            'sale_id' => $sale->id,
-            'reference' => $sale->ref_code,
-            'date' => $request->date,
-            'paying_amount' => $sale->paid_amount,
-            'down_payment' => $sale->paid_amount,
-            'created_at' => Carbon::now(),
-        ]);
-
-        // foreach ($request->inputs as $input) {
-        //     Order_emi::create([
-        //         'user_id' => Auth::id(),
-        //         'order_id' => $sale->id,
-        //         'emi_amount' => $input['emi_amount'],
-        //         'emi_date' => $input['emi_date'],
-        //     ]);
-        // }
-
+        if(count($request->payments ?: []) == 0) {
+            CutomerPayment::create([
+                'user_id' => Auth::id(),
+                'sale_id' => $sale->id,
+                'reference' => $sale->ref_code,
+                'date' => $request->date,
+                'paying_amount' => $request->paid_amount,
+                'down_payment' => $request->paid_amount,
+                'payment_method' => $request->payment_type,
+                'created_at' => Carbon::now(),
+            ]);
+        }else {
+            foreach($request->payments as $payment) {
+                CutomerPayment::create([
+                    'user_id' => Auth::id(),
+                    'sale_id' => $sale->id,
+                    'reference' => $sale->ref_code,
+                    'date' => $request->date,
+                    'paying_amount' => $payment['amount'],
+                    'down_payment' => $payment['amount'],
+                    'payment_method' => $payment['method'],
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+        }
         $pcount = count($request->product_id);
 
         for ($i = 0; $i < $pcount; $i++) {
@@ -176,8 +178,6 @@ class SaleController extends Controller
                 'sub_total' => $request->sub_total[$i],
                 'price_type' => $request->price_type[$i] ?? '',
             ]);
-
-            Product::where('id', $request->product_id[$i])->decrement('quantity', $request->quantity[$i]);
         }
         if ($sale->customer->phone) {
             SMSApi::send($sale->customer->phone, 'A Sale of '.$sale->grandtotal.' is recorded. Ref: '.$sale->ref_code);

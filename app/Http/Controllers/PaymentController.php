@@ -27,32 +27,42 @@ class PaymentController extends Controller
     public function duePay(Request $request)
     {
         // dd($request->all());
-        $request->validate([
+        $data = $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'payment_date' => 'required',
             'next_due_date' => 'nullable',
-            'sale_id' => 'required|exists:sales,id',
             'paying_amount' => 'required',
             'payment_method' => 'required',
         ]);
-        $pay = CutomerPayment::create([
-            'user_id' => Auth::id(),
-            'date' => $request->payment_date,
-            'paying_amount' => $request->paying_amount,
-            'customer_id' => $request->customer_id,
-            'payment_method' => $request->payment_method,
-            'note' => $request->note,
-            'created_at' => Carbon::now(),
-        ]);
-        $affected_sales = [];
-        $amount = $request->paying_amount;
-        $next_due_date = $request->next_due_date;
-        $sale = Sale::find($request->sale_id);
-        $sale->update([
-            'due_amount' => $sale->due_amount - $amount,
-            'next_due_date' => $next_due_date ? $next_due_date : null,
-        ]);
+        $dueSaleList = Sale::where('customer_id', $request->customer_id)
+            ->orderBy('created_at', 'asc')
+            ->where('due_amount', '>', 0)->get();
+        $totalDues = $dueSaleList->sum('due_amount');
 
+        // Distribute payment across sales
+        $remainingPayment = $data['paying_amount'];
+        $payments = [];
+
+        foreach ($dueSaleList as $sale) {
+            $paymentForThisSale = min($remainingPayment, $sale->due_amount);
+            if ($remainingPayment <= 0 || $paymentForThisSale <= 0) break;
+
+            // Create payment record
+            $payments[] = CutomerPayment::create([
+                'user_id' => Auth::id(),
+                'date' => $data['payment_date'],
+                'paying_amount' => $paymentForThisSale,
+                'customer_id' => $data['customer_id'],
+                'payment_method' => $data['payment_method'],
+                'note' => $data['note'] ?? '',
+                'created_at' => Carbon::now(),
+            ]);
+
+            // Update sale due amount
+            $sale->due_amount -= $paymentForThisSale;
+            $sale->save();
+            $remainingPayment -= $paymentForThisSale;
+        }
         // dd($pay, $affected_sales);
         return redirect()->back()->with('success', 'Payment successful');
 
@@ -83,12 +93,6 @@ class PaymentController extends Controller
          'paying_amount' => $request->paying_amount,
          'created_at' => Carbon::now(),
      ]);
-
-     // Sale::where('ref_code',$request->reference)->decrement('due_amount',$request->paying_amount)->increment('paid_amount',$request->paying_amount);
-
-     Purchase::where('purchase_code',$request->reference)->decrement('due_amount',$request->paying_amount);
-     Purchase::where('purchase_code',$request->reference)->increment('paid_amount',$request->paying_amount);
-
      return redirect()->back();
 
      }

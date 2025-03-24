@@ -39,20 +39,18 @@
                                 @include('common.customer')
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="form-group">
                                 <label>Select Sale</label>
                                 <select class="form-control select2" name="sale_id" required>
                                     <option value="">Select Sale</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input type="number" class="form-control" name="paying_amount" required min="0" max="0"
-                                    onkeyup="$('input[name=next_due]').val(this.getAttribute('max') - this.value);"
-                                >
+                                <input type="number" class="form-control" name="paying_amount" required min="0">
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -113,17 +111,26 @@
         $('select[name="customer_id"]').on('change', function () {
             var customer_id = $(this).val();
             let sales = allSales.filter(sale => sale.customer_id == customer_id && sale.due_amount > 0);
-            $('select[name="sale_id"]').empty();
-            $('select[name="sale_id"]').append('<option value="">Select Sale</option>');
-            sales.forEach(sale => {
-                $('select[name="sale_id"]').append('<option value="' + sale.id + '">' + sale.ref_code + '</option>');
-            });
-            $('select[name="sale_id"]').select2();
-            $('select[name="sale_id"]').on('change', function () {
-                var sale_id = $(this).val();
-                let sale = allSales.find(sale => sale.id == sale_id);
-                $('input[name="next_due"]').val(sale.due_amount);
-                $('input[name="paying_amount"]').attr('max', sale.due_amount);
+            let totalDue = sales.reduce((acc, sale) => acc + sale.due_amount, 0);
+            $('[name="paying_amount"]').val(totalDue);
+            $('[name="paying_amount"]').attr('max', totalDue);
+            $('[name="next_due"]').val(0);
+
+            // $('select[name="sale_id"]').empty();
+            // $('select[name="sale_id"]').append('<option value="">Select Sale</option>');
+            // sales.forEach(sale => {
+            //     $('select[name="sale_id"]').append('<option value="' + sale.id + '">' + sale.ref_code + '</option>');
+            // });
+            // $('select[name="sale_id"]').select2();
+            // $('select[name="sale_id"]').on('change', function () {
+            //     var sale_id = $(this).val();
+            //     let sale = allSales.find(sale => sale.id == sale_id);
+            //     $('input[name="next_due"]').val(sale.due_amount);
+            //     $('input[name="paying_amount"]').attr('max', sale.due_amount);
+            // });
+            $('input[name="paying_amount"]').on('keyup', function () {
+                let nextDue = $(this).attr('max') - $(this).val();
+                $('input[name="next_due"]').val(nextDue);
             });
         });
     });
