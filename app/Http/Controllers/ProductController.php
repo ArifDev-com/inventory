@@ -57,6 +57,18 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products', 'category', 'subCategory', 'brand', 'unit', 'warehouses', 'suppliers'));
     }
 
+    public function lowStock()
+    {
+        $products = Product::with('user')
+            ->where('status', 'active')
+            ->get()
+            ->filter(function ($product) {
+                return $product->current_stock <= $product->alert_quantity;
+            });
+
+        return view('admin.products.low-stock', compact('products'));
+    }
+
     public function indexShowroom()
     {
         $category = Category::latest()->get();

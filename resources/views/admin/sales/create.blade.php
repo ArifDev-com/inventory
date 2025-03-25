@@ -320,7 +320,7 @@
 
                     <td>
                     <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;"
-                        min="1" max="${product.current_stock}"
+                        min="1"
                     >
                     </td>
 

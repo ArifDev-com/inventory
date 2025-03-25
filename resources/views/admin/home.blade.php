@@ -160,7 +160,7 @@
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-lg-4 col-xl-4">
-                            <a class="card dash-widget" style="border-top: 3px solid #fd3622;" href="{{ route('sale.index') }}">
+                            <a class="card dash-widget" style="border-top: 3px solid #fd3622;" href="{{ route('product.low.stock') }}">
                                 <div class="card-body">
                                     <span class="dash-widget-icon">
                                         <i class="fa fa-exclamation-triangle"></i>

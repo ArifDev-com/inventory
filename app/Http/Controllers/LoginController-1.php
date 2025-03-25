@@ -9,6 +9,7 @@ class LoginController extends Controller
 {
     public function loginForm()
     {
+        
         return view('admin.signin');
     }
     public function login(Request $request)
@@ -18,12 +19,12 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
- 
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/admin/dashboard');
         }
- 
+
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);

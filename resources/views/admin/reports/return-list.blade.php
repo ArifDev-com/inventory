@@ -84,7 +84,11 @@
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $saleReturn->id }}</td>
                                 <td>{{ $saleReturn->date }}</td>
-                                <td>{{ $saleReturn->customer->name }}</td>
+                                <td>
+                                    <a href="{{ route('customer.show', ['customer' => $saleReturn->customer->id]) }}">
+                                        {{ $saleReturn->customer->name }}
+                                    </a>
+                                </td>
 
                                 {{-- <td>
                                     <span class="badges bg-lightgreen">{{ $saleReturn->payment_type }}</span>

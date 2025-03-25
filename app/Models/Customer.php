@@ -47,7 +47,7 @@ class Customer extends Model
     }
 
     public function payments(){
-        return $this->hasMany(CutomerPayment::class);
+        return $this->hasMany(CutomerPayment::class, 'customer_id');
     }
 
     function creator() {

@@ -6,6 +6,10 @@
         @yield('name') Page
     </title>
     <style type="text/css">
+        html, body {
+            margin-top: 5px;
+            padding-top: 5px;
+        }
         * {
             font-size: 10pt;
         }
@@ -79,7 +83,7 @@
 
         footer {
             position: fixed;
-            bottom: -40px;
+            bottom: -20px;
             left: 0px;
             right: 0px;
         }
@@ -96,7 +100,7 @@
                     <img src="{{'data:image/png;base64,' . base64_encode(file_get_contents(public_path('logo2.png')))}}"
                         alt="image" style="width: 160px; height: auto;">
                 </td>
-                <td style="text-align: left; padding-left: 200px; ">
+                <td style="text-align: left; padding-left: 180px; ">
                     <div style="display: inline-block; width: 450px; font-size: 11px;">
                         73, Kawran Bazar (1st Floor), Tejgaon, Dhaka-1215, Bangladesh
                         <br>
@@ -116,7 +120,7 @@
             position: absolute;
             text-align: center;
             width: 100%;
-            top: 90px;
+            top: 95px;
             ">
         <div style="
                 background: #807e7f;

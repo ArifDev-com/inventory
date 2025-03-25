@@ -18,31 +18,47 @@
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
+                <form action="{{ route('due.payments') }}" method="get">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="date" name="start_date" class="form-control" value="{{ request('start_date') ?: now()->format('Y-m-d') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" name="end_date" class="form-control" value="{{ request('end_date') ?: now()->format('Y-m-d') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" onclick="this.form.target='';" class="btn btn-primary">Search</button>
+                            <button type="submit" onclick="this.form.target='_blank';" name="print" value="1" class="btn btn-info">
+                                <i class="fa fa-print"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                </form>
                 <div class="table-responsive">
                     <table class="table" id="myTable">
                         <thead>
                             <tr>
                                 <th>Sl</th>
+                                <th>Inv. No.</th>
+                                <th>Payment Date</th>
                                 <th>Customer</th>
                                 <th>Phone</th>
-                                <th>Payment Date</th>
-                                <th>Inv. No.</th>
+                                <th>Address</th>
                                 <th>Paid Amount</th>
-                                <th>Payment Method</th>
                                 <th>Due Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(App\Models\CutomerPayment::where('is_due_pay', true)->get() as $key => $payment)
+                            @foreach($payments as $key => $payment)
                             <tr>
                                 <td>{{ $key+1 }}</td>
+                                <td>{{ $payment->sale?->ref_code }}</td>
+                                <td>{{ $payment->date }}</td>
                                 <td>{{ $payment->customer?->name }}</td>
                                 <td>{{ $payment->customer?->phone }}</td>
-                                <td>{{ $payment->date }}</td>
-                                <td>{{ $payment->sale?->ref_code }}</td>
+                                <td>{{ $payment->customer?->address }}</td>
                                 <td>{{ $payment->paying_amount }}</td>
-                                <td>{{ $payment->payment_method }}</td>
                                 <td>{{ $payment->due_date }}</td>
                                 <td>
                                     <a href="{{ route('due.payment.print', $payment->id) }}" class="btn btn-info btn-sm">

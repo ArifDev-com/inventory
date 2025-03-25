@@ -162,10 +162,63 @@
                                     <td>{{ $sale->paid_amount }}</td>
                                     <td>{{ $sale->due_amount }}</td>
                                     <td>
-                                        {{ $sale->payment_type }}
+                                        <div style="width: 100px;">
+                                            {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
+                                        </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('sale.pdf', $sale->id) }}" class="btn btn-primary">View</a>
+                                        <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                            aria-expanded="true">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="{{ route('sale.pdf', [$sale->id]) }}" class="dropdown-item"><img
+                                                        src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
+                                                        alt="img">Print Invoice</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('sale.challan.pdf', [$sale->id]) }}"
+                                                    class="dropdown-item">
+                                                    <img
+                                                        src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
+                                                        alt="img">
+                                                    Print Challan
+                                                </a>
+                                            </li>
+
+                                            {{-- @if(!$sale->returns->count()) --}}
+                                            <li>
+                                                <a href="{{ route('sale.return', [$sale->id]) }}"
+                                                    class="dropdown-item">
+                                                    Sale Return
+                                                </a>
+                                            </li>
+                                            {{-- @else
+                                            <li>
+                                                <a href="{{ route('sale.return.pdf', [$sale->returns->first()->id]) }}"
+                                                    class="dropdown-item">
+                                                    Sale Return</a>
+                                            </li> --}}
+                                            {{-- @endif --}}
+                                            @if(!$sale->cancel_requested && auth()->user()->id == $sale->user_id)   
+                                            <li>
+                                                <a href="{{ route('sale.cancel', [$sale->id]) }}"
+                                                    onclick="return confirm('Are you sure you want to request cancellation?')"
+                                                    class="dropdown-item confirm-text">
+                                                    Request Cancellation</a>
+                                            </li>
+                                            @endif
+                                            @if (auth()->user()->user_role == 'admin')
+                                            <li>
+                                                <a href="{{ route('sale.delete', $sale->id) }}"
+                                                    onclick="return confirm('Are you sure you want to delete this sale?')"
+                                                    class="dropdown-item confirm-text"><img
+                                                        src="{{ asset('backend') }}/img/icons/delete1.svg" class="me-2"
+                                                        alt="img">{{ trans('table.sale.delete sale') }}</a>
+                                            </li>
+                                            @endif
+                                        </ul>
                                     </td>
                                 </tr>
                                 @endforeach

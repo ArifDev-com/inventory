@@ -67,9 +67,9 @@ class PurchaseController extends Controller
             $query->where('name', 'LIKE', '%'.$request->search.'%');
         })
         ->get()
-        ->filter(function ($p) {
-            return $p->current_stock > 0;
-        })
+        // ->filter(function ($p) {
+        //     return $p->current_stock > 0;
+        // })
         ->take(5);
 
         // return response()->json($products);

@@ -196,6 +196,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Product here
     Route::get('/products/inactive', [App\Http\Controllers\ProductController::class, 'inactive'])->name('product.inactive');
     Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
+    Route::get('/products/low-stock', [App\Http\Controllers\ProductController::class, 'lowStock'])->name('product.low.stock');
 
     Route::get('/products/showroom', [App\Http\Controllers\ProductController::class, 'indexShowroom'])->name('product.showroom');
 

@@ -9,7 +9,7 @@
             <div>
                 <table>
                     <tr>
-                        <td>
+                        <td style="width: 30%">
                             Cell No.
                         </td>
                         <td>
@@ -18,23 +18,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Customer
+                        <td style="width: 30%">
+                            Customer Name
                         </td>
                         <td>
                             : {{ $sale->customer?->name }}
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Company
+                        <td style="width: 30%">
+                            Company Name
                         </td>
                         <td>
                             : {{ $sale->customer?->company_name }}
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td style="width: 30%">
                             Address
                         </td>
                         <td>
@@ -83,7 +83,6 @@
     <tbody>
         <tr style="height: 20pt;">
             <td style="
-                        width: 43pt;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -100,7 +99,6 @@
                 <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">SL No.</p>
             </td>
             <td style="
-                        width: 56pt;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -117,7 +115,7 @@
                 <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Item Code</p>
             </td>
             <td style="
-                        width: 218pt;
+                        width: 30%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -134,7 +132,6 @@
                 <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Particulars</p>
             </td>
             <td style="
-                        width: 46pt;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -151,7 +148,6 @@
                 <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit</p>
             </td>
             <td style="
-                        width: 70pt;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -169,7 +165,7 @@
                 </p>
             </td>
             <td style="
-                        width: 100pt;
+                        width: 20%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -312,7 +308,7 @@
 
 @if ($sale->note)
 <h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
-    Note: <br>{{ $sale->note }}
+    Note: {{ $sale->note }}
 </h1>
 @endif
 @endsection

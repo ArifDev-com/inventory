@@ -23,7 +23,9 @@
                             trans('sidebar.product.menu_name') }} </span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{{ route('product.index') }}"
-                                class="{{ request()->is('admin/products') ? 'active' : '' }}">All Product List</a></li>
+                                class="{{ request()->is('admin/products') ? 'active' : '' }}">Active Product List</a></li>
+                        <li><a href="{{ route('product.low.stock') }}"
+                                class="{{ request()->is('admin/products/low-stock') ? 'active' : '' }}">Low Stock Product List</a></li>
                         <li><a href="{{ route('product.inactive') }}"
                                 class="{{ request()->is('admin/products/inactive') ? 'active' : '' }}">Inactive Product List</a></li>
                         @if(auth()->user()->user_role == 'admin')
@@ -152,7 +154,7 @@
                 </li> --}}
                 <li class="submenu ">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/customer/due/pay') ? 'active' : '' }}"><img
+                        class="{{ (request()->is('admin/customer/due/pay') || request()->is('admin/customer/due/list') || request()->is('admin/customer/due/pay/list/customers')) ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/users1.svg" alt="img"><span>Due Payment</span> <span
                             class="menu-arrow"></span></a>
                     <ul>
@@ -160,7 +162,7 @@
                             class="{{ request()->is('admin/customer/due/pay') ? 'active' : '' }}">Due Payment</a>
                         </li>
                         <li><a href="{{ route('due.list') }}"
-                            class="{{ request()->is('admin/customer/due/list') ? 'active' : '' }}">Due List</a>
+                            class="{{ request()->is('admin/customer/due/list/customers') ? 'active' : '' }}">Due List</a>
                         </li>
                         <li><a href="{{ route('due.payments') }}"
                             class="{{ request()->is('admin/customer/due/pay/list') ? 'active' : '' }}">Due Payment List</a>

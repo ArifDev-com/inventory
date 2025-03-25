@@ -15,6 +15,11 @@
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
+                <a href="{{ route('due.list', ['print' => 1]) }}"
+                    target="_blank"
+                    class="btn btn-info btn-sm">
+                    <i class="fa fa-print"></i> Print Due List
+                </a>
                 <div class="table-responsive">
                     <table class="table" id="myTable">
                         <thead>
@@ -22,7 +27,9 @@
                                 <th>Sl</th>
                                 <th>Customer</th>
                                 <th>Phone</th>
+                                <th>Address</th>
                                 <th>Total Due</th>
+                                <th>Due Payment Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -30,9 +37,17 @@
                             @foreach($customers as $key => $customer)
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>{{ $customer->name }}</td>
+                                <td>
+                                    <a href="{{ route('customer.show', ['customer' => $customer->id]) }}">
+                                        {{ $customer->name }}
+                                    </a>
+                                </td>
                                 <td>{{ $customer->phone }}</td>
+                                <td>{{ $customer->address }}</td>
                                 <td>{{ $customer->sales()->sum('due_amount') }}</td>
+                                <td>
+                                    {{ $customer->sales()->where('due_amount', '>', 0)->max('due_date') }}
+                                </td>
                                 <td>
                                     <a href="{{ route('due.payment', ['customer' => $customer->id]) }}" class="btn btn-info btn-sm">
                                          Pay Due

@@ -119,9 +119,13 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td >{{ $sale->ref_code }}</td>
                                 <td>{{ $sale->date }}</td>
-                                <td>{{ $sale->customer?->name }}</td>
-                                <td >
-                                    <div style="width: 100px;">
+                                <td>
+                                    <a href="{{ route('customer.show', ['customer' => $sale->customer->id]) }}">
+                                        {{ $sale->customer?->name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <div style="width: 100px; word-wrap: break-word; overflow: hidden;">
                                         {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
                                     </div>
                                 </td>
@@ -155,13 +159,13 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ route('sale.pdf', [$sale->id]) }}" class="dropdown-item"><img
+                                            <a href="{{ route('sale.pdf', [$sale->id]) }}" class="dropdown-item" target="_blank"><img
                                                     src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
                                                     alt="img">Print Invoice</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('sale.challan.pdf', [$sale->id]) }}"
-                                                class="dropdown-item">
+                                                class="dropdown-item" target="_blank">
                                                 <img
                                                     src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
                                                     alt="img">
@@ -169,28 +173,6 @@
                                             </a>
                                         </li>
 
-                                        {{-- @if(!$sale->returns->count()) --}}
-                                        <li>
-                                            <a href="{{ route('sale.return', [$sale->id]) }}"
-                                                class="dropdown-item">
-                                                Sale Return
-                                            </a>
-                                        </li>
-                                        {{-- @else
-                                        <li>
-                                            <a href="{{ route('sale.return.pdf', [$sale->returns->first()->id]) }}"
-                                                class="dropdown-item">
-                                                Sale Return</a>
-                                        </li> --}}
-                                        {{-- @endif --}}
-                                        @if(!$sale->cancel_requested && auth()->user()->id == $sale->user_id)
-                                        <li>
-                                            <a href="{{ route('sale.cancel', [$sale->id]) }}"
-                                                onclick="return confirm('Are you sure you want to request cancellation?')"
-                                                class="dropdown-item confirm-text">
-                                                Request Cancellation</a>
-                                        </li>
-                                        @endif
                                         @if (auth()->user()->user_role == 'admin')
                                         <li>
                                             <a href="{{ route('sale.delete', $sale->id) }}"

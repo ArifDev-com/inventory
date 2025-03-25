@@ -76,20 +76,39 @@ class PaymentController extends Controller
 
     }
 
-    public function dueList(){
-        return view('admin.customer.dueList', [
-            'customers' => Customer::query()
+    public function dueList(Request $request) {
+        $customers = Customer::query()
                 ->whereHas('sales', function($query){
                     $query->where('due_amount', '>', 0);
                 })
-                ->with('sales')
-                ->get(),
+                ->orderBy('name', 'asc')
+                
+                ->with('sales');
+        if($request->print){
+            $pdf = Pdf::loadView('admin.customer.dueListPrint', [
+                'customers' => $customers->get(),
+            ]);
+            return $pdf->stream('Due list.pdf', ['Attachment' => false]);
+        }
+        return view('admin.customer.dueList', [
+            'customers' => $customers->get(),
         ]);
     }
 
-    public function duePayList(){
+    public function duePayList(Request $request) {
+        $payments = CutomerPayment::latest();
+        $payments->whereDate('created_at', '>=', $request->start_date ?: Carbon::now());
+        $payments->whereDate('created_at', '<=', $request->end_date ?: Carbon::now());
+        if($request->print){
+            $pdf = Pdf::loadView('admin.customer.duePaymentListPrint', [
+                'payments' => $payments->get(),
+                'start_date' => Carbon::parse($request->start_date ?? now()->format('Y-m-d'))->format('d-m-Y'),
+                'end_date' => Carbon::parse($request->end_date ?? now()->format('Y-m-d'))->format('d-m-Y'),
+            ]);
+            return $pdf->stream('due payment.pdf', ['Attachment' => false]);
+        }
         return view('admin.customer.duePaymentList', [
-            'payments' => CutomerPayment::latest()->get(),
+            'payments' => $payments->get(),
         ]);
     }
     public function duePayPrint($payment){
