@@ -408,7 +408,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/customer/sup/pay', [App\Http\Controllers\PaymentController::class, 'supPay'])->name('sup.payment');
 
     // Sale here
-
     Route::get('/sales', [App\Http\Controllers\SaleController::class, 'index'])->name('sale.index');
 
     Route::get('/sale/create', [App\Http\Controllers\SaleController::class, 'create'])->name('sale.create');
@@ -612,4 +611,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/reports/datewise-sale', [App\Http\Controllers\ReportController::class, 'datewiseSaleReport'])->name('reports.datewise-sale');
     Route::get('/reports/product-wise', [App\Http\Controllers\ReportController::class, 'productWiseReport'])->name('reports.product-wise');
     Route::get('/reports/product-list', [App\Http\Controllers\ReportController::class, 'productList'])->name('reports.product-list');
+
+    Route::get('export/{type}', [App\Http\Controllers\ExportController::class, 'export'])->name('export');
 });

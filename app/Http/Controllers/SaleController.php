@@ -301,15 +301,8 @@ class SaleController extends Controller
                 $query->select('id', 'name');
             },
         ])->first();
-        // return view('admin.sales.print-page', compact('sale', 'randomNumber'));
         $pdf = Pdf::loadView('admin.sales.print-page', compact('sale', 'randomNumber'));
-
         return $pdf->stream('invoice.pdf', ['Attachment' => false]);
-
-        // return $pdf->download('codesolutionstuff.pdf');
-        // return view('admin.sales.print-page');
-
-        // return view('admin.sales.print-page',compact('sale','randomNumber'));
     }
 
     public function generateChallanPDF(Sale $sale)

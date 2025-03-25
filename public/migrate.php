@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Cache;
 
 define('LARAVEL_START', microtime(true));
 require __DIR__.'/../vendor/autoload.php';
-require __DIR__ . '/../app/app.php';
 
 // Set up Laravel application
 $app = require_once __DIR__.'/../bootstrap/app.php';

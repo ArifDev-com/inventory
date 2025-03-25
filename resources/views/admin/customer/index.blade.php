@@ -438,11 +438,7 @@ $(document).ready(function () {
 
 <script>
     let table = new DataTable('#myTable', {
-        pageLength:50,
-        dom: 'Bfrtip',
-        buttons: [
-            'csv', 'excel', 'pdf', 'print'
-        ]
+        pageLength: 50,
     });
 </script>
 
