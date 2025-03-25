@@ -111,14 +111,17 @@ class SaleReturnController extends Controller
         $pcount = count($request->product_id);
 
         for ($i = 0; $i < $pcount; $i++) {
-            $saleReturn->items()->create([
-                'product_id' => $request->product_id[$i],
-                'quantity' => $request->quantity[$i],
-                'sub_total' => $request->sub_total[$i],
-                'price' => $request->price[$i],
-            ]);
+            if($request->quantity[$i])
+            {
+                $saleReturn->items()->create([
+                    'product_id' => $request->product_id[$i],
+                    'quantity' => $request->quantity[$i],
+                    'sub_total' => $request->sub_total[$i],
+                    'price' => $request->price[$i],
+                ]);
+            }
         }
-
+        session()->flash('return_id', $saleReturn->id);
         return redirect()->route('sale.index')->with('success', 'Sale return request sent');
     }
 
@@ -171,7 +174,7 @@ class SaleReturnController extends Controller
     public function generatePDF(SaleReturn $saleReturn)
     {
         $pdf = Pdf::loadView('admin.saleReturn.print-page', compact('saleReturn'));
-        return $pdf->stream('invoice.pdf', ['Attachment' => false]);
+        return $pdf->stream('Sale Return.pdf', ['Attachment' => false]);
 
     }
 

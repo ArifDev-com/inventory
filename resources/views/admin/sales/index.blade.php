@@ -222,7 +222,9 @@
             ]
         });
 
-        @if (session()->has('sale_id'))
+        @if (session()->has('return_id'))
+            window.open("{{ route('sale.return.pdf', [session()->get('return_id')]) }}", '_blank');
+        @elseif (session()->has('sale_id'))
             window.open("{{ route('sale.pdf', [session()->get('sale_id')]) }}", '_blank');
             window.open("{{ route('sale.challan.pdf', [session()->get('sale_id')]) }}", '_blank');
         @endif

@@ -18,6 +18,7 @@ use App\Models\SubCategory;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\Warehouse;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -495,6 +496,10 @@ class ReportController extends Controller
                 return $q->whereBetween('date', [$fromDate, $toDate]);
             })
             ->get();
+        if($request->print) {
+            $pdf = Pdf::loadView('admin.reports.return-list-print', compact('saleReturns', 'fromDate', 'toDate'));
+            return $pdf->stream('Return List.pdf');
+        }
         return view('admin.reports.return-list', compact('saleReturns', 'fromDate', 'toDate'));
     }
 }

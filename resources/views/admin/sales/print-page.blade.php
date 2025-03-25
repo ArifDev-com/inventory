@@ -325,12 +325,12 @@
             </tr>
         </tbody>
     </table>
-    <h1 style="padding: 4px; padding-left: 10pt; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($sale->grandtotal) }} Taka Only.</h1>
+    <h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($sale->grandtotal) }} Taka Only.</h1>
 
     @if ($sale->note)
-        <p>
-            Note: {{ $sale->note }}
-        </p>
+        <h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
+            Note: <br>{{ $sale->note }}
+        </h1>
     @endif
 @endsection
 @section('footer')

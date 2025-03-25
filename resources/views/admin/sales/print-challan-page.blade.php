@@ -3,35 +3,82 @@
 CHALLAN
 @endsection
 @section('content')
-        <table>
-            <tr>
-                <td>
-                    <div>
-                        <p style="padding-left: 8pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Cell No. : {{ $sale->customer?->phone }}</p>
-
-                        <p style="padding-left: 9pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Customer Name : <span class="s1">{{ $sale->customer?->name }} </p>
-                        <p style="padding-left: 9pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Company Name : <span class="s1"> {{ $sale->customer->company_name }} </span></p>
-                        <p style="padding-bottom: 1pt; padding-left: 10pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Address : <span class="s1">{{ $sale->customer->address }}</span></p>
-                    </div>
-                </td>
-                <td style="">
-                    <div style="
-                        display: inline-block;
-                        padding-left: 300px
-                    ">
-                        <div>
-                            Bill No. : {{ $sale->ref_code }}
-                        </div>
-                        <div>
-                            Date: {{ \Carbon\Carbon::parse($sale->date)->format('d-m-Y') }}
-                        </div>
-                        <div>
-                            Time: {{ $sale->created_at->format('H:i') }}
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <table>
+        <tr>
+            <td>
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                Cell No.
+                            </td>
+                            <td>
+                                :
+                                {{ $sale->customer?->phone }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Customer
+                            </td>
+                            <td>
+                                : {{ $sale->customer?->name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Company
+                            </td>
+                            <td>
+                                : {{ $sale->customer?->company_name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Address
+                            </td>
+                            <td>
+                                : {{ $sale->customer?->address }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td style="text-align: right">
+                <div style="
+                    display: inline-block;
+                    text-align: left;
+                ">
+                    <table>
+                        <tr>
+                            <td>
+                                Bill No
+                            </td>
+                            <td>
+                                : {{ $sale->ref_code }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Date
+                            </td>
+                            <td>
+                                : {{ \Carbon\Carbon::parse($sale->date)->format('d-m-Y') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Time
+                            </td>
+                            <td>
+                                : {{ $sale->created_at->format('H:i') }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
         <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 20px" cellspacing="0" class="border">
             <tbody>
                 <tr style="height: 20pt;">
@@ -176,13 +223,12 @@ CHALLAN
                 </tr>
             </tbody>
         </table>
-        <h1 style="padding-top: 1pt; padding-left: 10pt; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($sale->grandtotal) }} Taka Only</h1>
-
+        <h1 style="padding-top: 1pt; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($sale->grandtotal) }} Taka Only</h1>
 
         @if ($sale->note)
-        <p>
-            Note: {{ $sale->note }}
-        </p>
+        <h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
+            Note: <br>{{ $sale->note }}
+        </h1>
         @endif
 @endsection
 @section('footer')

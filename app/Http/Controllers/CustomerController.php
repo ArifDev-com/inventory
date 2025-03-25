@@ -6,6 +6,7 @@ use App\Actions\SMSApi;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Customer;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -218,5 +219,12 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         return view('admin.customer.show', compact('customer'));
+    }
+
+    public function print()
+    {
+        $customers = Customer::latest()->get();
+        $pdf = Pdf::loadView('admin.customer.print', compact('customers'));
+        return $pdf->stream('Customer List.pdf', ['Attachment' => false]);
     }
 }

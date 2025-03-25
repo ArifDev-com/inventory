@@ -88,6 +88,10 @@
                         </div>
                     </div>
                 </div> --}}
+                <a href="{{ route('customer.print') }}" class="dt-button buttons-print" tabindex="0" aria-controls="example" type="button">
+                    <i class="fa fa-print"></i>
+                    <span>Print</span>
+                </a>
                 <!-- /Filter -->
                 <div class="table-responsive">
                     <table class="table" id="myTable">

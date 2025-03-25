@@ -383,7 +383,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Customer here
 
     Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
-
+    Route::get('/customer/print', [App\Http\Controllers\CustomerController::class, 'print'])->name('customer.print');
     Route::get('/customer/create', [App\Http\Controllers\CustomerController::class, 'create'])->name('customer.create');
     Route::get('/customer/{customer}', [App\Http\Controllers\CustomerController::class, 'show'])->name('customer.show');
 
@@ -576,6 +576,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/reports', [App\Http\Controllers\ReportController::class, 'report'])->name('total.report');
     Route::get('/return-reports', [App\Http\Controllers\ReportController::class, 'returnReport'])->name('return.report');
+    Route::get('/return-reports/print', [App\Http\Controllers\ReportController::class, 'returnReportPrint'])->name('return.report.print');
     Route::get('/profit/loss', [App\Http\Controllers\ReportController::class, 'profitLoss'])->name('profit.loss');
 
     // Payment Gateway Process Open Link

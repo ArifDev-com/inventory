@@ -113,7 +113,22 @@
                                     {{ $saleReturn->user?->name }}
                                 </td>
                                 <td>
-                                    <a href="{{ route('sale.return.pdf', $saleReturn->id) }}" class="btn btn-primary">View</a>
+                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                        aria-expanded="true">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ route('sale.return.pdf', $saleReturn->id) }}"  class="dropdown-item">
+                                                Print Return
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('sale.return.pdf', $saleReturn->id) }}"  class="dropdown-item">
+                                                View
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                          @endforeach
@@ -127,14 +142,9 @@
 </div>
 
 <script>
-
     $('#example').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'csv', 'excel', 'pdf' , 'print'
-        ]
-    } );
 
+    } );
 </script>
 
 

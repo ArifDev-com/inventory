@@ -82,7 +82,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <img src="{{'data:image/png;base64,' . base64_encode(file_get_contents(public_path('logo.png')))}}" alt="image" style="width: 160px; height: auto;">
+                        <img src="{{'data:image/png;base64,' . base64_encode(file_get_contents(public_path('logo2.png')))}}" alt="image" style="width: 160px; height: auto;">
                     </td>
                     <td style="text-align: left; padding-left: 200px; ">
                         <div style="display: inline-block; width: 450px; font-size: 11px;">
@@ -115,6 +115,7 @@
                 font-family: Arial, sans-serif;
                 display: inline-block;
                 padding: 10px;
+                text-transform: uppercase;
                 ">
                 @yield('name')
             </div>
