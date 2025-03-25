@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Sale;
 use App\Models\Purchase;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,9 +70,21 @@ class PaymentController extends Controller
             $sale->save();
             $remainingPayment -= $paymentForThisSale;
         }
+        session()->flash('payments', json_encode($payments));
         // dd($pay, $affected_sales);
         return redirect()->back()->with('success', 'Payment successful');
 
+    }
+
+    public function dueList(){
+        return view('admin.customer.dueList', [
+            'customers' => Customer::query()
+                ->whereHas('sales', function($query){
+                    $query->where('due_amount', '>', 0);
+                })
+                ->with('sales')
+                ->get(),
+        ]);
     }
 
     public function duePayList(){
@@ -79,7 +92,11 @@ class PaymentController extends Controller
             'payments' => CutomerPayment::latest()->get(),
         ]);
     }
-
+    public function duePayPrint($payment){
+        return Pdf::loadView('admin.customer.duePaymentPrint', [
+            'payment' => CutomerPayment::find($payment),
+        ])->stream('due payment.pdf', ['Attachment' => false]);
+    }
 
     public function supPay(Request $request){
 

@@ -29,6 +29,7 @@
                 {{ session('success') }}
             </div>
         @endif
+
         <div class="card">
             <div class="card-body">
                 <form action="{{ route('due.payment') }}" method="post">
@@ -116,24 +117,31 @@
             $('[name="paying_amount"]').attr('max', totalDue);
             $('[name="next_due"]').val(0);
 
-            // $('select[name="sale_id"]').empty();
-            // $('select[name="sale_id"]').append('<option value="">Select Sale</option>');
-            // sales.forEach(sale => {
-            //     $('select[name="sale_id"]').append('<option value="' + sale.id + '">' + sale.ref_code + '</option>');
-            // });
-            // $('select[name="sale_id"]').select2();
-            // $('select[name="sale_id"]').on('change', function () {
-            //     var sale_id = $(this).val();
-            //     let sale = allSales.find(sale => sale.id == sale_id);
-            //     $('input[name="next_due"]').val(sale.due_amount);
-            //     $('input[name="paying_amount"]').attr('max', sale.due_amount);
-            // });
             $('input[name="paying_amount"]').on('keyup', function () {
                 let nextDue = $(this).attr('max') - $(this).val();
                 $('input[name="next_due"]').val(nextDue);
             });
+
         });
+
+        @if(request()->customer)
+        setTimeout(() => {
+            // check url param customer
+            let customer = new URLSearchParams(window.location.search).get('customer');
+            if (customer) {
+                $('select[name="customer_id"]').html('');
+                $('select[name="customer_id"]').append('<option value="' + customer + '">{{  App\Models\Customer::find(request()->customer)?->name }}</option>');
+                $('select[name="customer_id"]').val(customer).trigger('change');
+            }
+        }, 500);
+        @endif
     });
+    @if(session('payments'))
+        let payments = @json(json_decode(session('payments'), true));
+        payments.forEach(payment => {
+            window.open("{{ route('due.payment.print', ':id') }}".replace(':id', payment.id), '_blank');
+        });
+    @endif
 </script>
 
 @endsection

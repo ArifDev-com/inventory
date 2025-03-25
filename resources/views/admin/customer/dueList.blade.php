@@ -9,10 +9,7 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Due Payment List</h4>
-            </div>
-            <div class="page-btn">
-                <a href="{{ route('due.payment') }}" class="btn btn-added"><img src="{{asset('backend')}}/img/icons/plus.svg" alt="img">Add Due Payment</a>
+                <h4>Due List</h4>
             </div>
         </div>
         <!-- /product list -->
@@ -25,28 +22,20 @@
                                 <th>Sl</th>
                                 <th>Customer</th>
                                 <th>Phone</th>
-                                <th>Payment Date</th>
-                                <th>Inv. No.</th>
-                                <th>Paid Amount</th>
-                                <th>Payment Method</th>
-                                <th>Due Date</th>
+                                <th>Total Due</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(App\Models\CutomerPayment::where('is_due_pay', true)->get() as $key => $payment)
+                            @foreach($customers as $key => $customer)
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>{{ $payment->customer?->name }}</td>
-                                <td>{{ $payment->customer?->phone }}</td>
-                                <td>{{ $payment->date }}</td>
-                                <td>{{ $payment->sale?->ref_code }}</td>
-                                <td>{{ $payment->paying_amount }}</td>
-                                <td>{{ $payment->payment_method }}</td>
-                                <td>{{ $payment->due_date }}</td>
+                                <td>{{ $customer->name }}</td>
+                                <td>{{ $customer->phone }}</td>
+                                <td>{{ $customer->sales()->sum('due_amount') }}</td>
                                 <td>
-                                    <a href="{{ route('due.payment.print', $payment->id) }}" class="btn btn-info btn-sm">
-                                        <i class="fa fa-print"></i> Print
+                                    <a href="{{ route('due.payment', ['customer' => $customer->id]) }}" class="btn btn-info btn-sm">
+                                         Pay Due
                                     </a>
                                 </td>
                             </tr>

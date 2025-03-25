@@ -159,6 +159,9 @@
                         <li><a href="{{ route('due.payment') }}"
                             class="{{ request()->is('admin/customer/due/pay') ? 'active' : '' }}">Due Payment</a>
                         </li>
+                        <li><a href="{{ route('due.list') }}"
+                            class="{{ request()->is('admin/customer/due/list') ? 'active' : '' }}">Due List</a>
+                        </li>
                         <li><a href="{{ route('due.payments') }}"
                             class="{{ request()->is('admin/customer/due/pay/list') ? 'active' : '' }}">Due Payment List</a>
                         </li>
