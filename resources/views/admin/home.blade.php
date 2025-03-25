@@ -281,7 +281,9 @@
                                 <td class="" style="font-size: 13px;">{{ $sale->ref_code }}</td>
                                 <td>{{ $sale->date }}</td>
                                 <td>{{ $sale->customer?->name }}</td>
-                                <td><span class="badges bg-lightgreen">{{ $sale->payment_type }}</span></td>
+                                <td>
+                                    {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
+                                </td>
                                 <td>{{ $sale->grandtotal }}</td>
                                 <td>{{ $sale->discount }}</td>
                                 <td>{{ $sale->paid_amount }}</td>
@@ -372,9 +374,9 @@
                                 <td>{{ $saleReturn->customer?->name }}</td>
                                 <td><span class="badges bg-lightgreen">{{ $saleReturn->payment_type }}</span></td>
                                 <td>{{ $saleReturn->grandtotal }}</td>
-                                <td>{{ $sale->paid_amount }}</td>
+                                <td>{{ $saleReturn->paid_amount }}</td>
                                 <td>
-                                    {{ $sale->user?->first_name . ' ' . $sale->user?->last_name }}
+                                    {{ $saleReturn->user?->name }}
                                 </td>
                                 <td class="text-center">
                                     <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"

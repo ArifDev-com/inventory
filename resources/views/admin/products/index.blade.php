@@ -152,8 +152,8 @@
                                 <th>Wholesale Price</th>
                                 <th>Retail Price</th>
                                 <th>{{ trans('table.thead.price') }}</th>
-                                <th>{{ trans('table.thead.created by') }}</th>
                                 <th>{{ trans('table.thead.action') }}</th>
+                                <th>{{ trans('table.thead.created by') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -189,7 +189,6 @@
                                 <td>{{ $product->retail_price }}</td>
                                 <td>{{ $product->price }}</td>
 
-                                <td>{{ $product->user?->first_name . ' ' . $product->user?->last_name }}</td>
                                 <td>
                                     <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
                                         aria-expanded="true">
@@ -229,6 +228,7 @@
                                         @endif
                                     </ul>
                                 </td>
+                                <td>{{ $product->user?->name }}</td>
                             </tr>
                             @endforeach
                         </tbody>

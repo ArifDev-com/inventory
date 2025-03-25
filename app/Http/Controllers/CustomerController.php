@@ -214,4 +214,9 @@ class CustomerController extends Controller
         }
         return redirect()->back()->with('success', 'SMS Sent Successfully');
     }
+
+    public function show(Customer $customer)
+    {
+        return view('admin.customer.show', compact('customer'));
+    }
 }

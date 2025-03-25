@@ -16,7 +16,7 @@
   <link rel="icon" type="image/x-icon" href="#">
 
   {{-- <title>{{ $shopDocument->name }}</title> --}}
-  <title>Inventory Management Software</title>
+  <title>Capital Lift Ltd.</title>
 
   <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
     integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
@@ -161,7 +161,7 @@
 <body>
   <br><br>
   <center>
-    <h1 style="color: white; margin-bottom: 10px;"><span class="">Register - Inventory Management Software!</span></h1>
+    <h1 style="color: white; margin-bottom: 10px;"><span class="">Register - Capital Lift Ltd.!</span></h1>
   </center>
 
 
@@ -220,8 +220,7 @@
     <input type="submit" value="Register" />
 
     <center>
-      <a href="{{ route('login')}}"
-        style="color: #666;); font-size: 16px; font-weight: bold;">Login</a>
+      <a href="{{ route('login')}}" style="color: #666;); font-size: 16px; font-weight: bold;">Login</a>
     </center>
     <br>
 
@@ -229,8 +228,7 @@
 
     <div class="links">
       <br>
-      <center> Developed By: <a href="#" target="_blank"
-          style="color: red; font-size: 18px;">
+      <center> Developed By: <a href="#" target="_blank" style="color: red; font-size: 18px;">
           Capital Lift Ltd.</a></center>
 
     </div>

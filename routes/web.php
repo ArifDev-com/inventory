@@ -385,6 +385,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
 
     Route::get('/customer/create', [App\Http\Controllers\CustomerController::class, 'create'])->name('customer.create');
+    Route::get('/customer/{customer}', [App\Http\Controllers\CustomerController::class, 'show'])->name('customer.show');
 
     Route::post('/customer/store', [App\Http\Controllers\CustomerController::class, 'store'])->name('customer.store');
     // store customer with modal
@@ -418,7 +419,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/sale/edit/{sale_id}', [App\Http\Controllers\SaleController::class, 'edit'])->name('sale.edit');
 
     Route::get('/sale/return/list', [App\Http\Controllers\SaleReturnController::class, 'index'])->name('sale.return.list');
-    Route::get('/sale/return/{sale}', [App\Http\Controllers\SaleReturnController::class, 'create'])->name('sale.return');
+    Route::get('/sale/return/{sale?}', [App\Http\Controllers\SaleReturnController::class, 'create'])
+        ->name('sale.return');
     Route::post('/sale/return/store', [App\Http\Controllers\SaleReturnController::class, 'store'])->name('sale.return.store');
     Route::get('/sale/return/pdf/{saleReturn}', [App\Http\Controllers\SaleReturnController::class, 'generatePDF'])->name('sale.return.pdf');
     Route::get('/sale/return/delete/{saleReturn}', [App\Http\Controllers\SaleReturnController::class, 'destroy'])->name('sale.return.delete');

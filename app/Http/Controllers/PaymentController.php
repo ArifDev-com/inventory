@@ -55,11 +55,17 @@ class PaymentController extends Controller
                 'customer_id' => $data['customer_id'],
                 'payment_method' => $data['payment_method'],
                 'note' => $data['note'] ?? '',
+                'is_due_pay' => true,
                 'created_at' => Carbon::now(),
+                'sale_id' => $sale->id,
+                'due_date' => $sale->due_date,
             ]);
 
             // Update sale due amount
             $sale->due_amount -= $paymentForThisSale;
+            if($data['next_due_date'] ?? null){
+                $sale->due_date = $data['next_due_date'];
+            }
             $sale->save();
             $remainingPayment -= $paymentForThisSale;
         }

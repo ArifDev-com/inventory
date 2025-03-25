@@ -22,11 +22,23 @@ class SaleReturnController extends Controller
         return view('admin.saleReturn.index', compact('customer', 'warehouse', 'saleReturns'));
     }
 
-    public function create(Sale $sale)
+    public function create($id = null)
     {
+        if($id == null)
+        {
+            $request = request();
+            if($request->sale_id)
+            {
+                return redirect()->route('sale.return', $request->sale_id);
+            }
+            return view('admin.saleReturn.select-sale', [
+                'sales' => Sale::latest()->get()
+            ]);
+        }
         $customers = Customer::latest()->get();
         $warehouses = Warehouse::latest()->get();
         $saleReturn = SaleReturn::latest()->get();
+        $sale = Sale::findOrFail($id);
 
         return view('admin.saleReturn.create', compact('customers', 'warehouses', 'saleReturn', 'sale'));
     }

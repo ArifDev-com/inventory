@@ -98,19 +98,14 @@
                     <table class="table" id="example">
                         <thead>
                             <tr>
-                                <th>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
-                                </th>
                                 <th>Sl</th>
-                                <th>Invoice No</th>
+                                <th>Inv. No.</th>
                                 <th>{{ trans('table.sale.date') }}</th>
                                 <th>{{ trans('table.sale.customer') }}</th>
-                                <th>{{ trans('table.sale.payment') }}</th>
+                                <th  style="width: 40px !important;">P. Type</th>
                                 <th>{{ trans('table.sale.total') }}</th>
-                                <th>Discount</th>
+                                {{-- <th>Discount</th>
+                                <th>Other Cost</th> --}}
                                 <th>{{ trans('table.sale.paid') }}</th>
                                 <th>{{ trans('table.sale.due') }}</th>
                                 <th>Due Date</th>
@@ -121,21 +116,18 @@
                         <tbody>
                             @foreach ($sales as $key => $sale)
                             <tr>
-                                <td>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
-                                </td>
                                 <td>{{ $key + 1 }}</td>
-                                <td class="" style="font-size: 13px;">{{ $sale->ref_code }}</td>
+                                <td >{{ $sale->ref_code }}</td>
                                 <td>{{ $sale->date }}</td>
                                 <td>{{ $sale->customer?->name }}</td>
-                                <td>
-                                    {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
+                                <td >
+                                    <div style="width: 100px;">
+                                        {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
+                                    </div>
                                 </td>
                                 <td>{{ $sale->grandtotal }}</td>
-                                <td>{{ $sale->discount }}</td>
+                                {{-- <td>{{ $sale->discount }}</td>
+                                <td>{{ $sale->other_cost }}</td> --}}
                                 <td>{{ $sale->paid_amount }}</td>
                                 <td class="text-red">{{ $sale->due_amount }}</td>
                                 <td>{{ $sale->due_date }}</td>

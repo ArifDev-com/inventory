@@ -85,7 +85,7 @@
                                     </td>
                                     <td>
                                         <input type="number" class="form-control"
-                                            value="{{ old('quantity.' . $product->id, '0') }}"
+                                            value="{{ old('quantity.' . $product->id) }}"
                                             name="quantity[{{ $product->id }}]" style="width: 100px;" >
                                     </td>
                                     <td>{{ $product->current_stock }}</td>

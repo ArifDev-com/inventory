@@ -16,7 +16,7 @@
   <link rel="icon" type="image/x-icon" href="#">
 
   {{-- <title>{{ $shopDocument->name }}</title> --}}
-  <title>Inventory Management Software</title>
+  <title>Capital Lift Ltd.</title>
 
   <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
     integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
@@ -161,7 +161,7 @@
 <body>
   <br><br>
   <center>
-    <h1 style="color: white; margin-bottom: 10px;"><span class="">Inventory Management Software!</span></h1>
+    <h1 style="color: white; margin-bottom: 10px;"><span class="">Capital Lift Ltd.!</span></h1>
   </center>
 
 

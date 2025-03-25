@@ -68,11 +68,14 @@
                         return {
                             results: data.data.map(item => ({
                                 id: item.id,
-                                text: item.name,
+                                text: item.name + ' - ' + (item.phone || ''),
                             })),
                         };
                     },
                 },
+            });
+            $(document).on('select2:open', () => {
+                document.querySelector('.select2-search__field').focus();
             });
         }, 500);
     });

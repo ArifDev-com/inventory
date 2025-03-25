@@ -41,6 +41,15 @@ class Customer extends Model
     public function cus_items(){
         return $this->hasManyThrough(SaleItem::class, Sale::class);
     }
+
+    public function returns(){
+        return $this->hasMany(SaleReturn::class);
+    }
+
+    public function payments(){
+        return $this->hasMany(CutomerPayment::class);
+    }
+
     function creator() {
         return $this->belongsTo(User::class, 'user_id');
     }

@@ -16,7 +16,7 @@
   <link rel="icon" type="image/x-icon" href="#">
 
   {{-- <title>{{ $shopDocument->name }}</title> --}}
-  <title>Inventory Management Software</title>
+  <title>Capital Lift Ltd.</title>
 
 
 

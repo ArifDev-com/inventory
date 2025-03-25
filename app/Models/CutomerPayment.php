@@ -10,6 +10,7 @@ class CutomerPayment extends Model
     use HasFactory;
     protected $casts = [
         'affected_sales' => 'array',
+        'is_due_pay' => 'boolean',
     ];
     protected $fillable=[
        'date',
@@ -22,5 +23,14 @@ class CutomerPayment extends Model
         'payment_method',
         'note',
         'affected_sales',
+        'is_due_pay',
+        'due_date',
     ];
+
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
+    public function sale(){
+        return $this->belongsTo(Sale::class);
+    }
 }

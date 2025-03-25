@@ -298,7 +298,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'quantity' => 'required|array',
-            'quantity.*' => 'required|integer',
+            'quantity.*' => 'nullable|integer',
         ], [
             'quantity.required' => 'The quantity field is required.',
             'quantity.*.required' => 'The quantity field is required.',
@@ -306,7 +306,7 @@ class ProductController extends Controller
         ]);
 
         foreach ($request->quantity as $productId => $quantity) {
-            if($quantity == 0) {
+            if($quantity == 0 && !is_numeric($quantity)) {
                 continue;
             }
             $product = Product::find($productId);

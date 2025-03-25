@@ -69,9 +69,10 @@
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
-                                        <th>Net Unit Price(৳) </th>
-                                        <th>Stock</th>
-                                        <th>QTY </th>
+                                        <th>Sale QTY</th>
+                                        <th>Sale Price</th>
+                                        <th>Avail. QTY </th>
+                                        <th>Returning QTY </th>
                                         <th class="text-end">Subtotal (৳) </th>
                                         <th>Action</th>
                                     </tr>
@@ -84,16 +85,29 @@
                                         <td class="">
                                             <a href="javascript:void(0);">{{ $item->product->name }}</a>
                                         </td>
+                                        <td>{{ $item->quantity }}</td>
                                         <td class="price">
                                             {{ $item->price }}
                                             <input type="hidden" name="price[]" value="{{ $item->price }}">
                                         </td>
-                                        <td>{{ $item->product->current_stock }}</td>
+                                        @php
+                                            $avail_qty = $item->quantity - (
+                                                \App\Models\SaleReturnItem::whereHas('saleReturn', function($query) use ($sale){
+                                                    $query->where('sale_id', $sale->id);
+                                                })
+                                                    ->where('product_id', $item->product_id)
+                                                    ->sum('quantity')
+                                            );
+                                        @endphp
+                                        <td>
+                                            {{ $avail_qty }}
+                                        </td>
                                         <td>
                                             <input type="number" name="quantity[]" class="form-control quantity"
-                                                placeholder="quantity" value="{{ $item->quantity }}"
+                                                placeholder="quantity" value="0"
                                                 style="width:100px;"
                                                 onchange="updateSubTotal($(this).parent().parent())"
+                                                max="{{ $avail_qty }}"
                                                 >
                                         </td>
                                         <td class="text-end">
@@ -203,18 +217,17 @@
         // tr.find('.inline_total').val(inlineSubTotal);
         tr.find('.inline_total').val(totalAmount);
         updateGrandTotal();
-    };
+    }
 
     function updateGrandTotal() {
         var total = 0;
         $('.inline_total').each(function(i, e) {
             var inlineTotal = $(this).val() - 0;
             total += inlineTotal;
-            // console.log(i);
-            // console.log(e);
         });
         var formattedTotal = total.toFixed(0); // Fixed a typo: 'num' should be 'total'
         $('.total_val').val(formattedTotal);
+        $('.paid_amount').val(formattedTotal);
         $('.return_amount').val(
             $('.return_amount').attr('sale_grandtotal') - formattedTotal
         );
