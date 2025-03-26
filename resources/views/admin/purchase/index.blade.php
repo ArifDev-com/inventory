@@ -22,9 +22,11 @@
                 <h6>Manage your purchases</h6>
             </div>
             <div class="page-btn">
+                @if(auth()->user()->user_role == 'superadmin')
                 <a href="{{ route('purchase.create') }}" class="btn btn-added">
                     <img src="{{asset('backend')}}/img/icons/plus.svg" alt="img">Add New Purchases
                 </a>
+                @endif
             </div>
         </div>
 
@@ -107,7 +109,7 @@
                 <div class="table-responsive">
                     <table class="table" id="example">
                         <thead>
-                            
+
                             <tr>
                                 <th>
                                     {{-- <label class="checkboxs">
@@ -119,7 +121,7 @@
                                 <th>Supplier Name</th>
                                 <th>Invocie No</th>
                                 <th>Date</th>
-                              
+
                                 <th>Grand Total</th>
                                 <th>Paid</th>
                                 <th>Due</th>
@@ -145,22 +147,25 @@
                                 </td>
                                 <td class="badge bg-danger text-white mt-2" style="font-size: 13px;">{{ $purchase->purchase_code }}</td>
                                 <td>{{ $purchase->date }}</td>
-                             
+
                                 <td>{{ $purchase->grandtotal }}</td>
                                 <td>{{ $purchase->paid_amount }}</td>
                                 <td>{{ $purchase->due_amount }}</td>
-                        
+
                                 <td class="text-center">
                                     <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu"  >
-                                        
-                                     
-                                        
+                                        @if(auth()->user()->user_role == 'superadmin')
                                         <li>
                                             <a href="{{ route('purchase.delete',$purchase->id) }}" class="dropdown-item confirm-text"><img src="{{asset('backend')}}/img/icons/delete1.svg" class="me-2" alt="img">Delete Purchase</a>
-                                        </li>								
+                                        </li>
+                                        @else
+                                        <li class="p-2">
+                                            <i class="fa fa-ban" aria-hidden="true"></i> No Action
+                                        </li>
+                                        @endif
                                     </ul>
                                 </td>
                             </tr>

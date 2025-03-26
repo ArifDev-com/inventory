@@ -22,7 +22,7 @@
                 <h6>{{ trans('sidebar.product.body.manage your products') }}</h6>
             </div>
             <div class="page-btn">
-                @if (auth()->user()->user_role == 'admin')
+                @if (auth()->user()->user_role == 'superadmin')
                 <a href="{{ route('product.create') }}" class="btn btn-added"><img
                         src="{{ asset('backend') }}/img/icons/plus.svg" alt="img" class="me-1">{{
                     trans('sidebar.product.body.add new product') }}</a>
@@ -146,7 +146,7 @@
                                 </th>
                                 <th>{{ trans('table.thead.product_name') }}</th>
                                 <th>Current Stock</th>
-                                @if(auth()->user()->user_role == 'admin')
+                                @if(auth()->user()->user_role == 'admin' || auth()->user()->user_role == 'superadmin')
                                 <th>{{ trans('table.thead.purchaseprice') }}</th>
                                 @endif
                                 <th>Wholesale Price</th>
@@ -182,7 +182,7 @@
                                             @endif
                                             style="font-size: 15px;">{{ $product->current_stock }}</span>
                                 </td>
-                                @if(auth()->user()->user_role == 'admin')
+                                @if(auth()->user()->user_role == 'admin' || auth()->user()->user_role == 'superadmin')
                                     <td>{{ $product->purchase_price }}</td>
                                 @endif
                                 <td>{{ $product->wholesale_price }}</td>
@@ -204,7 +204,7 @@
                                             </a>
                                         </li>
 
-                                        @if (auth()->user()->user_role == 'admin')
+                                        @if (auth()->user()->user_role == 'superadmin')
                                         <li>
                                             <a href="{{ route('product.edit', $product->id) }}"
                                                 class="dropdown-item"><img

@@ -45,6 +45,7 @@
                         <div class="form-group">
                             <label>Role</label>
                             <select class="select" name="user_role">
+                                <option {{ $user->user_role == 'superadmin' ? 'selected' : '' }} value="superadmin">Super Admin</option>
                                 <option {{ $user->user_role == 'admin' ? 'selected' : '' }} value="admin">Admin</option>
                                 <option {{ $user->user_role == 'salesman' ? 'selected' : '' }} value="salesman">Salesman</option>
                             </select>

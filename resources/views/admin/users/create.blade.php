@@ -55,6 +55,7 @@
                             <label>User Role</label>
                             <select class="select" name="user_role">
                                 <option>Select User Role</option>
+                                <option value="superadmin">Super Admin</option>
                                 <option value="admin">Admin</option>
                                 <option value="salesman">Salesman</option>
                             </select>

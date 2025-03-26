@@ -22,7 +22,7 @@
                 <h6>{{ trans('sidebar.product.body.manage your products') }}</h6>
             </div>
             <div class="page-btn">
-                @if (auth()->user()->user_role == 'admin')
+                @if (auth()->user()->user_role == 'superadmin')
                 <a href="{{ route('product.create') }}" class="btn btn-added"><img
                         src="{{ asset('backend') }}/img/icons/plus.svg" alt="img" class="me-1">{{
                     trans('sidebar.product.body.add new product') }}</a>
@@ -205,7 +205,7 @@
                                             </a>
                                         </li>
 
-                                        @if (auth()->user()->user_role == 'admin')
+                                        @if (auth()->user()->user_role == 'superadmin')
                                         <li>
                                             <a href="{{ route('product.edit', $product->id) }}"
                                                 class="dropdown-item"><img

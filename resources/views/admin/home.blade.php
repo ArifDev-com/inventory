@@ -239,7 +239,7 @@
         </div>
         @endif
 
-        @if($user->user_role == 'admin')
+        @if($user->user_role == 'superadmin')
             @if($cancellationRequests->count() > 0)
             <hr>
             <div>
