@@ -42,11 +42,17 @@
                                         value="{{ $toDate->format('d-m-Y') }}" name="to_date">
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-filters"><img
+                            <div class="col-lg-4 col-12">
+                                <div class="form-group w-100">
+                                    <button type="submit" class="btn btn-filters d-inline-block"
+                                        onclick="this.form.target='';"
+                                    >
+                                        <img
                                             src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img">
-
+                                    </button>
+                                    <button type="submit" class="btn btn-info" onclick="this.form.target='_blank';" name="print" value="1">
+                                        <i class="fa fa-print" aria-hidden="true"></i>
+                                        Print
                                     </button>
                                 </div>
                             </div>
@@ -90,10 +96,6 @@
 
 <script>
     $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf', 'print'
-            ]
         });
 </script>
 @endsection

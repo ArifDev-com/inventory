@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class CutomerPayment extends Model
 {
     use HasFactory;
+
     protected $casts = [
         'affected_sales' => 'array',
         'is_due_pay' => 'boolean',
     ];
-    protected $fillable=[
-       'date',
-       'reference',
+
+    protected $fillable = [
+        'date',
+        'reference',
         'user_id',
         'paying_amount',
         'sale_id',
@@ -27,10 +29,13 @@ class CutomerPayment extends Model
         'due_date',
     ];
 
-    public function customer(){
+    public function customer()
+    {
         return $this->belongsTo(Customer::class);
     }
-    public function sale(){
+
+    public function sale()
+    {
         return $this->belongsTo(Sale::class);
     }
 }

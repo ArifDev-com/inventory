@@ -12,6 +12,7 @@
         }
         * {
             font-size: 10pt;
+            font-family: Arial, sans-serif;
         }
 
         p {

@@ -113,9 +113,9 @@
             var customer_id = $(this).val();
             let sales = allSales.filter(sale => sale.customer_id == customer_id && sale.due_amount > 0);
             let totalDue = sales.reduce((acc, sale) => acc + sale.due_amount, 0);
-            $('[name="paying_amount"]').val(totalDue);
+            $('[name="paying_amount"]').val(0);
             $('[name="paying_amount"]').attr('max', totalDue);
-            $('[name="next_due"]').val(0);
+            $('[name="next_due"]').val(totalDue);
 
             $('input[name="paying_amount"]').on('keyup', function () {
                 let nextDue = $(this).attr('max') - $(this).val();

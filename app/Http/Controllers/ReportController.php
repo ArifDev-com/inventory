@@ -412,6 +412,10 @@ class ReportController extends Controller
                 ->sum('quantity');
             return $p;
         });
+        if($request->print) {
+            $pdf = Pdf::loadView('admin.reports.datewise-stock-report-print', compact('products', 'fromDate', 'toDate'));
+            return $pdf->stream('Datewise Stock Report.pdf');
+        }
         return view('admin.reports.datewise-stock-report', compact('products', 'fromDate', 'toDate'));
     }
 
@@ -419,23 +423,22 @@ class ReportController extends Controller
     {
         // $products = Product::latest()->get();
         $customers = Customer::latest()->get();
-        $fromDate = '';
-        $toDate = '';
-        $data = [];
-        if (isset($request->from_date) && ! empty($request->from_date)) {
-            $fromDate = Carbon::parse($request->from_date)->format('Y-m-d');
-            $toDate = Carbon::parse($request->to_date)->format('Y-m-d');
-            $sales = Sale::latest()
-                ->when($fromDate && $toDate != '', function ($q) use ($fromDate, $toDate) {
-                    return $q->whereBetween('date', [$fromDate, $toDate]);
-                })
-                ->when($request->customer_id, function ($q) use ($request) {
-                    return $q->where('customer_id', $request->customer_id);
-                })
-                ->get();
-        }
+        $fromDate = now()->startOfDay();
+        $toDate = now()->endOfDay();
 
-        return view('admin.reports.datewise-sale-report', compact('customers', 'data', 'fromDate', 'toDate'));
+        $sales = [];
+        if (($request->from_date) && ($request->to_date)) {
+            $fromDate = Carbon::parse($request->from_date)->startOfDay();
+            $toDate = Carbon::parse($request->to_date)->endOfDay();
+        }
+        $sales = Sale::latest()
+            ->whereBetween('created_at', [$fromDate, $toDate])
+            ->get();
+        if($request->print) {
+            $pdf = Pdf::loadView('admin.reports.datewise-sale-report-print', compact('customers', 'sales', 'fromDate', 'toDate'));
+            return $pdf->stream('Datewise Sale Report.pdf');
+        }
+        return view('admin.reports.datewise-sale-report', compact('customers', 'sales', 'fromDate', 'toDate'));
     }
 
     public function productWiseReport(Request $request)

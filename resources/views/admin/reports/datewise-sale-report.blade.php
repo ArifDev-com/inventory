@@ -27,45 +27,36 @@
         <div class="card">
             <div class="card-body">
                 <!-- /Filter -->
-                <form action="{{ route('reports.datewise-sale') }}" method="get">
-                    <div class="pb-0">
-                        <div class="row">
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" class="datetimepicker cal-icon" placeholder="Choose Start Date"
-                                        name="from_date" value="{{ request()->from_date }}">
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" class="datetimepicker cal-icon" placeholder="Choose End Date"
-                                        name="to_date" value="{{ request()->to_date }}">
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <select class="select" name="customer_id">
-                                        <option>Choose Customer</option>
-                                        @foreach ($customers ?? [] as $customer)
-                                        <option @if(request()->customer_id == $customer->id)
-                                            selected
-                                            @endif
-                                            value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-1 col-sm-6 col-12 ms-auto">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-filters ms-auto"><img
-                                            src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img">
-
-                                    </button>
-                                </div>
+                <div>
+                    <form class="row">
+                        <div class="col-lg-2 col-sm-6 col-12">
+                            <div class="form-group">
+                                <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date"
+                                    value="{{ $fromDate->format('d-m-Y') }}" name="from_date">
                             </div>
                         </div>
-                    </div>
-                </form>
+                        <div class="col-lg-2 col-sm-6 col-12">
+                            <div class="form-group">
+                                <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date"
+                                    value="{{ $toDate->format('d-m-Y') }}" name="to_date">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-12">
+                            <div class="form-group w-100">
+                                <button type="submit" class="btn btn-filters d-inline-block"
+                                    onclick="this.form.target='';"
+                                >
+                                    <img
+                                        src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img">
+                                </button>
+                                <button type="submit" class="btn btn-info" onclick="this.form.target='_blank';" name="print" value="1">
+                                    <i class="fa fa-print" aria-hidden="true"></i>
+                                    Print
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <!-- /Filter -->
                 <div class="table-responsive">
                     <table class="table" id="example">
@@ -73,42 +64,31 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Code</th>
-                                <th>Name</th>
                                 <th>Date</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Discount</th>
+                                <th>Due</th>
+                                <th>Paid</th>
                                 <th>Grand Total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data ?? [] as $key => $sale)
+                            @foreach ($sales ?? [] as $key => $sale)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $sale->ref_code }}</td>
-                                <td>{{ $sale->customer->name }}</td>
-                                <td><span class="badges bg-lightgreen">{{ $sale->status }}</span></td>
-                                <td>{{ $sale->grandtotal }}</td>
-                                {{-- <td>
-                                    <a class="me-3" href="{{ route('quotation.edit',$quotation->id) }}">
-                                        <img src="{{asset('backend')}}/img/icons/edit.svg" alt="img">
+                                <td>
+                                    <a href="{{ route('sale.pdf', $sale->id) }}" target="_blank">
+                                        {{ $sale->ref_code }}
                                     </a>
-                                    <a class="me-3 confirm-text" href="">
-                                        <img src="{{asset('backend')}}/img/icons/delete.svg" alt="img">
-                                    </a>
-                                </td> --}}
-
-                                <td class="text-center">
-                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
-                                        aria-expanded="true">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ route('quotation.move_sale', $quotation->id) }}"
-                                                class="dropdown-item confirm-text">
-                                                Move to Sales
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </td>
+                                <td>{{ \Carbon\Carbon::parse($sale->date)->format('d-m-Y') }}</td>
+                                <td>{{ $sale->customer?->name }}</td>
+                                <td>{{ $sale->customer?->phone }}</td>
+                                <td>{{ $sale->discount }}</td>
+                                <td>{{ $sale->due_amount }}</td>
+                                <td>{{ $sale->paid_amount }}</td>
+                                <td>{{ $sale->grandtotal }}</td>
                             </tr>
                             @endforeach
                         </tbody>
