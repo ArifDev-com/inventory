@@ -44,7 +44,7 @@
                 @if(auth()->user()->user_role == 'admin' || auth()->user()->user_role == 'superadmin')
                 <li class="submenu">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/purchases') || request()->is('admin/purchase/create')  ? 'active' : '' }}"><img
+                        class="{{ request()->is('admin/purchases') || request()->is('admin/purchase/create') || request()->is('admin/suppliers') ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/purchase1.svg" alt="img"><span> {{
                             trans('sidebar.purchase.menu_name') }}</span> <span class="menu-arrow"></span></a>
                     <ul>
@@ -56,7 +56,8 @@
                         <li><a href="{{ route('purchase.index') }}"
                                 class="{{ request()->is('admin/purchases') ? 'active' : '' }}">{{
                                 trans('sidebar.purchase.purchase_list') }}</a></li>
-
+                        <li><a href="{{ route('supplier.index') }}"
+                            class="{{ request()->is('admin/suppliers') ? 'active' : '' }}">Supplier</a></li>
                     </ul>
                 </li>
                 @endif
@@ -236,16 +237,12 @@
                 @if(auth()->user()->user_role == 'admin' || auth()->user()->user_role == 'superadmin')
                 <li class="submenu">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/shopDocuments') || request()->is('admin/warehouses') || request()->is('admin/warehouse/create') || request()->is('admin/categories') || request()->is('admin/category/create')  || request()->is('admin/subCategories') || request()->is('admin/subCategory/create') || request()->is('admin/brands') || request()->is('admin/brand/create') || request()->is('admin/suppliers') || request()->is('admin/supplier/create') || request()->is('admin/units') || request()->is('admin/unit/create') || request()->is('admin/users') || request()->is('admin/user/create') ? 'active' : '' }}"><img
+                        class="{{ request()->is('admin/shopDocuments') || request()->is('admin/warehouses') || request()->is('admin/warehouse/create') || request()->is('admin/categories') || request()->is('admin/category/create')  || request()->is('admin/subCategories') || request()->is('admin/subCategory/create') || request()->is('admin/brands') || request()->is('admin/brand/create') || request()->is('admin/units') || request()->is('admin/unit/create') || request()->is('admin/users') || request()->is('admin/user/create') ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/settings.svg" alt="img"><span> Settings </span> <span
                             class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{{ route('shopDocument.index') }}"
                                 class="{{ request()->is('admin/shopDocuments') ? 'active' : '' }}">Shop Setup </a></li>
-
-                        <li><a href="{{ route('supplier.index') }}"
-                            class="{{ request()->is('admin/suppliers') ? 'active' : '' }}">Supplier</a></li>
-
                             <li><a href="{{ route('user.index') }}"
                                 class="{{ request()->is('admin/users')  ? 'active' : '' }}">Users List</a></li>
                         <li><a href="{{ route('user.create') }}"
