@@ -6,10 +6,12 @@
         @yield('name') Page
     </title>
     <style type="text/css">
-        html, body {
-            margin-top: 5px;
-            padding-top: 5px;
+        html,
+        body {
+            margin-top: 20px;
+            padding-top: 0px;
         }
+
         * {
             font-size: 10pt;
             font-family: Arial, sans-serif;
@@ -84,16 +86,22 @@
 
         footer {
             position: fixed;
-            bottom: -20px;
+            /* bottom: -30px; */
+            bottom: -30px;
             left: 0px;
             right: 0px;
+        }
+
+        @page {
+            size: auto;
+            margin: 50px;
+            margin-top: 100px;
+            padding-top: 50px;
         }
     </style>
 </head>
 
 <body>
-    <p style="text-indent: 0pt; text-align: left;"><br /></p>
-    <p style="text-indent: 0pt; text-align: left;"><span></span></p>
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px;">
         <tbody>
             <tr>
@@ -142,21 +150,6 @@
     <footer>
         <table style="width: 100%;">
             <tr>
-                {{-- <td style="text-align: center;">
-                    _______________
-                    <br>
-                    Received by
-                </td>
-                <td style="text-align: center;">
-                    SOLD GOODS ARE NOT TAKEN BACK
-                </td>
-                <td style="text-align: center;">
-                    {{ $sale->user?->name }}
-                    <br>
-                    _______________
-                    <br>
-                    for CAPITAL LIFT
-                </td> --}}
                 @yield('footer')
             </tr>
         </table>

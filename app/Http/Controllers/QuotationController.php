@@ -68,27 +68,23 @@ class QuotationController extends Controller
         //   'customer_id'=>'required|max:255',
         //   'warehouse_id'=>'required|max:255',
         //   'date'=>'required|max:255',
-        //   'ref_code'=>'required|max:255',
-        //   'tax'=>'required|max:255',
         //   'discount'=>'required|max:255',
-        //   'shipping'=>'required|max:255',
         //   'grandtotal'=>'required|max:255',
-        //   'status'=>'required|max:255',
-        //   'description'=>'required',
         //  ],[
         //   'customer_id.required' => 'select supplier name',
         //   'warehouse_id.required' => 'select warehouse name',
         // ]);
-
+        // dd($request->all());
         $quotation = Quotation::create([
             'customer_id' => $request->customer_id,
             'warehouse_id' => $request->warehouse_id,
             'date' => $request->date,
-            'ref_code' => $request->ref_code,
+            'ref_code' => 100 + Quotation::count(),
             'tax' => $request->tax,
-            'discount' => $request->discount,
-            'shipping' => $request->shipping,
+            'discount' => $request->discount ?: 0,
+            'shipping' => $request->shipping ?: 0,
             'grandtotal' => $request->grand_total,
+            'other_cost' => $request->other_cost ?: 0,
             'status' => $request->status,
             'description' => $request->description,
         ]);
@@ -150,34 +146,14 @@ class QuotationController extends Controller
     public function destroy($quo_id)
     {
         Quotation::findOrFail($quo_id)->delete();
-
+        QuotationItem::where('quotation_id', $quo_id)->delete();
         return redirect()->back()->with('delete', 'successfully Deleted');
     }
 
     public function generatePDF(Quotation $quotation)
     {
-        $randomNumber = random_int(100000, 999999);
-
-        $quotation->with([
-            'customer' => function ($query) {
-                $query->select('id', 'name', 'email', 'address');
-            },
-            'warehouse' => function ($query) {
-                $query->select('id', 'name', 'email', 'address');
-            },
-
-            'items' => function ($query) {
-                $query->select('id', 'quotation_id', 'product_id', 'quantity', 'sub_total');
-            },
-
-            'items.product' => function ($query) {
-                $query->select('id', 'name');
-            },
-        ])->first();
-
-        $pdf = Pdf::loadView('admin.quotation.print-page', compact('quotation', 'randomNumber'));
-
-        return $pdf->download('invoice.pdf');
+        $pdf = Pdf::loadView('admin.quotation.print-page', compact('quotation'));
+        return $pdf->stream('Quotation - ' . $quotation->ref_code . '.pdf');
     }
 
     public function move_sale($id)

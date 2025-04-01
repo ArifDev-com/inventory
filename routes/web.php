@@ -363,7 +363,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/quotation/create', [App\Http\Controllers\QuotationController::class, 'create'])->name('quotation.create');
 
-    Route::post('/quotation/store', [App\Http\Controllers\QuotationController::class, 'store'])->name('quotation.store');
+    // Route::post('/quotation/store', [App\Http\Controllers\QuotationController::class, 'store'])->name('quotation.store');
 
     Route::get('/quotation/edit/{quo_id}', [App\Http\Controllers\QuotationController::class, 'edit'])->name('quotation.edit');
 
@@ -441,6 +441,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/find-products', [App\Http\Controllers\SaleController::class, 'findProducts'])->name('find.products');
 
     Route::post('/quotation-store', [App\Http\Controllers\SaleController::class, 'quotation_store'])->name('quotation.store');
+    Route::get('/quotation-delete/{quotation}', [App\Http\Controllers\QuotationController::class, 'destroy'])->name('quotation.delete');
+    Route::get('/quotation-print/{quotation}', [App\Http\Controllers\QuotationController::class, 'generatePDF'])->name('quotation.print');
 
     // Transfer here
 

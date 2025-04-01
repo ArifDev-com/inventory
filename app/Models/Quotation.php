@@ -20,8 +20,14 @@ class Quotation extends Model
         'grandtotal',
         'status',
         'description',
+        'other_cost',
     ];
 
+    protected $casts = [
+        'grandtotal' => 'integer',
+        'other_cost' => 'integer',
+        'discount' => 'integer',
+    ];
 
     public function customer()
     {

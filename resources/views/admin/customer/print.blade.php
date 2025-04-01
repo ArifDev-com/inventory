@@ -2,7 +2,22 @@
 
 @section('name', 'Customer List')
 @section('content')
-<table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 50px" cellspacing="0" class="border">
+<style>
+    table * {
+        font-size: 10px !important;
+    }
+</style>
+<table style="margin-top: 30px">
+    <tr>
+        <td>
+            Date: {{ now()->format('d-m-Y') }}
+        </td>
+        <td style="text-align: right">
+            Time: {{ now()->format('h:i A') }}
+        </td>
+    </tr>
+</table>
+<table style="border-collapse: collapse; margin: auto; width: 100%;" cellspacing="0" class="border">
     <tbody>
         <tr style="height: 20pt;">
             <td
@@ -29,7 +44,7 @@
             </td>
             <td
                 style="
-                    width: 70pt;
+                    width: 120pt;
                     border-top-style: solid;
                     border-top-width: 1pt;
                     border-top-color: #959595;
@@ -51,7 +66,7 @@
             </td>
             <td
                 style="
-                    width: 56pt;
+                    width: 76pt;
                     border-top-style: solid;
                     border-top-width: 1pt;
                     border-top-color: #959595;
@@ -95,7 +110,6 @@
             </td>
             <td
                 style="
-                    width: 218pt;
                     border-top-style: solid;
                     border-top-width: 1pt;
                     border-top-color: #959595;

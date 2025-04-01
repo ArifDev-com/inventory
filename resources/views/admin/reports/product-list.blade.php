@@ -38,6 +38,10 @@
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
+                <a href="?print=1" class="btn btn-primary" target="_blank">
+                    <i class="fa fa-print"></i>
+                    Print
+                </a>
                 <div class="table-responsive">
                     <table class="table " id="example">
                         <thead>
@@ -102,10 +106,7 @@
 
 <script>
     $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf', 'print'
-            ]
+
         });
 </script>
 @endsection

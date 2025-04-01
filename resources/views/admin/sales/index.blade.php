@@ -28,71 +28,9 @@
             </div>
         </div>
 
-
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
-                {{-- <div class="table-top">
-                    <div class="search-set">
-                        <div class="search-path">
-                            <a class="btn btn-filter" id="filter_search">
-                                <img src="{{asset('backend')}}/img/icons/filter.svg" alt="img">
-                                <span><img src="{{asset('backend')}}/img/icons/closes.svg" alt="img"></span>
-                            </a>
-                        </div>
-                        <div class="search-input">
-                            <a class="btn btn-searchset"><img src="{{asset('backend')}}/img/icons/search-white.svg"
-                                    alt="img"></a>
-                        </div>
-                    </div>
-                    <div class="wordset">
-                        <ul>
-                            <li>
-                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img
-                                        src="{{asset('backend')}}/img/icons/pdf.svg" alt="img"></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img
-                                        src="{{asset('backend')}}/img/icons/excel.svg" alt="img"></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img
-                                        src="{{asset('backend')}}/img/icons/printer.svg" alt="img"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div> --}}
-                <!-- /Filter -->
-                {{-- <div class="card" id="filter_inputs">
-                    <div class="card-body pb-0">
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" placeholder="Enter Name">
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" placeholder="Enter Reference No">
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <select class="select">
-                                        <option>Completed</option>
-                                        <option>Paid</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <a class="btn btn-filters ms-auto"><img
-                                            src="{{asset('backend')}}/img/icons/search-whites.svg" alt="img"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
                 <!-- /Filter -->
                 <div class="table-responsive">
                     <table class="table" id="example">
@@ -159,9 +97,12 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ route('sale.pdf', [$sale->id]) }}" class="dropdown-item" target="_blank"><img
+                                            <a href="{{ route('sale.pdf', [$sale->id]) }}" class="dropdown-item" target="_blank">
+                                                <img
                                                     src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
-                                                    alt="img">Print Invoice</a>
+                                                    alt="img">
+                                                    Print Invoice
+                                            </a>
                                         </li>
                                         <li>
                                             <a href="{{ route('sale.challan.pdf', [$sale->id]) }}"
@@ -188,27 +129,21 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- {!! $sales->links() !!} --}}
                 </div>
             </div>
         </div>
-        <!-- /product list -->
     </div>
 </div>
-
 <script>
-    $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf', 'print'
-            ]
-        });
+    $('#example').DataTable({
+        pageLength: 100,
+    });
 
-        @if (session()->has('return_id'))
-            window.open("{{ route('sale.return.pdf', [session()->get('return_id')]) }}", '_blank');
-        @elseif (session()->has('sale_id'))
-            window.open("{{ route('sale.pdf', [session()->get('sale_id')]) }}", '_blank');
-            window.open("{{ route('sale.challan.pdf', [session()->get('sale_id')]) }}", '_blank');
-        @endif
+    @if (session()->has('return_id'))
+        window.open("{{ route('sale.return.pdf', [session()->get('return_id')]) }}", '_blank');
+    @elseif (session()->has('sale_id'))
+        window.open("{{ route('sale.pdf', [session()->get('sale_id')]) }}", '_blank');
+        window.open("{{ route('sale.challan.pdf', [session()->get('sale_id')]) }}", '_blank');
+    @endif
 </script>
 @endsection

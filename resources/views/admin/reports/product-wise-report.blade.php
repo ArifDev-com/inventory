@@ -17,8 +17,8 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Product Wise Report</h4>
-                <h6>Manage your Product Wise Report</h6>
+                <h4>Specific Product Report</h4>
+                <h6>Manage your Specific Product Report</h6>
             </div>
         </div>
 
@@ -55,11 +55,17 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-1 col-sm-6 col-12 ">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-filters"><img
+                            <div class="col-lg-2 ">
+                                <div class="form-group w-100">
+                                    <button type="submit" class="btn btn-filters d-inline-block"
+                                        onclick="this.form.target='';"
+                                    >
+                                        <img
                                             src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img">
-
+                                    </button>
+                                    <button type="submit" class="btn btn-info" onclick="this.form.target='_blank';" name="print" value="1">
+                                        <i class="fa fa-print" aria-hidden="true"></i>
+                                        Print
                                     </button>
                                 </div>
                             </div>
@@ -67,6 +73,18 @@
                     </div>
                 </form>
                 <!-- /Filter -->
+                @if (request()->product_id)
+                    @php
+                        $product = \App\Models\Product::findOrFail(request()->product_id);
+                    @endphp
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <b>Date : {{ request()->from_date }} to {{ request()->to_date }}</b> <br>
+                            <b>Product Name : {{ $product->name }}</b> <br>
+                            <b>Item Code : {{ $product->code }}</b> <br>
+                        </div>
+                    </div>
+                @endif
                 @if ($data)
                 <div class="table-responsive">
                     <table class="table" id="example">
@@ -106,10 +124,6 @@
 
 <script>
     $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf', 'print'
-            ]
         });
 </script>
 @endsection

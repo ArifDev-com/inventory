@@ -477,12 +477,20 @@ class ReportController extends Controller
                 ];
             }
         }
+        if($request->print) {
+            $pdf = Pdf::loadView('admin.reports.product-wise-report-print', compact('product', 'data', 'fromDate', 'toDate', 'products'));
+            return $pdf->stream('Product Wise Report.pdf');
+        }
         return view('admin.reports.product-wise-report', compact('product', 'data', 'fromDate', 'toDate', 'products'));
     }
 
     public function productList(Request $request)
     {
         $products = Product::orderBy("code")->get();
+        if($request->print) {
+            $pdf = Pdf::loadView('admin.reports.product-list-print', compact('products'));
+            return $pdf->stream('Product List.pdf');
+        }
         return view('admin.reports.product-list', compact('products'));
     }
 

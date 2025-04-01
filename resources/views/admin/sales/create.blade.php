@@ -100,7 +100,7 @@
                                     <li>
                                         <h4>Discount</h4>
                                         <h5>
-                                            <input type="number" value="0" name="discount" class="form-control discount"
+                                            <input type="number"  name="discount" class="form-control discount"
                                                 placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
                                                 onblur="updateGrandTotal();">
                                         </h5>
@@ -108,7 +108,7 @@
                                     <li>
                                         <h4>Other Cost</h4>
                                         <h5>
-                                            <input type="number" value="0" name="other_cost"
+                                            <input type="number" name="other_cost"
                                                 class="form-control other_cost" placeholder="Enter Other Cost"
                                                 onkeyup="updateGrandTotal();" onblur="updateGrandTotal();">
                                         </h5>
@@ -184,14 +184,11 @@
 
                         <div class="col-lg-12">
                             <button type="submit" class="btn btn-submit me-2">{{ trans('form.sale.submit') }}</button>
-                            <a href="" class="btn btn-cancel">{{ trans('form.sale.cancel') }}</a>
-                            <a href="#" onclick="checkout()" class="btn btn-warning"
-                                style="padding: 13px 25px; margin: 0px 10px;">Checkout</a>
-                            @if (session()->get('quotation_to_sale') == null)
-                            <button href="" class="btn btn-success" id="quotation_add"
-                                style="padding: 13px 25px;">Quotation</button>
+                            <a href="" class="btn btn-cancel me-2">{{ trans('form.sale.cancel') }}</a>
+                            <a href="#" onclick="checkout()" class="btn me-2 btn-warning">Checkout</a>
+                            @if (!$quotation)
+                                <button type="button" class="btn btn-success" id="quotation_add">Quotation</button>
                             @endif
-
                         </div>
                     </div>
                 </form>
@@ -474,16 +471,6 @@
         $('#quotation_add').on('click', function() {
             let isValid = true;
 
-            // Loop through all required fields and check if they are empty
-            $('#sale_store').find('[required]').each(function() {
-                if ($(this).val().trim() === '') {
-                    $(this).addClass('is-invalid'); // Add a red border or error styling
-                    isValid = false;
-                } else {
-                    $(this).removeClass('is-invalid'); // Remove error styling if fixed
-                }
-            });
-
             // If any required field is empty, prevent form submission
             if (!isValid) {
                 alert("Please fill all required fields before submitting.");
@@ -492,6 +479,8 @@
 
             // Collect form data
             let formData = $('#sale_store').serialize(); // Converts form fields into a query string
+            // $('#sale_store').attr('action', "{{ route('quotation.store') }}");
+            // return $('#sale_store').submit();
 
             // Send AJAX request
             $.ajax({
@@ -499,9 +488,8 @@
                 type: "POST",
                 data: formData,
                 success: function(response) {
-                    alert("Form submitted successfully!");
-                    console.log(response);
-
+                    alert("Quotation saved successfully!");
+                    // console.log(response);
                     // Redirect to quotation.index route
                     window.location.href = "{{ route('quotation.index') }}";
                 },
@@ -585,55 +573,55 @@
 
 <script>
     var i = 0;
-        $('#add').click(function() {
-            ++i;
-            $('#table').append(
-                `<tr>
-                <td>
-                    <div class="form-group">
-                        <input type="text" name="inputs[` + i + `][emi_amount]" required >
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input type="date" name="inputs[` + i + `][emi_date]"   class="form-control" required>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-danger remove-table-row">Remove</button>
-                    </div>
-                </td>
-            </tr>`
-            );
+    $('#add').click(function() {
+        ++i;
+        $('#table').append(
+            `<tr>
+            <td>
+                <div class="form-group">
+                    <input type="text" name="inputs[` + i + `][emi_amount]" required >
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <input type="date" name="inputs[` + i + `][emi_date]"   class="form-control" required>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <button type="button" class="btn btn-danger remove-table-row">Remove</button>
+                </div>
+            </td>
+        </tr>`
+        );
+    });
+
+    $(document).on('click', '.remove-table-row', function() {
+        $(this).parents('tr').remove();
+    })
+
+    const customers = @json($customers);
+
+    function showCustomerDue() {
+        var customerId = $('#selectpicker').val();
+        // // alert(customerId);
+        // if (customerId) {
+        //     const customer = customers.find(customer => customer.id == customerId);
+        //     // console.log(customer);
+        //     $('#customerDue').text(
+        //         'Due: ' + customer.sales.reduce((acc, sale) => acc + sale.due_amount, 0) +
+        //         ' Tk | Dealer: ' + (customer.creator?.first_name || 'Admin')
+        //     );
+        // } else {
+        //     $('#customerDue').text('');
+        // }
+    }
+    setInterval(() => {
+        $('.table .tbody tr').each(function() {
+            totalOfSubTotal($(this));
         });
-
-        $(document).on('click', '.remove-table-row', function() {
-            $(this).parents('tr').remove();
-        })
-
-        const customers = @json($customers);
-
-        function showCustomerDue() {
-            var customerId = $('#selectpicker').val();
-            // // alert(customerId);
-            // if (customerId) {
-            //     const customer = customers.find(customer => customer.id == customerId);
-            //     // console.log(customer);
-            //     $('#customerDue').text(
-            //         'Due: ' + customer.sales.reduce((acc, sale) => acc + sale.due_amount, 0) +
-            //         ' Tk | Dealer: ' + (customer.creator?.first_name || 'Admin')
-            //     );
-            // } else {
-            //     $('#customerDue').text('');
-            // }
-        }
-        setInterval(() => {
-            $('.table .tbody tr').each(function() {
-                totalOfSubTotal($(this));
-            });
-            updateGrandTotal();
-        }, 1000);
+        updateGrandTotal();
+    }, 1000);
 </script>
 @endsection
 

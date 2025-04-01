@@ -1,202 +1,299 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.pdf')
 
-<head>
-    <title>Quotation Pdf</title>
-</head>
-<style type="text/css">
-    body {
-        font-family: 'Roboto Condensed', sans-serif;
-    }
+@section('name', 'Quotation')
 
-    .m-0 {
-        margin: 0px;
-    }
+@section('content')
+<table>
+    <tr>
+        <td>
+            <div>
+                <table>
+                    <tr>
+                        <td style="width: 30%">
+                            Cell No.
+                        </td>
+                        <td>
+                            :
+                            {{ $quotation->customer?->phone }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%">
+                            Customer Name
+                        </td>
+                        <td>
+                            : {{ $quotation->customer?->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%">
+                            Company Name
+                        </td>
+                        <td>
+                            : {{ $quotation->customer?->company_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%">
+                            Address
+                        </td>
+                        <td>
+                            : {{ $quotation->customer?->address }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td style="text-align: right">
+            <div style="
+                    display: inline-block;
+                    text-align: left;
+                ">
+                <table>
+                    <tr>
+                        <td>
+                            Bill No
+                        </td>
+                        <td>
+                            : {{ $quotation->ref_code }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Date
+                        </td>
+                        <td>
+                            : {{ \Carbon\Carbon::parse($quotation->date)->format('d-m-Y') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Time
+                        </td>
+                        <td>
+                            : {{ $quotation->created_at->format('H:i') }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+<table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 20px; border: 1px solid #969696;" cellspacing="0" class="border">
+    <tbody>
+        <tr style="height: 20pt;">
+            <td style="
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">SL No.</p>
+            </td>
+            <td style="
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Item Code</p>
+            </td>
+            <td style="
+                        width: 30%;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Particulars</p>
+            </td>
+            <td style="
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit</p>
+            </td>
+            <td style="
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit Amount
+                </p>
+            </td>
+            <td style="
+                        width: 20%;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Total
+                    Amount(Tk)</p>
+            </td>
+        </tr>
+        @foreach ($quotation->items as $item)
+        <tr style="height: 17pt;">
+            <td>
+                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+            </td>
+            <td>
+                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
+                    {{ $item->product->code }}
+                </p>
+            </td>
+            <td>
+                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                    {{ $item->product->name }}
+                </p>
+            </td>
+            <td>
+                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                    {{ $item->quantity }}
+                </p>
+            </td>
+            <td>
+                {{ $item->price }}
+            </td>
+            <td>
+                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                    {{ $item->price * $item->quantity }}
+                </p>
+            </td>
+        </tr>
+        @endforeach
+        <tr>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="padding: 5px">
+                Sub Amount
+            </td>
+            <td style="text-align: center;">
+                {{ $quotation->items->sum('sub_total') }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="padding: 5px">
+                Other Cost
+            </td>
+            <td style="text-align: center;">
+                {{ $quotation->other_cost }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none;">
 
-    .p-0 {
-        padding: 0px;
-    }
+            </td>
+            <td style="border: none;">
 
-    .pt-5 {
-        padding-top: 5px;
-    }
+            </td>
+            <td>
+                Discount
+            </td>
+            <td style="text-align: center;">
+                {{ $quotation->discount ?: 0 }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: none;"></td>
+            <td style="border: none;"></td>
+            <td style="border: none; ">
 
-    .mt-10 {
-        margin-top: 10px;
-    }
+            </td>
+            <td style="border: none;">
 
-    .text-center {
-        text-align: center !important;
-    }
-
-    .w-100 {
-        width: 100%;
-    }
-
-    .w-50 {
-        width: 50%;
-    }
-
-    .w-85 {
-        width: 85%;
-    }
-
-    .w-15 {
-        width: 15%;
-    }
-
-    .logo img {
-        width: 200px;
-        height: 60px;
-    }
-
-    .gray-color {
-        color: #5D5D5D;
-    }
-
-    .text-bold {
-        font-weight: bold;
-    }
-
-    .border {
-        border: 1px solid #969696;
-    }
-
-    table tr,
-    th,
-    td {
-        border: 1px solid #d2d2d2;
-        border-collapse: collapse;
-        padding: 7px 8px;
-    }
-
-    table tr th {
-        background: #F4F4F4;
-        font-size: 15px;
-    }
-
-    table tr td {
-        font-size: 13px;
-    }
-
-    table {
-        border-collapse: collapse;
-    }
-
-    .box-text p {
-        line-height: 10px;
-    }
-
-    .float-left {
-        float: left;
-    }
-
-    .total-part {
-        font-size: 16px;
-        line-height: 12px;
-    }
-
-    .total-right p {
-        padding-right: 20px;
-    }
-</style>
-
-<body>
-    <div class="head-title">
-        <h1 class="text-center m-0 p-0">Invoice</h1>
-
-    </div>
-    <div class="add-detail mt-10">
-        <div class="w-50 float-left mt-10">
-            <p class="m-0 pt-5 text-bold w-100">Invoice Id - <span class="gray-color">{{ $randomNumber }}</span></p>
-            {{-- <p class="m-0 pt-5 text-bold w-100">Order Id - <span class="gray-color">AB123456A</span></p> --}}
-            <p class="m-0 pt-5 text-bold w-100">Order Date - <span class="gray-color">{{
-                    Carbon\Carbon::parse($quotation->created_at)->format('d-m-Y') }}</span></p>
-        </div>
-
-        <div style="clear: both;"></div>
-    </div>
-    <div class="table-section bill-tbl w-100 mt-10">
-        <table class="table w-100 mt-10">
-            <tr>
-                <th class="w-50">Shop Info</th>
-                <th class="w-50">Customer Info</th>
-            </tr>
-            <tr>
-                <td>
-                    <div class="box-text">
-                        <p>{{ $quotation->warehouse->name }}</p>
-                        <p>{{ $quotation->warehouse->email }}</p>
-                        <p>{{ $quotation->warehouse->address }}</p>
-
-                    </div>
-                </td>
-                <td>
-                    <div class="box-text">
-                        <p>{{ $quotation->customer->name }}</p>
-                        <p>{{ $quotation->customer->email }}</p>
-                        <p>{{ $quotation->customer->address }}</p>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="table-section bill-tbl w-100 mt-10">
-        <table class="table w-100 mt-10">
-            <tr>
-                <th class="w-50">Payment Method</th>
-                <th class="w-50">Payment Status</th>
-            </tr>
-            <tr>
-                <td>{{ $quotation->payment_type }}</td>
-                <td>{{ $quotation->payment_status }}</td>
-            </tr>
-        </table>
-    </div>
-    <div class="table-section bill-tbl w-100 mt-10">
-        <table class="table w-100 mt-10">
-            <tr>
-
-                <th class="w-50">Product Name</th>
-                <th class="w-50">Price</th>
-                <th class="w-50">Qty</th>
-                <th class="w-50">Subtotal</th>
-                {{-- <th class="w-50">Tax Amount</th>
-                <th class="w-50">Grand Total</th> --}}
-            </tr>
-
-            @foreach ($quotation->items as $item)
-
-            <tr align="center">
-
-                <td>{{ $item->product->name }}</td>
-                <td>{{ $item->product->price }}</td>
-                <td>{{ $item->quantity }}</td>
-                <td>{{ $item->sub_total }}</td>
-                {{-- <td>$50</td>
-                <td>$1550.20</td> --}}
-            </tr>
-
-            @endforeach
-
-            <tr>
-                <td colspan="7">
-                    <div class="total-part">
-                        <div class="total-left w-85 float-left" align="right">
-                            <p>Total</p>
-                            {{-- <p>Due</p>
-                            <p>Paid</p> --}}
-                        </div>
-                        <div class="total-right w-15 float-left text-bold" align="right">
-                            <p>{{ $quotation->grandtotal}}</p>
-                            {{-- <p>{{ $quotation->due_amount }}</p>
-                            <p>{{ $quotation->paid_amount }}</p> --}}
-                        </div>
-                        <div style="clear: both;"></div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-</html>
+            </td>
+            <td>
+                Total
+            </td>
+            <td style="text-align: center;">
+                {{ $quotation->grandtotal }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
+    In Word: {{ numberToWords($quotation->grandtotal) }} Taka Only.
+</h1>
+@if ($quotation->note)
+<h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
+    Note: {{ $quotation->note }}
+</h1>
+@endif
+@endsection
+@section('footer')
+<td style="text-align: center;">
+    _______________
+    <br>
+    Received by
+</td>
+<td style="text-align: center;">
+    SOLD GOODS ARE NOT TAKEN BACK
+</td>
+<td style="text-align: center;">
+    {{-- {{ $sale->user?->name }} --}}
+    {{-- <br> --}}
+    _______________
+    <br>
+    for CAPITAL LIFT
+</td>
+@endsection

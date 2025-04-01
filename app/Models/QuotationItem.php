@@ -13,7 +13,12 @@ class QuotationItem extends Model
         'product_id',
         'quotation_id',
         'quantity',
+        'price',
         'sub_total'
+    ];
+    protected $casts = [
+        'price' => 'integer',
+        'sub_total' => 'integer',
     ];
 
     public function quotation(){
@@ -21,6 +26,6 @@ class QuotationItem extends Model
     }
 
     public function product(){
-        return $this->belongsTo(Product::class,'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

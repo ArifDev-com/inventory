@@ -64,7 +64,7 @@
 
                 <li class="submenu ">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/sale/create') || request()->is('admin/sales') ? 'active' : '' }}"><img
+                        class="{{ request()->is('admin/sale/create') || request()->is('admin/sales') || request()->is('admin/return-reports') ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/sales1.svg" alt="img"><span> {{
                             trans('sidebar.sale.menu_name') }}</span> <span class="menu-arrow"></span></a>
                     <ul>
@@ -84,7 +84,7 @@
                         <li><a href="{{ route('sale.return') }}"
                                 class="{{ request()->is('admin/sale/return')  ? 'active' : '' }}">Add Return</a></li>
                         <li><a href="{{ route('return.report') }}"
-                                class="{{ request()->is('admin/sale/return') ? 'active' : '' }}">
+                                class="{{ request()->is('admin/return-reports') ? 'active' : '' }}">
                                 Return List
                             </a></li>
                     </ul>
@@ -97,7 +97,7 @@
                             Quoations</span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{{ route('quotation.index') }}"
-                                class="{{ request()->is('admin/quotation')  ? 'active' : '' }}">Quotation List</a></li>
+                                class="{{ request()->is('admin/quotations')  ? 'active' : '' }}">Quotation List</a></li>
                         </li>
                     </ul>
                 </li>
@@ -227,9 +227,9 @@
                         <li><a href="{{ route('reports.datewise-sale') }}"
                                 class="{{ request()->is('admin/report/datewise-sale-report') ? 'active' : '' }}">Date Wise Sale </a></li>
                         <li><a href="{{ route('reports.product-wise') }}"
-                                class="{{ request()->is('admin/report/product-wise-report') ? 'active' : '' }}">Product Wise</a></li>
+                                class="{{ request()->is('admin/reports/product-wise') ? 'active' : '' }}">Specific Product Report</a></li>
                         <li><a href="{{ route('reports.product-list') }}"
-                                class="{{ request()->is('admin/report/product-list') ? 'active' : '' }}">Product List</a></li>
+                                class="{{ request()->is('admin/reports/product-list') ? 'active' : '' }}">Product List</a></li>
                         <li><a href="{{ route('return.report') }}"
                                 class="{{ request()->is('admin/report/return-list') ? 'active' : '' }}">Return List</a></li>
                     </ul>

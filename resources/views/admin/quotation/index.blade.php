@@ -31,125 +31,62 @@
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
-                {{-- <div class="table-top">
-                    <div class="search-set">
-                        <div class="search-path">
-                            <a class="btn btn-filter" id="filter_search">
-                                <img src="{{ asset('backend') }}/img/icons/filter.svg" alt="img">
-                                <span><img src="{{ asset('backend') }}/img/icons/closes.svg" alt="img"></span>
-                            </a>
-                        </div>
-                        <div class="search-input">
-                            <a class="btn btn-searchset"><img src="{{ asset('backend') }}/img/icons/search-white.svg"
-                                    alt="img"></a>
-                        </div>
+                @if (session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session()->get('success') }}
                     </div>
-                    <div class="wordset">
-                        <ul>
-                            <li>
-                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img
-                                        src="{{ asset('backend') }}/img/icons/pdf.svg" alt="img"></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img
-                                        src="{{ asset('backend') }}/img/icons/excel.svg" alt="img"></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img
-                                        src="{{ asset('backend') }}/img/icons/printer.svg" alt="img"></a>
-                            </li>
-                        </ul>
+                @endif
+                @if (session()->has('delete'))
+                    <div class="alert alert-danger">
+                        {{ session()->get('delete') }}
                     </div>
-                </div> --}}
-                <!-- /Filter -->
-                {{-- <div class="card" id="filter_inputs">
-                    <div class="card-body pb-0">
-                        <div class="row">
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date">
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <input type="text" placeholder="Enter Reference ">
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <select class="select">
-                                        <option>Choose Customer</option>
-                                        <option>Customer1</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <select class="select">
-                                        <option>Choose Status</option>
-                                        <option>Inprogress</option>
-                                        <option>Complete</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-1 col-sm-6 col-12 ms-auto">
-                                <div class="form-group">
-                                    <a class="btn btn-filters ms-auto"><img
-                                            src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
+                @endif
                 <!-- /Filter -->
                 <div class="table-responsive">
                     <table class="table" id="example">
                         <thead>
                             <tr>
-                                {{-- <th>
-                                    <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </th> --}}
                                 <th>Sl</th>
-                                {{-- <th>Product Name</th> --}}
-                                <th>Reference</th>
-                                <th>Custmer Name</th>
-                                <th>Status</th>
-                                <th>Grand Total ($)</th>
+                                <th>
+                                    ID
+                                </th>
+                                <th>Date</th>
+                                <th>Custmer</th>
+                                <th>Items</th>
+                                <th>Total</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($quotations as $key => $quotation)
                             <tr>
-                                {{-- <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td> --}}
-                                {{-- <td class="productimgname">
-                                    <a href="javascript:void(0);" class="product-img">
-                                        <img src="{{asset('backend')}}/img/product/product1.jpg" alt="product">
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $quotation->id }}</td>
+                                <td>{{ $quotation->created_at->format('d-m-Y') }}</td>
+                                <td>
+                                    <a href="{{ route('customer.show', $quotation->customer?->id ?? 0) }}">
+                                        {{ $quotation->customer?->name ?? 'N/A' }}
                                     </a>
-
-                                </td> --}}
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $quotation->ref_code }}</td>
-                                <td>{{ $quotation->customer->name }}</td>
-                                <td><span class="badges bg-lightgreen">{{ $quotation->status }}</span></td>
+                                </td>
+                                <td style="width: 400px;">
+                                    <table class="" style="width: 100%;">
+                                        <thead style="background: none; border: none;">
+                                            <tr style="background-color: none;">
+                                                <th style="border: 1px solid gray;">Product</th>
+                                                <th style="border: 1px solid gray;">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($quotation->items as $item)
+                                            <tr>
+                                                <td style="border: 1px solid gray; text-align: left;">{{ $item->product?->name }}</td>
+                                                <td style="border: 1px solid gray; width: 70px">{{ $item->quantity }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </td>
                                 <td>{{ $quotation->grandtotal }}</td>
-                                {{-- <td>
-                                    <a class="me-3" href="{{ route('quotation.edit',$quotation->id) }}">
-                                        <img src="{{asset('backend')}}/img/icons/edit.svg" alt="img">
-                                    </a>
-                                    <a class="me-3 confirm-text" href="">
-                                        <img src="{{asset('backend')}}/img/icons/delete.svg" alt="img">
-                                    </a>
-                                </td> --}}
-
                                 <td class="text-center">
                                     <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
                                         aria-expanded="true">
@@ -162,13 +99,27 @@
                                                 Move to Sales
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="{{ route('quotation.print', $quotation->id) }}"
+                                                target="_blank"
+                                                class="dropdown-item confirm-text">
+                                                Print
+                                            </a>
+                                        </li>
+                                        @if (auth()->user()->role == 'superadmin' || auth()->user()->role == 'admin')
+                                            <li>
+                                                <a href="{{ route('quotation.delete', $quotation->id) }}"
+                                                    class="dropdown-item confirm-text">
+                                                    Delete
+                                                </a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- {!! $quotations->links() !!} --}}
                 </div>
             </div>
         </div>
@@ -178,10 +129,7 @@
 
 <script>
     $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf', 'print'
-            ]
+
         });
 </script>
 @endsection

@@ -46,7 +46,7 @@ class SaleController extends Controller
         return view('admin.sales.index', compact('product', 'customer', 'warehouse', 'sales'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $authId = Auth::user()->id;
         $cities = City::latest()->get();
@@ -60,8 +60,8 @@ class SaleController extends Controller
         // dd($customers->toArray());
         $warehouses = Warehouse::latest()->get();
         $sales = Sale::latest()->get();
-
-        return view('admin.sales.create', compact('products', 'customers', 'warehouses', 'sales', 'cities', 'countries'));
+        $quotation = Quotation::find($request->quotation_id);
+        return view('admin.sales.create', compact('products', 'customers', 'warehouses', 'sales', 'cities', 'countries', 'quotation'));
     }
 
     // search here
@@ -129,8 +129,8 @@ class SaleController extends Controller
             'date' => $request->date,
             'ref_code' => $ref_code,
             'tax' => $request->tax,
-            'discount' => $request->discount,
-            'shipping' => $request->shipping,
+            'discount' => $request->discount ?: 0,
+            'shipping' => $request->shipping ?: 0,
             'grandtotal' => $request->grand_total,
             'paid_amount' => $request->paid_amount,
             'due_amount' => $request->due_amount,
@@ -351,22 +351,22 @@ class SaleController extends Controller
         $quotation = Quotation::create([
             'customer_id' => $request->customer_id,
             'date' => $request->date,
-            'discount' => $request->discount ?? 0,
+            'discount' => $request->discount ?: 0,
             'grandtotal' => $request->grand_total,
+            'other_cost' => $request->other_cost ?: 0,
             'warehouse_id' => $request->warehouse_id ?? 0,
             'description' => $request->description ?? '',
-            'ref_code' => $request->ref_code ?? 0,
+            'ref_code' => 100 + Quotation::count(),
             'status' => 'pending',
         ]);
 
-        $quotationItem = new QuotationItem;
-
         foreach ($request->product_id as $key => $value) {
-            $quotationItem::create([
+            QuotationItem::create([
                 'quotation_id' => $quotation->id,
                 'product_id' => $value,
                 'quantity' => $request->quantity[$key],
                 'sub_total' => $request->sub_total[$key],
+                'price' => $request->price[$key],
             ]);
         }
 
