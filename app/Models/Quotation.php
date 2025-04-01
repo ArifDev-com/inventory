@@ -21,6 +21,7 @@ class Quotation extends Model
         'status',
         'description',
         'other_cost',
+        'user_id',
     ];
 
     protected $casts = [
@@ -39,7 +40,10 @@ class Quotation extends Model
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
 
-
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function items()
     {

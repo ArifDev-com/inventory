@@ -54,6 +54,7 @@
                                 <th>Custmer</th>
                                 <th>Items</th>
                                 <th>Total</th>
+                                <th>By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -87,6 +88,7 @@
                                     </table>
                                 </td>
                                 <td>{{ $quotation->grandtotal }}</td>
+                                <td>{{ $quotation->user?->name }}</td>
                                 <td class="text-center">
                                     <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
                                         aria-expanded="true">

@@ -290,8 +290,8 @@
     SOLD GOODS ARE NOT TAKEN BACK
 </td>
 <td style="text-align: center;">
-    {{-- {{ $sale->user?->name }} --}}
-    {{-- <br> --}}
+    {{ $quotation->user?->name }}
+    <br>
     _______________
     <br>
     for CAPITAL LIFT

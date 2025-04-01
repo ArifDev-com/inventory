@@ -27,6 +27,9 @@
             <div class="card-body">
                 <form action="{{ route('sale.store') }}" id="sale_store" method="post" enctype="multipart/form-data">
                     @csrf
+                    @if ($quotation)
+                        <input type="hidden" name="quotation_id" value="{{ $quotation->id }}">
+                    @endif
                     <div class="row">
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
@@ -109,7 +112,7 @@
                                                 <input type="hidden" name="purchase_price[]" class="purchase_price" value="{{ $item->product?->price }}" style="width:100px;">
 
                                                 <td class="price_td" mrp="{{ $item->product?->price }}" retail="{{ $item->product?->retail_price }}" purchase="{{ $item->product?->purchase_price }}" wholesale="{{ $item->product?->wholesale_price }}">
-                                                    <input type="number" name="price[]" class="form-control price"  placeholder="price" value="{{ $item->product?->price }}" style="width:100px;"
+                                                    <input type="number" name="price[]" class="form-control price"  placeholder="price" value="{{ $item->price }}" style="width:100px;"
                                                         onkeyup="$(this).next().val('').trigger('change');"
                                                     >
                                                     <select name="price_type[]" class="link" onchange="updatePriceTypePrice(this)">

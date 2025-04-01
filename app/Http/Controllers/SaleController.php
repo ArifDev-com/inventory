@@ -182,6 +182,11 @@ class SaleController extends Controller
         if ($sale->customer->phone) {
             SMSApi::send($sale->customer->phone, 'A Sale of '.$sale->grandtotal.' is recorded. Ref: '.$sale->ref_code);
         }
+        if ($request->quotation_id) {
+            Quotation::query()
+                ->where('id', $request->quotation_id)
+                ->delete();
+        }
         session()->flash('sale_id', $sale->id);
 
         return redirect()->route('sale.index')->with('success', 'Sale Added');
@@ -358,6 +363,7 @@ class SaleController extends Controller
             'description' => $request->description ?? '',
             'ref_code' => 100 + Quotation::count(),
             'status' => 'pending',
+            'user_id' => Auth::id(),
         ]);
 
         foreach ($request->product_id as $key => $value) {
