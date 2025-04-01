@@ -52,7 +52,7 @@
                 <table>
                     <tr>
                         <td>
-                            Bill No
+                            Quotation No
                         </td>
                         <td>
                             : {{ $quotation->ref_code }}

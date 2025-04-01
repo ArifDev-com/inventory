@@ -5,7 +5,11 @@
                 <label>Customer</label>
                 <select class="form-control select2-customer__" name="customer_id" required
                     onchange="__selectedCustomer(this)"
-                ></select>
+                >
+                    @if ($selected_customer ?? null)
+                        <option value="{{ $selected_customer->id }}">{{ $selected_customer->name }}</option>
+                    @endif
+                </select>
                 <span class="text-danger" id="customer_id_error"></span>
             </div>
         </div>
@@ -77,6 +81,9 @@
             $(document).on('select2:open', () => {
                 document.querySelector('.select2-search__field').focus();
             });
+            @if($selected_customer ?? null)
+                __selectedCustomer($('select.select2-customer__')[0]);
+            @endif
         }, 500);
     });
 </script>

@@ -369,7 +369,7 @@ class SaleController extends Controller
                 'price' => $request->price[$key],
             ]);
         }
-
-        return back();
+        session()->flash('success', 'Quotation Added');
+        return response()->json(['id' => $quotation->id]);
     }
 }

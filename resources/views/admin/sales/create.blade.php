@@ -10,7 +10,9 @@
         background-color: transparent;
     }
 </style>
-
+@php
+    $selected_customer = $quotation ? $quotation->customer : null;
+@endphp
 <div class="page-wrapper">
     <div class="content">
         <div class="page-header">
@@ -31,7 +33,7 @@
                                 <label>{{ trans('form.sale.sale date') }}</label>
                                 <div class="input-groupicon">
                                     <input type="date" class="form-control" name="date" placeholder="Choose Date"
-                                        value="<?php echo date('Y-m-d'); ?>">
+                                        value="{{ $quotation ? $quotation->date : date('Y-m-d') }}">
                                 </div>
                             </div>
                         </div>
@@ -88,7 +90,44 @@
                                 </thead>
                                 <br>
                                 <tbody class="tbody">
+                                    @if ($quotation)
+                                        @foreach ($quotation->items as $item)
+                                            <tr id="product_${product.id}">
+                                                <input type="hidden" name="product_id[]"  class="form-control product_id"  value="{{ $item->product_id }}">
+                                                <td class="productimgname">
+                                                    <a href="javascript:void(0);">{{ $item->product?->name }}</a>-<a href="javascript:void(0);">{{ $item->product?->code }}</a>
+                                                </td>
 
+                                                <td >{{ $item->product?->current_stock }}</td>
+
+                                                <td>
+                                                    <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="{{ $item->quantity }}" style="width:100px;"
+                                                        min="1"
+                                                    >
+                                                </td>
+
+                                                <input type="hidden" name="purchase_price[]" class="purchase_price" value="{{ $item->product?->price }}" style="width:100px;">
+
+                                                <td class="price_td" mrp="{{ $item->product?->price }}" retail="{{ $item->product?->retail_price }}" purchase="{{ $item->product?->purchase_price }}" wholesale="{{ $item->product?->wholesale_price }}">
+                                                    <input type="number" name="price[]" class="form-control price"  placeholder="price" value="{{ $item->product?->price }}" style="width:100px;"
+                                                        onkeyup="$(this).next().val('').trigger('change');"
+                                                    >
+                                                    <select name="price_type[]" class="link" onchange="updatePriceTypePrice(this)">
+                                                        <option value="">Custom price</option>
+                                                        <option value="mrp" selected>MRP price - {{ $item->product?->price }}</option>
+                                                        <option value="retail">Retail price - {{ $item->product?->retail_price }}</option>
+                                                        <option value="wholesale">Wholesale price - {{ $item->product?->wholesale_price }}</option>
+                                                    </select>
+                                                </td>
+                                                <td class="text-end" >
+                                                    <input type="number" class="inline_total" readonly name="sub_total[]" value="{{ $item->sub_total }}" style="width:100px;">
+                                                </td>
+                                                <td>
+                                                    <a class="remove"><img src="{{ asset('backend') }}/img/icons/delete.svg" alt="svg"></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -102,7 +141,8 @@
                                         <h5>
                                             <input type="number"  name="discount" class="form-control discount"
                                                 placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
-                                                onblur="updateGrandTotal();">
+                                                onblur="updateGrandTotal();"
+                                                value="{{ $quotation ? $quotation->discount : '' }}">
                                         </h5>
                                     </li>
                                     <li>
@@ -110,7 +150,8 @@
                                         <h5>
                                             <input type="number" name="other_cost"
                                                 class="form-control other_cost" placeholder="Enter Other Cost"
-                                                onkeyup="updateGrandTotal();" onblur="updateGrandTotal();">
+                                                onkeyup="updateGrandTotal();" onblur="updateGrandTotal();"
+                                                value="{{ $quotation ? $quotation->other_cost : '' }}">
                                         </h5>
                                     </li>
 
@@ -118,7 +159,8 @@
                                     <li class="total">
                                         <h4>{{ trans('form.sale.grand total') }}</h4>
                                         <input type="number" readonly class="total_val form-control" name="grand_total"
-                                            style="margin-left:30px;">
+                                            style="margin-left:30px;"
+                                            value="{{ $quotation ? $quotation->grandtotal : '' }}">
                                     </li>
                                 </ul>
                             </div>
@@ -491,7 +533,7 @@
                     alert("Quotation saved successfully!");
                     // console.log(response);
                     // Redirect to quotation.index route
-                    window.location.href = "{{ route('quotation.index') }}";
+                    window.location.href = "{{ route('quotation.index') }}?quotation_id=" + response.id;
                 },
                 error: function(xhr, status, error) {
                     alert("Error submitting form.");

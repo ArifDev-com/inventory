@@ -94,7 +94,7 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ route('quotation.move_sale', $quotation->id) }}"
+                                            <a href="{{ route('sale.create', ['quotation_id' => $quotation->id]) }}"
                                                 class="dropdown-item confirm-text">
                                                 Move to Sales
                                             </a>
@@ -128,8 +128,10 @@
 </div>
 
 <script>
-    $('#example').DataTable({ pageLength: 100,
-
-        });
+    $('#example').DataTable({ pageLength: 100});
+    @if (request()->get('quotation_id'))
+        window.open("{{ route('quotation.print', request()->get('quotation_id')) }}", '_blank');
+        window.location.href = "{{ route('quotation.index') }}";
+    @endif
 </script>
 @endsection
