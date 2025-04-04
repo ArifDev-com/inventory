@@ -73,40 +73,32 @@
         box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
         margin-bottom: 30px;
     }
-
     a.card {
         text-decoration: none;
         color: #1f1f1f;
     }
-
     .card-title {
         color: #1f1f1f;
         font-size: 20px;
         font-weight: 500;
         margin-bottom: 20px;
     }
-
     .card-header {
         background-color: #fff;
     }
-
     .card-footer {
         background-color: #fff;
     }
-
     .card-body {
         width: 100%;
         padding: 10px;
     }
+
 </style>
 <div class="page-wrapper">
     <div class="content">
-
         @php
-            $authId = Auth::user()->id;
-            $logo = App\Models\ShopDocument::first();
             $user = Auth::user();
-            $user_pending = App\Models\User::where('id', $authId)->where('status',0)->first();
             $dueReports = App\Models\Sale::where('due_amount', '>', 0)
                 ->where('due_date', '<', now()->addDays(7))
                 ->orderBy('due_date', 'asc') // get upcoming due
@@ -240,6 +232,82 @@
         @endif
 
         @if($user->user_role == 'superadmin')
+        <div class="row">
+            <div class="col-md-8">
+                <div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <a class="card" style="border-top: 3px solid #1071d6;" href="#">
+                                <div class="card-header border-bottom">
+                                     <h5>Financial Summary</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <b>Today Total Collection</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{-- due pay + sale --}}
+                                            <b>
+                                                {{ App\Models\CutomerPayment::whereDate('created_at', now())
+                                                    ->sum('paying_amount') }}
+                                            </b>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <b>Today Due Collection</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b>
+                                                {{ App\Models\CutomerPayment::whereDate('created_at', now())
+                                                    ->where('is_due_pay', 1)
+                                                    ->sum('paying_amount') }}
+                                            </b>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <b>Today Total Sale</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b>
+                                                {{ App\Models\CutomerPayment::whereDate('created_at', now())
+                                                    ->where('is_due_pay', 0)
+                                                    ->sum('paying_amount') }}
+                                            </b>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <b>Today Total Return</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b>
+                                                {{
+                                                    App\Models\SaleReturn::whereDate('created_at', now())
+                                                    ->sum('paid_amount')
+                                                }}
+                                            </b>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <b>Today Total Expense</b>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <b>
+                                                {{ App\Models\Expense::whereDate('created_at', now())->sum('amount') }}
+                                            </b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @if($cancellationRequests->count() > 0)
             <hr>
             <div>
@@ -321,15 +389,9 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- {!! $sales->links() !!} --}}
                 </div>
                 <script>
-                    $('#example').DataTable({ pageLength: 100,
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'csv', 'excel', 'pdf', 'print'
-                        ]
-                    });
+                    $('#example').DataTable({ pageLength: 100 });
                 </script>
             </div>
             @endif
@@ -409,12 +471,7 @@
                     {{-- {!! $sales->links() !!} --}}
                 </div>
                 <script>
-                    $('#example2').DataTable({ pageLength: 100,
-                                dom: 'Bfrtip',
-                                buttons: [
-                                    'csv', 'excel', 'pdf', 'print'
-                                ]
-                            });
+                    $('#example2').DataTable({ pageLength: 100 });
                 </script>
             </div>
             @endif
