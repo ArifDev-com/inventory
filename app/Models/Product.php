@@ -10,8 +10,9 @@ class Product extends Model
     use HasFactory;
 
     protected $appends = [
-        'current_stock'
+        'current_stock',
     ];
+
     protected $fillable = [
         'name',
         'product_size',
@@ -40,7 +41,18 @@ class Product extends Model
         'alert_quantity',
     ];
 
-    public function user(){
+    // set actiive status query scope by default
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('active', function ($builder) {
+            $builder->where('status', 'active');
+        });
+    }
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -93,14 +105,15 @@ class Product extends Model
     {
         return $this->hasMany(SaleReturnItem::class);
     }
+
     public function approvedSaleReturns()
     {
-        return $this->saleReturns()->whereHas('saleReturn', function($query) {
+        return $this->saleReturns()->whereHas('saleReturn', function ($query) {
             $query->where('status', 'received');
         });
     }
 
-    function getCurrentStockAttribute()
+    public function getCurrentStockAttribute()
     {
         // add stock from return amount later
         return $this->quantity + $this->stockUpdates()->sum('quantity') + $this->purchaseItems()->sum('quantity') - $this->saleItems()->sum('quantity') + $this->approvedSaleReturns()->sum('quantity');
@@ -126,6 +139,7 @@ class Product extends Model
 
         return $this->quantity + $purchasesBefore + $stockUpdatesBefore - $salesBefore + $approvedSaleReturnsBefore;
     }
+
     public function stockQuantityAtEndOf($date): int
     {
         $purchasesUpToDate = $this->purchaseItems()
@@ -147,5 +161,4 @@ class Product extends Model
         // dump($this->quantity , $purchasesUpToDate , $stockUpdatesUpToDate , $salesUpToDate);
         return $this->quantity + $purchasesUpToDate + $stockUpdatesUpToDate - $salesUpToDate + $approvedSaleReturnsUpToDate;
     }
-
 }

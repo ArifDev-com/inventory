@@ -191,7 +191,9 @@
                 </p>
             </td>
             <td>
-                0
+                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                    {{ $payment->discount }}
+                </p>
             </td>
             <td>
                 <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
@@ -205,7 +207,7 @@
                 Total
             </td>
             <td style="padding: 5px">
-                0
+                {{ $payments->sum('discount') }}
             </td>
             <td style="text-align: center;">
                 {{ $payments->sum('paying_amount') }}

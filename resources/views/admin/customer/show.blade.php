@@ -95,6 +95,7 @@
                                     <th>Payment Date</th>
                                     <th>Inv. No.</th>
                                     <th>Paid Amount</th>
+                                    <th>Discount</th>
                                     <th>Payment Method</th>
                                     <th>Due Date</th>
                                 </tr>
@@ -106,6 +107,7 @@
                                     <td>{{ $payment->date }}</td>
                                     <td>{{ $payment->sale?->ref_code }}</td>
                                     <td>{{ $payment->paying_amount }}</td>
+                                    <td>{{ $payment->discount }}</td>
                                     <td>{{ $payment->payment_method }}</td>
                                     <td>{{ $payment->due_date }}</td>
                                 </tr>
@@ -201,7 +203,7 @@
                                                     Sale Return</a>
                                             </li> --}}
                                             {{-- @endif --}}
-                                            @if(!$sale->cancel_requested && auth()->user()->id == $sale->user_id)   
+                                            @if(!$sale->cancel_requested && auth()->user()->id == $sale->user_id)
                                             <li>
                                                 <a href="{{ route('sale.cancel', [$sale->id]) }}"
                                                     onclick="return confirm('Are you sure you want to request cancellation?')"

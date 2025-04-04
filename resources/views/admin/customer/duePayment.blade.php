@@ -51,7 +51,17 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input type="number" class="form-control" name="paying_amount" required min="0">
+                                <input type="number" class="form-control" name="paying_amount" required min="0"
+                                    onchange="calculateNextDue()" onkeyup="calculateNextDue()"
+                                >
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Discount</label>
+                                <input type="number" class="form-control" name="discount" min="0"
+                                    onchange="calculateNextDue()" onkeyup="calculateNextDue()"
+                                >
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -108,6 +118,14 @@
     @endphp
 <script>
     let allSales = @json($sales);
+    function calculateNextDue() {
+        let payingAmount = $('[name="paying_amount"]').val();
+        let discount = $('[name="discount"]').val();
+        let nextDue = $('[name="paying_amount"]').attr('max') - (
+            Number(payingAmount || 0) + Number(discount || 0)
+        );
+        $('input[name="next_due"]').val(nextDue);
+    }
     $(document).ready(function () {
         $('select[name="customer_id"]').on('change', function () {
             var customer_id = $(this).val();
@@ -116,14 +134,8 @@
             $('[name="paying_amount"]').val(0);
             $('[name="paying_amount"]').attr('max', totalDue);
             $('[name="next_due"]').val(totalDue);
-
-            $('input[name="paying_amount"]').on('keyup', function () {
-                let nextDue = $(this).attr('max') - $(this).val();
-                $('input[name="next_due"]').val(nextDue);
-            });
-
+            $('[name="discount"]').attr('max', totalDue);
         });
-
         @if(request()->customer)
         setTimeout(() => {
             // check url param customer

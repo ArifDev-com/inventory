@@ -45,6 +45,7 @@
                                 <th>Phone</th>
                                 <th>Address</th>
                                 <th>Paid Amount</th>
+                                <th>Discount</th>
                                 <th>Due Date</th>
                                 <th>Action</th>
                             </tr>
@@ -59,6 +60,7 @@
                                 <td>{{ $payment->customer?->phone }}</td>
                                 <td>{{ $payment->customer?->address }}</td>
                                 <td>{{ $payment->paying_amount }}</td>
+                                <td>{{ $payment->discount }}</td>
                                 <td>{{ $payment->due_date }}</td>
                                 <td>
                                     <a href="{{ route('due.payment.print', $payment->id) }}" class="btn btn-info btn-sm">

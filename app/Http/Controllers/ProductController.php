@@ -32,7 +32,8 @@ class ProductController extends Controller
         $warehouses = Warehouse::latest()->get();
         $suppliers = Supplier::latest()->get();
         $authId = Auth::user()->id;
-        $products = Product::with('user')
+        $products = Product::withoutGlobalScope('active')
+            ->with('user')
             ->where('status', '!=', 'active')
             ->orWhereNull('status')
             // ->latest()
@@ -190,7 +191,7 @@ class ProductController extends Controller
         $units = Unit::latest()->get();
         $warehouses = Warehouse::latest()->get();
         $suppliers = Supplier::latest()->get();
-        $product = Product::findOrFail($pro_id);
+        $product = Product::withoutGlobalScope('active')->findOrFail($pro_id);
 
         return view('admin.products.edit', compact('product', 'categories', 'subCategories', 'brands', 'units', 'warehouses', 'suppliers'));
     }
@@ -200,7 +201,7 @@ class ProductController extends Controller
 
         $pro_id = $request->id;
 
-        $product = Product::findOrFail($pro_id);
+        $product = Product::withoutGlobalScope('active')->findOrFail($pro_id);
 
         if ($request->hasFile('image')) {
             $imag = $request->file('image');
@@ -242,7 +243,9 @@ class ProductController extends Controller
             'status' => $request->status,
             'update_at' => Carbon::now(),
         ]);
-
+        if($product->status == 'inactive') {
+            return redirect()->route('product.inactive')->with('success', 'Product successfully Updated');
+        }
         return redirect()->route('product.index')->with('success', 'Product successfully Updated');
     }
 
@@ -262,7 +265,11 @@ class ProductController extends Controller
 
     public function product_details($pro_id)
     {
-        $product = Product::with(['category', 'subcategory', 'brand', 'unit', 'warehouse', 'supplier'])->where('id', $pro_id)->latest()->first();
+        $product = Product::withoutGlobalScope('active')
+            ->with(['category', 'subcategory', 'brand', 'unit', 'warehouse', 'supplier'])
+            ->where('id', $pro_id)
+            ->latest()
+            ->first();
 
         return view('admin.products.product_details', compact('product'));
     }

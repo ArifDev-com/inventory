@@ -12,6 +12,7 @@ class CutomerPayment extends Model
     protected $casts = [
         'affected_sales' => 'array',
         'is_due_pay' => 'boolean',
+        'discount' => 'integer',
     ];
 
     protected $fillable = [
@@ -27,6 +28,7 @@ class CutomerPayment extends Model
         'affected_sales',
         'is_due_pay',
         'due_date',
+        'discount',
     ];
 
     public function customer()

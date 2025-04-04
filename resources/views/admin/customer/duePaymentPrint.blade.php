@@ -96,6 +96,16 @@
             <tr style="height: 17pt;">
                 <td bgcolor="#EFEFEF" style="width: 50%; padding: 5px">
 
+                        Discount
+
+                </td>
+                <td>
+                    {{ $payment->discount }}
+                </td>
+            </tr>
+            <tr style="height: 17pt;">
+                <td bgcolor="#EFEFEF" style="width: 50%; padding: 5px">
+
                         Current Due
 
                 </td>
