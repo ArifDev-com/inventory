@@ -3,13 +3,16 @@
 @section('name', 'Due paid')
 
 @section('content')
-    <table>
+<style>
+    .c_info td {color: #383838; font-size: 14px;}
+</style>
+    <table class="c_info">
         <tr>
             <td>
                 <div>
                     <table>
                         <tr>
-                            <td>
+                            <td style="width: 26%;">
                                 Cell No.
                             </td>
                             <td>
@@ -18,23 +21,23 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                Customer
+                            <td style="width: 26%;">
+                                Customer name
                             </td>
                             <td>
                                 : {{ $payment->customer?->name }}
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                Company
+                            <td style="width: 26%;">
+                                Company name
                             </td>
                             <td>
                                 : {{ $payment->customer?->company_name }}
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="width: 26%;">
                                 Address
                             </td>
                             <td>
@@ -71,7 +74,7 @@
             </td>
         </tr>
     </table>
-    <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 20px" cellspacing="0" class="border">
+    <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 10px" cellspacing="0" class="border">
         <tbody>
             <tr style="height: 17pt;">
                 <td bgcolor="#EFEFEF" style="width: 50%; padding: 5px">

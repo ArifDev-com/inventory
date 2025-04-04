@@ -12,7 +12,11 @@ class Product extends Model
     protected $appends = [
         'current_stock',
     ];
-
+    protected $casts = [
+        'wholesale_price' => 'integer',
+        'retail_price' => 'integer',
+        'price' => 'integer',
+    ];
     protected $fillable = [
         'name',
         'product_size',

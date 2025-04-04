@@ -63,7 +63,7 @@
                                 <td>{{ $payment->discount }}</td>
                                 <td>{{ $payment->due_date }}</td>
                                 <td>
-                                    <a href="{{ route('due.payment.print', $payment->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('due.payment.print', $payment->id) }}" class="btn btn-info btn-sm" target="_blank">
                                         <i class="fa fa-print"></i> Print
                                     </a>
                                 </td>

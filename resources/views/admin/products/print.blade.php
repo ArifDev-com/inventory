@@ -1,6 +1,6 @@
 @extends('layouts.pdf')
 
-@section('name', 'Product list')
+@section('name', $active ? 'Active Products' : 'Inactive Products')
 
 @section('content')
     <table style="margin-top: 30px;">
@@ -38,7 +38,7 @@
                 </td>
                 <td
                     style="
-                        width: 46pt;
+                        width: 56pt;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -58,7 +58,6 @@
                 </td>
                 <td
                     style="
-                        width: 218pt;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -98,6 +97,72 @@
                         Quantity
                     </p>
                 </td>
+                <td
+                    style="
+                        width: 80pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                        Wholesale Price
+                    </p>
+                </td>
+                <td
+                    style="
+                        width: 70pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                        Retail Price
+                    </p>
+                </td>
+                <td
+                    style="
+                        width: 50pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    "
+                    bgcolor="#EFEFEF"
+                >
+                    <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                        Price
+                    </p>
+                </td>
             </tr>
         </thead>
         <tbody>
@@ -115,7 +180,34 @@
                     <td style="padding: 3px; color: #383838;">
                         {{ $product->current_stock }}
                     </td>
+                    <td style="padding: 3px; color: #383838;">
+                        {{ $product->wholesale_price }}
+                    </td>
+                    <td style="padding: 3px; color: #383838; text-align: center;">
+                        {{ $product->retail_price }}
+                    </td>
+                    <td style="padding: 3px; color: #383838; text-align: center;">
+                        {{ $product->price }}
+                    </td>
+                </tr>
             @endforeach
+            <tr>
+                <td colspan="3" style="text-align: right;">
+                    Total
+                </td>
+                <td>
+                    {{ $products->sum('current_stock') }}
+                </td>
+                <td>
+                    {{ $products->sum('wholesale_price') }}
+                </td>
+                <td>
+                    {{ $products->sum('retail_price') }}
+                </td>
+                <td>
+                    {{ $products->sum('price') }}
+                </td>
+            </tr>
         </tbody>
     </table>
 @endsection

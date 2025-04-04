@@ -37,13 +37,13 @@
                             @foreach($customers as $key => $customer)
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>
+                                <td style="text-align: left;">
                                     <a href="{{ route('customer.show', ['customer' => $customer->id]) }}">
                                         {{ $customer->name }}
                                     </a>
                                 </td>
                                 <td>{{ $customer->phone }}</td>
-                                <td>{{ $customer->address }}</td>
+                                <td style="text-align: left;">{{ $customer->address }}</td>
                                 <td>{{ $customer->sales()->sum('due_amount') }}</td>
                                 <td>
                                     {{ $customer->sales()->where('due_amount', '>', 0)->max('due_date') }}

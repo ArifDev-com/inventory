@@ -13,6 +13,8 @@ use App\Models\SubCategory;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\Warehouse;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +25,7 @@ use Milon\Barcode\DNS1D;
 
 class ProductController extends Controller
 {
-    public function inactive()
+    public function inactive(Request $request)
     {
         $category = Category::latest()->get();
         $subCategory = SubCategory::latest()->get();
@@ -40,9 +42,14 @@ class ProductController extends Controller
             ->orderBy('code', 'asc')
             ->get();
 
+        if($request->print) {
+            $active = 0;
+            $pdf = FacadePdf::loadView('admin.products.print', compact('products', 'active'));
+            return $pdf->stream('Products.pdf');
+        }
         return view('admin.products.inactive', compact('products', 'category', 'subCategory', 'brand', 'unit', 'warehouses', 'suppliers'));
     }
-    public function index()
+    public function index(Request $request)
     {
         $category = Category::latest()->get();
         $subCategory = SubCategory::latest()->get();
@@ -54,7 +61,11 @@ class ProductController extends Controller
         $products = Product::with('user')->where('status', 'active')
             ->orderBy('code', 'asc')
             ->get();
-
+        if($request->print) {
+            $active = 1;
+            $pdf = FacadePdf::loadView('admin.products.print', compact('products', 'active'));
+            return $pdf->stream('Products.pdf');
+        }
         return view('admin.products.index', compact('products', 'category', 'subCategory', 'brand', 'unit', 'warehouses', 'suppliers'));
     }
 
