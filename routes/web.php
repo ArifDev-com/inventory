@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
@@ -619,4 +620,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/reports/product-list', [App\Http\Controllers\ReportController::class, 'productList'])->name('reports.product-list');
 
     Route::get('export/{type}', [App\Http\Controllers\ExportController::class, 'export'])->name('export');
+
+    Route::get('/collection-details', [HomeController::class, 'collectionDetails'])->name('collection.details');
 });

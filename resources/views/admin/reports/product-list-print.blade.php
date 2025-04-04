@@ -115,6 +115,7 @@
                     <td style="padding: 3px; color: #383838;">
                         {{ $product->current_stock }}
                     </td>
+                </tr>
             @endforeach
         </tbody>
     </table>

@@ -93,7 +93,6 @@
         width: 100%;
         padding: 10px;
     }
-
 </style>
 <div class="page-wrapper">
     <div class="content">
@@ -237,23 +236,23 @@
                 <div>
                     <div class="row">
                         <div class="col-md-8">
-                            <a class="card" style="border-top: 3px solid #1071d6;" href="#">
+                            <div class="card" style="border-top: 3px solid #1071d6;">
                                 <div class="card-header border-bottom">
-                                     <h5>Financial Summary</h5>
+                                    <h5>Financial Summary</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
+                                    <a href="{{ route('collection.details') }}" class="row">
                                         <div class="col-md-6">
                                             <b>Today Total Collection</b>
                                         </div>
                                         <div class="col-md-6">
-                                            {{-- due pay + sale --}}
+                                            {{-- due_pay + sale --}}
                                             <b>
                                                 {{ App\Models\CutomerPayment::whereDate('created_at', now())
                                                     ->sum('paying_amount') }}
                                             </b>
                                         </div>
-                                    </div>
+                                    </a>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <b>Today Due Collection</b>
@@ -302,7 +301,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -365,25 +364,16 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
-                                        aria-expanded="true">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    <a href="{{ route('sale.delete', $sale->id) }}"
+                                        onclick="return confirm('Are you sure you want to delete this sale?')"
+                                        class="btn btn-primary btn-sm text-white">
+                                        <i class="fa fa-check"></i>
                                     </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ route('sale.cancel.undo', [$sale->id]) }}"
-                                                onclick="return confirm('Are you sure you want to undo cancellation?')"
-                                                class="dropdown-item confirm-text">
-                                                Undo Cancellation</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('sale.delete', $sale->id) }}"
-                                                onclick="return confirm('Are you sure you want to delete this sale?')"
-                                                class="dropdown-item confirm-text"><img
-                                                    src="{{ asset('backend') }}/img/icons/delete1.svg" class="me-2"
-                                                    alt="img">{{ trans('table.sale.delete sale') }}</a>
-                                        </li>
-                                    </ul>
+                                    <a href="{{ route('sale.cancel.undo', [$sale->id]) }}"
+                                        onclick="return confirm('Are you sure you want to undo cancellation?')"
+                                        class="btn btn-danger btn-sm text-white">
+                                        <i class="fa fa-times"></i>
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach
@@ -441,28 +431,16 @@
                                     {{ $saleReturn->user?->name }}
                                 </td>
                                 <td class="text-center">
-                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
-                                        aria-expanded="true">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    <a href="{{ route('sale.return.approve', [$saleReturn->id]) }}"
+                                        onclick="return confirm('Are you sure you want to approve this sale return?')"
+                                        class="btn btn-primary btn-sm text-white">
+                                        <i class="fa fa-check"></i>
                                     </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ route('sale.return.approve', [$saleReturn->id]) }}"
-                                                onclick="return confirm('Are you sure you want to approve this sale return?')"
-                                                class="dropdown-item confirm-text">
-                                                Approve Sale Return
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('sale.return.delete', $saleReturn->id) }}"
-                                                onclick="return confirm('Are you sure you want to delete this sale return?')"
-                                                class="dropdown-item confirm-text"><img
-                                                    src="{{ asset('backend') }}/img/icons/delete1.svg" class="me-2"
-                                                    alt="img">
-                                                Delete Sale Return
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <a href="{{ route('sale.return.delete', $saleReturn->id) }}"
+                                        onclick="return confirm('Are you sure you want to delete this sale return?')"
+                                        class="btn btn-danger btn-sm text-white">
+                                        <i class="fa fa-times"></i>
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach

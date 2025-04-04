@@ -27,7 +27,7 @@
                                 class="{{ request()->is('admin/products/inactive') ? 'active' : '' }}">Inactive Product List</a></li>
                     </ul>
                 </li>
-                
+
                 <li class="submenu">
                     <a href="javascript:void(0);"
                         class="{{ request()->is('admin/reports/datewise-stock') || request()->is('admin/reports/product-list') || request()->is('admin/products/low-stock') ? 'active' : '' }}"><img
@@ -50,7 +50,7 @@
                         @endif
                         <li><a href="{{ route('reports.datewise-stock') }}"
                                 class="{{ request()->is('admin/reports/datewise-stock') ? 'active' : '' }}">Date Wise Stock </a></li>
-                        
+
                     </ul>
                 </li>
 
@@ -87,6 +87,8 @@
                         <li><a href="{{ route('sale.index') }}"
                                 class="{{ request()->is('admin/sales') ? 'active' : '' }}">{{
                                 trans('sidebar.sale.sale_list') }}</a></li>
+                        <li><a href="{{ route('sale.create') }}"
+                                class="{{ request()->is('admin/sale/create')  ? 'active' : '' }}">Cancelled Sales</a></li>
                     </ul>
                 </li>
                 <li class="submenu ">
@@ -116,7 +118,7 @@
                     </ul>
                 </li>
 
-                
+
                 @if(auth()->user()->user_role == 'admin' || auth()->user()->user_role == 'superadmin')
                 <li class="submenu ">
                     <a href="javascript:void(0);"
@@ -133,7 +135,7 @@
                     </ul>
                 </li>
                 @endif
-                
+
                 <li class="submenu ">
                     <a href="javascript:void(0);"
                         class="{{ (request()->is('admin/customer/due/pay') || request()->is('admin/customer/due/list') || request()->is('admin/customer/due/pay/list/customers')) ? 'active' : '' }}"><img

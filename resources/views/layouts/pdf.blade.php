@@ -44,7 +44,7 @@
             text-decoration: none;
             font-size: 9.7pt;
         }
-        
+
 
         h1 {
             color: #3d3d3d;
@@ -88,22 +88,23 @@
         footer {
             position: fixed;
             /* bottom: -30px; */
-            bottom: 20px;
+            bottom: -35px;
             left: 0px;
             right: 0px;
         }
-        
+
         footer td{
             font-size: 11px;
         }
 
         @page {
             size: auto;
-            margin: 0px 30px;
+            /* margin: 0px 30px; */
+            margin-bottom: 50px;
             margin-top: 100px;
             padding-top: 50px;
         }
-        
+
         html, body{
             margin-top: 10px;
         }

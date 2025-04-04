@@ -214,13 +214,13 @@
                     <td
                     >
                         <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
-                            {{ $item->product->code }}
+                            {{ $item->product?->code }}
                         </p>
                     </td>
                     <td
                     >
                         <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
-                            {{ $item->product->name }}
+                            {{ $item->product?->name }}
                         </p>
                     </td>
                     <td

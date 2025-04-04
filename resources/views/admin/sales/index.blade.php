@@ -78,15 +78,15 @@
                                     {{-- @dump($sale->cancel_requested) --}}
                                     @if($sale->cancel_requested)
                                     <br>
-                                    <span class="badge bg-danger">Requested to Cancel</span>
+                                    <span class="badge bg-danger">Cancel Pending</span>
                                     @endif
                                     {{-- @dump($sale->returns->first()?->status) --}}
                                     @if($sale->returns->count())
                                     <br>
                                         @if ($sale->returns()->orderBy('id', 'desc')->first()->status == 'received')
-                                        <span class="badge bg-info">Returned</span>
+                                        <span class="badge bg-info">Return Approved</span>
                                         @else
-                                        <span class="badge bg-warning">Return Requested</span>
+                                        <span class="badge bg-warning">Return Pending</span>
                                         @endif
                                     @endif
                                 </td>
