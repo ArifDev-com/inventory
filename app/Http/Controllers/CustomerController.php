@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\Customer;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -223,7 +224,13 @@ class CustomerController extends Controller
         $customers = Customer::latest()
             ->with(['sales'])
             ->get();
-        $pdf = Pdf::loadView('admin.customer.print', compact('customers'));
-        return $pdf->stream('Customer List.pdf', ['Attachment' => false]);
+        $html = view('admin.customer.print', compact('customers'))->render();
+        return SnappyPdf::loadHTML($html)
+            ->setPaper('a4')
+            ->setOption('margin-top', '10mm')
+            ->setOption('margin-bottom', '10mm')
+            ->setOption('margin-left', '10mm')
+            ->setOption('margin-right', '10mm')
+            ->stream('Customer List.pdf');
     }
 }
