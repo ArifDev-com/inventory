@@ -137,7 +137,8 @@
         align-items: initial;
         alignment-baseline: middle;
         float: left;"><i class="fa-solid fa-clock"></i> <span id="printDay"></span>, <span id="printDate"> </span>,
-            <span id="printTime"></span></p>
+            <span id="printTime"></span>
+        </p>
 
         <!-- <div class="">
   <div class="date" id="printDate"></div>
@@ -304,7 +305,8 @@
                                             <p class="noti-details"><span class="noti-title">Misty Tison</span> added
                                                 <span class="noti-title">Domenic Houston</span> and <span
                                                     class="noti-title">Claire Mapes</span> to project <span
-                                                    class="noti-title">Doctor available module</span></p>
+                                                    class="noti-title">Doctor available module</span>
+                                            </p>
                                             <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
                                         </div>
                                     </div>

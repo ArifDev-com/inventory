@@ -137,7 +137,8 @@
         align-items: initial;
         alignment-baseline: middle;
         float: left;"><i class="fa-solid fa-clock"></i> <span id="printDay"></span>, <span id="printDate"> </span>,
-            <span id="printTime"></span></p>
+            <span id="printTime"></span>
+        </p>
 
         <!-- <div class="">
   <div class="date" id="printDate"></div>
@@ -233,7 +234,8 @@
                                     </span>
                                     <div class="media-body flex-grow-1">
                                         <p class="noti-details"><span class="noti-title">John Doe</span> added new task
-                                            <span class="noti-title">Patient appointment booking</span></p>
+                                            <span class="noti-title">Patient appointment booking</span>
+                                        </p>
                                         <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
                                     </div>
                                 </div>

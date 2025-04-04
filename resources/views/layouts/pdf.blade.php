@@ -42,8 +42,9 @@
             font-style: normal;
             font-weight: bold;
             text-decoration: none;
-            font-size: 10pt;
+            font-size: 9.7pt;
         }
+        
 
         h1 {
             color: #3d3d3d;
@@ -87,16 +88,24 @@
         footer {
             position: fixed;
             /* bottom: -30px; */
-            bottom: -30px;
+            bottom: 20px;
             left: 0px;
             right: 0px;
+        }
+        
+        footer td{
+            font-size: 11px;
         }
 
         @page {
             size: auto;
-            margin: 50px;
+            margin: 0px 30px;
             margin-top: 100px;
             padding-top: 50px;
+        }
+        
+        html, body{
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -109,9 +118,9 @@
                     <img src="{{'data:image/png;base64,' . base64_encode(file_get_contents(public_path('logo2.png')))}}"
                         alt="image" style="width: 160px; height: auto;">
                 </td>
-                <td style="text-align: left; padding-left: 180px; ">
-                    <div style="display: inline-block; width: 450px; font-size: 11px;">
-                        73, Kawran Bazar (1st Floor), Tejgaon, Dhaka-1215, Bangladesh
+                <td style="text-align: left; padding-left: 160px; ">
+                    <div style="display: inline-block; width: 500px; font-size: 13px; color: #342b2b; font-family: Arial, sans-serif; font-weight: normal; letter-spacing: -0.20px;">
+                        73, Karwan Bazar (1st Floor), Tejgaon, Dhaka-1215, Bangladesh.
                         <br>
                         Br. Office: 111, Borua Baganbari, Khilkhet, Dhaka-1229.
                         <br>
@@ -135,11 +144,11 @@
                 background: #807e7f;
                 color: #fff;
                 border-radius: 5px;
-                font-size: 20px;
+                font-size: 24px;
                 font-weight: bold;
                 font-family: Arial, sans-serif;
                 display: inline-block;
-                padding: 10px;
+                padding: 6px 10px;
                 text-transform: uppercase;
                 ">
             @yield('name')

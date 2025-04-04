@@ -32,14 +32,14 @@
         <div class="card">
             <div class="card-body">
                 @if (session()->has('success'))
-                    <div class="alert alert-success">
-                        {{ session()->get('success') }}
-                    </div>
+                <div class="alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
                 @endif
                 @if (session()->has('delete'))
-                    <div class="alert alert-danger">
-                        {{ session()->get('delete') }}
-                    </div>
+                <div class="alert alert-danger">
+                    {{ session()->get('delete') }}
+                </div>
                 @endif
                 <!-- /Filter -->
                 <div class="table-responsive">
@@ -78,12 +78,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($quotation->items as $item)
+                                            @foreach($quotation->items as $item)
                                             <tr>
-                                                <td style="border: 1px solid gray; text-align: left;">{{ $item->product?->name }}</td>
-                                                <td style="border: 1px solid gray; width: 70px">{{ $item->quantity }}</td>
+                                                <td style="border: 1px solid gray; text-align: left;">{{
+                                                    $item->product?->name }}</td>
+                                                <td style="border: 1px solid gray; width: 70px">{{ $item->quantity }}
+                                                </td>
                                             </tr>
-                                        @endforeach
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </td>
@@ -102,19 +104,19 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('quotation.print', $quotation->id) }}"
-                                                target="_blank"
+                                            <a href="{{ route('quotation.print', $quotation->id) }}" target="_blank"
                                                 class="dropdown-item confirm-text">
                                                 Print
                                             </a>
                                         </li>
-                                        @if (auth()->user()->role == 'superadmin' || auth()->user()->role == 'admin')
-                                            <li>
-                                                <a href="{{ route('quotation.delete', $quotation->id) }}"
-                                                    class="dropdown-item confirm-text">
-                                                    Delete
-                                                </a>
-                                            </li>
+                                        @if (auth()->user()->user_role == 'superadmin' || auth()->user()->user_role ==
+                                        'admin')
+                                        <li>
+                                            <a href="{{ route('quotation.delete', $quotation->id) }}"
+                                                class="dropdown-item confirm-text">
+                                                Delete
+                                            </a>
+                                        </li>
                                         @endif
                                     </ul>
                                 </td>

@@ -123,13 +123,8 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ route('sale.return.pdf', $saleReturn->id) }}"  class="dropdown-item">
+                                            <a target="_blank" href="{{ route('sale.return.pdf', $saleReturn->id) }}"  class="dropdown-item">
                                                 Print Return
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('sale.return.pdf', $saleReturn->id) }}"  class="dropdown-item">
-                                                View
                                             </a>
                                         </li>
                                     </ul>

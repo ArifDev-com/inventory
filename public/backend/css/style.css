@@ -7988,3 +7988,12 @@ table.dataTable tbody td{
 
 /* Payment method colors */
 
+/* Custom Css Sujon */
+
+.fa-ellipsis-v{
+  font-size: 20px;
+  background: #00b9ff !important;
+  padding: 8px;
+  border-radius: 5px;
+  color: #fff;
+}

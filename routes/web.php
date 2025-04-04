@@ -582,6 +582,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/return-reports', [App\Http\Controllers\ReportController::class, 'returnReport'])->name('return.report');
     Route::get('/return-reports/print', [App\Http\Controllers\ReportController::class, 'returnReportPrint'])->name('return.report.print');
     Route::get('/profit/loss', [App\Http\Controllers\ReportController::class, 'profitLoss'])->name('profit.loss');
+    Route::get('/reports/product-added-report', [App\Http\Controllers\ReportController::class, 'productAddedReport'])->name('product.added.report');
 
     // Payment Gateway Process Open Link
     Route::get('/payment/gateway/dashboard', [App\Http\Controllers\PaymentGatewayController::class, 'dashboardPaymentGateway'])->name('payment.gateway.dashboard');

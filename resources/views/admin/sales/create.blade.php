@@ -143,7 +143,7 @@
                                         <h4>Discount</h4>
                                         <h5>
                                             <input type="number"  name="discount" class="form-control discount"
-                                                placeholder="Enter Other Cost" onkeyup="updateGrandTotal();"
+                                                placeholder="Enter Discount" onkeyup="updateGrandTotal();"
                                                 onblur="updateGrandTotal();"
                                                 value="{{ $quotation ? $quotation->discount : '' }}">
                                         </h5>
@@ -215,7 +215,7 @@
                                 onclick="addPaymentMethod()" type="button"
                                 id="add_payment_method">
                                 <i class="fa fa-plus"></i>
-                                Add Payment method
+                                Add More Method
                             </button>
                         </div>
 

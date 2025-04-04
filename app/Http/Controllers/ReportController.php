@@ -513,4 +513,23 @@ class ReportController extends Controller
         }
         return view('admin.reports.return-list', compact('saleReturns', 'fromDate', 'toDate'));
     }
+
+    public function productAddedReport(Request $request)
+    {
+        $fromDate = now()->startOfMonth()->format('Y-m-d');
+        $toDate = now()->format('Y-m-d');
+        if (($request->from_date) && ($request->to_date)) {
+            $fromDate = Carbon::parse($request->from_date)->format('Y-m-d');
+            $toDate = Carbon::parse($request->to_date)->format('Y-m-d');
+        }
+        // dd($fromDate, $toDate);
+        $updates = ProductStockUpdate::query()
+            ->whereBetween('created_at', [$fromDate . ' 00:00:00', $toDate . ' 23:59:59'])
+            ->get();
+        if($request->print) {
+            $pdf = Pdf::loadView('admin.reports.product-added-report-print', compact('updates', 'fromDate', 'toDate'));
+            return $pdf->stream('Product Added Report.pdf');
+        }
+        return view('admin.reports.product-added-report', compact('updates', 'fromDate', 'toDate'));
+    }
 }

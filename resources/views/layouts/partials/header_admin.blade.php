@@ -138,7 +138,8 @@ $admin = \Auth::check() && \Auth::id() == 2;
         align-items: initial;
         alignment-baseline: middle;
         float: left;"><i class="fa-solid fa-clock"></i> <span id="printDay"></span>, <span id="printDate"> </span>,
-      <span id="printTime"></span></p>
+      <span id="printTime"></span>
+    </p>
 
     <!-- <div class="">
   <div class="date" id="printDate"></div>

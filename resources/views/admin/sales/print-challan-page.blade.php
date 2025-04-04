@@ -3,45 +3,48 @@
 CHALLAN
 @endsection
 @section('content')
-    <table>
+<style>
+    .c_info td {color: #383838; font-size: 14px;}
+</style>
+    <table class="c_info">
         <tr>
             <td>
                 <div>
                     <table>
-                        <tr>
-                            <td>
-                                Cell No.
-                            </td>
-                            <td>
-                                :
-                                {{ $sale->customer?->phone }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Customer
-                            </td>
-                            <td>
-                                : {{ $sale->customer?->name }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Company
-                            </td>
-                            <td>
-                                : {{ $sale->customer?->company_name }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Address
-                            </td>
-                            <td>
-                                : {{ $sale->customer?->address }}
-                            </td>
-                        </tr>
-                    </table>
+                    <tr>
+                        <td style="width: 26%;">
+                            Cell No.
+                        </td>
+                        <td>
+                            :
+                            {{ $sale->customer?->phone }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 26%">
+                            Customer Name
+                        </td>
+                        <td>
+                            : {{ $sale->customer?->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 26%">
+                            Company Name
+                        </td>
+                        <td>
+                            : {{ $sale->customer?->company_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 26%">
+                            Address
+                        </td>
+                        <td>
+                            : {{ $sale->customer?->address }}
+                        </td>
+                    </tr>
+                </table>
                 </div>
             </td>
             <td style="text-align: right">
@@ -79,9 +82,9 @@ CHALLAN
             </td>
         </tr>
     </table>
-        <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 20px" cellspacing="0" class="border">
+        <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 8px" cellspacing="0" class="border">
             <tbody>
-                <tr style="height: 20pt;">
+                <tr style="height: 16pt;">
                     <td
                         style="
                             width: 43pt;
@@ -100,7 +103,7 @@ CHALLAN
                         "
                         bgcolor="#EFEFEF"
                     >
-                        <p class="s2" style="padding-top: 3pt; text-indent: 0pt; text-align: center;">SL No.</p>
+                        <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">SL No.</p>
                     </td>
                     <td
                         style="
@@ -120,7 +123,7 @@ CHALLAN
                         "
                         bgcolor="#EFEFEF"
                     >
-                        <p class="s2" style="padding-top: 3pt; text-indent: 0pt; text-align: center;">Item Code</p>
+                        <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Item Code</p>
                     </td>
                     <td
                         style="
@@ -140,7 +143,7 @@ CHALLAN
                         "
                         bgcolor="#EFEFEF"
                     >
-                        <p class="s2" style="padding-top: 3pt; text-indent: 0pt; text-align: center;">Particulars</p>
+                        <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Particulars</p>
                     </td>
                     <td
                         style="
@@ -160,7 +163,7 @@ CHALLAN
                         "
                         bgcolor="#EFEFEF"
                     >
-                        <p class="s2" style="padding-top: 3pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">Size</p>
+                        <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Size</p>
                     </td>
                     <td
                         style="
@@ -180,31 +183,31 @@ CHALLAN
                         "
                         bgcolor="#EFEFEF"
                     >
-                        <p class="s2" style="padding-top: 3pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit</p>
+                        <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit</p>
                     </td>
                 </tr>
                 @foreach ($sale->items as $item)
                     <tr style="height: 17pt;">
                         <td
                         >
-                            <p class="s2" style="padding-top: 1pt; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+                            <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
                         </td>
                         <td
                         >
-                            <p class="s2" style="padding-top: 1pt; text-indent: 0pt; text-align: center;">
+                            <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">
                                 {{ $item->product->code }}
                             </p>
                         </td>
                         <td
                         >
-                            <p class="s2" style="padding-top: 1pt; padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                            <p class="s2" style="padding: 3px; padding-left: 5px; text-indent: 0pt; text-align: left;">
                                 {{ $item->product->name }}
                             </p>
                         </td>
                         <td></td>
                         <td
                         >
-                            <p class="s2" style="padding-top: 1pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                            <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                                 {{ $item->quantity }}
                             </p>
                         </td>
@@ -215,19 +218,22 @@ CHALLAN
                     <td style="border: none;"></td>
                     <td style="border: none;"></td>
                     <td>
+                        <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                         Total
+                        </p>
                     </td>
                     <td style="text-align: center;">
+                        <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                         {{ $sale->items->sum('quantity') }}
+                        </p>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <h1 style="padding-top: 1pt; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($sale->grandtotal) }} Taka Only</h1>
 
         @if ($sale->note)
         <h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
-            Note: <br>{{ $sale->note }}
+            Note: {{ $sale->note }}
         </h1>
         @endif
 @endsection
@@ -245,7 +251,7 @@ CHALLAN
             <br>
             _______________
             <br>
-            for CAPITAL LIFT
+            CAPITAL LIFT
         </td>
 @endsection
 

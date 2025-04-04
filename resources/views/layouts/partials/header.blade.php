@@ -111,7 +111,7 @@
 
       <p style="color: #fff; font-weight: bold; font-family: 'Roboto', sans-serif; padding-top: 6px; font-size: 18px;">
         Capital Lift Ltd.
-        </p>
+      </p>
 
     </a>
     {{-- <a href="{{ route('home') }}" class="logo logo-white">
@@ -136,7 +136,8 @@
         align-items: initial;
         alignment-baseline: middle;
         float: left;"><i class="fa-solid fa-clock"></i> <span id="printDay"></span>, <span id="printDate"> </span>,
-      <span id="printTime"></span></p>
+      <span id="printTime"></span>
+    </p>
 
     <!-- <div class="">
   <div class="date" id="printDate"></div>

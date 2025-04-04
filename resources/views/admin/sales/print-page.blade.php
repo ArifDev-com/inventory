@@ -3,13 +3,17 @@
 @section('name', 'Bill')
 
 @section('content')
-<table>
+
+<style>
+    .c_info td {color: #383838; font-size: 14px;}
+</style>
+<table class="c_info">
     <tr>
         <td>
             <div>
                 <table>
                     <tr>
-                        <td style="width: 30%">
+                        <td style="width: 26%;">
                             Cell No.
                         </td>
                         <td>
@@ -18,7 +22,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 30%">
+                        <td style="width: 26%">
                             Customer Name
                         </td>
                         <td>
@@ -26,7 +30,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 30%">
+                        <td style="width: 26%">
                             Company Name
                         </td>
                         <td>
@@ -34,7 +38,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 30%">
+                        <td style="width: 26%">
                             Address
                         </td>
                         <td>
@@ -79,10 +83,11 @@
         </td>
     </tr>
 </table>
-<table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 20px; border: 1px solid #969696;" cellspacing="0" class="border">
+<table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 8px; border: 1px solid #969696;" cellspacing="0" class="border">
     <tbody>
-        <tr style="height: 20pt;">
+        <tr style="height: 16pt;">
             <td style="
+                        width: 7%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -96,9 +101,10 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">SL No.</p>
+                <p class="s2" style="padding: 3px 0px; text-indent: 0pt; text-align: center;">SL No.</p>
             </td>
             <td style="
+                        width: 10%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -112,10 +118,10 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Item Code</p>
+                <p class="s2" style="padding: 3px 0px; text-indent: 0pt; text-align: center;">Item Code</p>
             </td>
             <td style="
-                        width: 30%;
+                        width: 42%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -129,9 +135,10 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Particulars</p>
+                <p class="s2" style="padding: 3px 0px; text-indent: 0pt; text-align: center;">Particulars</p>
             </td>
             <td style="
+                        width: 12%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -145,9 +152,10 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit</p>
+                <p class="s2" style="padding: 3px 0px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit</p>
             </td>
             <td style="
+                        width: 13%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -161,11 +169,11 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit Amount
+                <p class="s2" style="padding: 3px 0px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Unit Amount
                 </p>
             </td>
             <td style="
-                        width: 20%;
+                        width: 14%;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -179,35 +187,35 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Total
-                    Amount(Tk)</p>
+                <p class="s2" style="padding: 3px 0px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Total Amn.(Tk)</p>
             </td>
         </tr>
         @foreach ($sale->items as $item)
         <tr style="height: 17pt;">
             <td>
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+                <p class="s2" style="padding: 3px 0px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
+                <p class="s2" style="padding: 3px 0px; text-indent: 0pt; text-align: center;">
                     {{ $item->product->code }}
                 </p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                <p class="s2" style="padding: 3px 0px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
                     {{ $item->product->name }}
                 </p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                <p class="s2" style="padding: 3px 0px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                     {{ $item->quantity }}
                 </p>
             </td>
             <td>
+                <p class="s2" style="padding: 3px 0px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                 {{ $item->price }}
             </td>
             <td>
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                <p class="s2" style="padding: 3px 0px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                     {{ $item->price * $item->quantity }}
                 </p>
             </td>
@@ -219,10 +227,14 @@
             <td style="border: none;"></td>
             <td style="border: none;"></td>
             <td style="padding: 5px">
+                <p class="s2">
                 Sub Amount
+                </p>
             </td>
             <td style="text-align: center;">
+                <p class="s2">
                 {{ $sale->items->sum('sub_total') }}
+                </p>
             </td>
         </tr>
         <tr>
@@ -231,10 +243,14 @@
             <td style="border: none;"></td>
             <td style="border: none;"></td>
             <td style="padding: 5px">
+                <p class="s2">
                 Other Cost
+                </p>
             </td>
             <td style="text-align: center;">
+                <p class="s2">
                 {{ $sale->other_cost }}
+                </p>
             </td>
         </tr>
         <tr>
@@ -244,18 +260,26 @@
                 <div
                     style="width: 100px; border: 1px solid #969696; margin: 0; padding: 5px;display: inline-block; border-right: none;">
                     <div style="text-align: center;">
+                        <p class="s2">
                         Previous Due
+                        </p>
                     </div>
                 </div>
             </td>
             <td>
+                <p class="s2">
                 {{ $sale->customer?->sales()->where('id', '!=', $sale->id)->sum('due_amount') }}
+                </p>
             </td>
             <td>
+                <p class="s2">
                 Discount
+                </p>
             </td>
             <td style="text-align: center;">
+                <p class="s2">
                 {{ $sale->discount ?: 0 }}
+                </p>
             </td>
         </tr>
         <tr>
@@ -265,18 +289,26 @@
                 <div
                     style="width: 100px; border: 1px solid #969696; margin: 0; padding: 5px;display: inline-block; border-right: none; border-top: none;">
                     <div style="text-align: center;">
+                        <p class="s2">
                         Add Due
+                        </p>
                     </div>
                 </div>
             </td>
             <td>
+                <p class="s2">
                 {{ $sale->due_amount }}
+                </p>
             </td>
             <td>
+                <p class="s2">
                 Total
+                </p>
             </td>
             <td style="text-align: center;">
+                <p class="s2">
                 {{ $sale->grandtotal }}
+                </p>
             </td>
         </tr>
         <tr>
@@ -287,18 +319,25 @@
                 <div
                     style="width: 100px; border: 1px solid #969696; margin: 0; padding: 5px;display: inline-block; border-right: none; border-top: none; border-bottom: none;">
                     <div style="text-align: center;">
+                        <p class="s2">
                         Total Due
+                        </p>
                     </div>
                 </div>
             </td>
             <td>
+                <p class="s2">
                 {{ $sale->customer?->sales()->sum('due_amount') }}
+                </p>
             </td>
             <td>
+                <p class="s2">
                 Paid Amount
             </td>
             <td style="text-align: center;">
+                <p class="s2">
                 {{ $sale->paid_amount }}
+                </p>
             </td>
         </tr>
     </tbody>
@@ -326,6 +365,6 @@
     <br>
     _______________
     <br>
-    for CAPITAL LIFT
+    CAPITAL LIFT
 </td>
 @endsection

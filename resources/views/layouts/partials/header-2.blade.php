@@ -229,7 +229,8 @@
                                     </span>
                                     <div class="media-body flex-grow-1">
                                         <p class="noti-details"><span class="noti-title">John Doe</span> added new task
-                                            <span class="noti-title">Patient appointment booking</span></p>
+                                            <span class="noti-title">Patient appointment booking</span>
+                                        </p>
                                         <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
                                     </div>
                                 </div>
