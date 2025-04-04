@@ -99,7 +99,7 @@
 
         @page {
             size: auto;
-            /* margin: 0px 30px; */
+            margin: 0px 30px;
             margin-bottom: 50px;
             margin-top: 100px;
             padding-top: 50px;
@@ -139,7 +139,7 @@
             position: absolute;
             text-align: center;
             width: 100%;
-            top: 95px;
+            top: 85px;
             ">
         <div style="
                 background: #807e7f;

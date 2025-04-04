@@ -12,7 +12,7 @@ CHALLAN
                 <div>
                     <table>
                     <tr>
-                        <td style="width: 26%;">
+                        <td style="width: 20%;">
                             Cell No.
                         </td>
                         <td>
@@ -21,7 +21,7 @@ CHALLAN
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 26%">
+                        <td style="width: 20%">
                             Customer Name
                         </td>
                         <td>
@@ -29,7 +29,7 @@ CHALLAN
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 26%">
+                        <td style="width: 20%">
                             Company Name
                         </td>
                         <td>
@@ -37,10 +37,10 @@ CHALLAN
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 26%">
+                        <td style="width: 20%; vertical-align: top;">
                             Address
                         </td>
-                        <td>
+                        <td style="width: 400px;">
                             : {{ $sale->customer?->address }}
                         </td>
                     </tr>

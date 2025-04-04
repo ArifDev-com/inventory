@@ -57,7 +57,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td >{{ $sale->ref_code }}</td>
                                 <td>{{ $sale->date }}</td>
-                                <td>
+                                <td style="text-align: left;">
                                     <a href="{{ route('customer.show', ['customer' => $sale->customer->id]) }}">
                                         {{ $sale->customer?->name }}
                                     </a>
@@ -73,7 +73,7 @@
                                 <td>{{ $sale->paid_amount }}</td>
                                 <td class="text-red">{{ $sale->due_amount }}</td>
                                 <td>{{ $sale->due_date }}</td>
-                                <td>
+                                <td style="text-align: left;">
                                     {{ $sale->user?->first_name . ' ' . $sale->user?->last_name }}
                                     {{-- @dump($sale->cancel_requested) --}}
                                     @if($sale->cancel_requested)

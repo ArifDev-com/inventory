@@ -13,7 +13,14 @@
             </td>
         </tr>
     </table>
-    <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 4px" cellspacing="0" class="border">
+    
+    <style>
+        .ac_fs *{
+            font-size: 11px;
+        }
+    </style>
+    
+    <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 4px" cellspacing="0" class="border ac_fs">
         <thead>
             <tr style="height: 20pt;">
                 <td
@@ -34,7 +41,7 @@
                     "
                     bgcolor="#EFEFEF"
                 >
-                    <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">S.L</p>
+                    <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">S.L</p>
                 </td>
                 <td
                     style="
@@ -54,7 +61,7 @@
                     "
                     bgcolor="#EFEFEF"
                 >
-                    <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Item Code</p>
+                    <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">Item Code</p>
                 </td>
                 <td
                     style="
@@ -73,7 +80,7 @@
                     "
                     bgcolor="#EFEFEF"
                 >
-                    <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Product Name</p>
+                    <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">Product Name</p>
                 </td>
                 <td
                     style="
@@ -93,7 +100,7 @@
                     "
                     bgcolor="#EFEFEF"
                 >
-                    <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                    <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                         Quantity
                     </p>
                 </td>
@@ -115,8 +122,8 @@
                     "
                     bgcolor="#EFEFEF"
                 >
-                    <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                        Wholesale Price
+                    <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                        W. Price
                     </p>
                 </td>
                 <td
@@ -137,8 +144,8 @@
                     "
                     bgcolor="#EFEFEF"
                 >
-                    <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                        Retail Price
+                    <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                        R. Price
                     </p>
                 </td>
                 <td
@@ -224,7 +231,7 @@
         <div>
             {{-- {{ auth()->user()?->name }} --}}
         </div>
-        <div style="border-top: 2px solid #000; margin-top: 3px;">
+        <div style="border-top: 1px solid #000; margin-top: 3px;">
             CAPITAL LIFT
         </div>
     </td>

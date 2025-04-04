@@ -189,8 +189,9 @@
 
                 </div>
             </div>
+            
             <div class="col-md-4">
-                <div>
+                <div class="card p-3" style="border-top: 3px solid #b27ef7;">
                     <h4>Upcoming Due:</h4>
                     <div class="">
                         <table class="table">
@@ -231,75 +232,118 @@
         @endif
 
         @if($user->user_role == 'superadmin')
+
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div>
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="card" style="border-top: 3px solid #1071d6;">
-                                <div class="card-header border-bottom">
-                                    <h5>Financial Summary</h5>
+                        <div class="col-md-12">
+                            <div>
+                                <div class="card-header border-bottom mb-3">
+                                    <h5>Today Financial Summary</h5>
                                 </div>
-                                <div class="card-body">
-                                    <a href="{{ route('collection.details') }}" class="row">
-                                        <div class="col-md-6">
-                                            <b>Today Total Collection</b>
-                                        </div>
-                                        <div class="col-md-6">
-                                            {{-- due_pay + sale --}}
-                                            <b>
-                                                {{ App\Models\CutomerPayment::whereDate('created_at', now())
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="{{ route('collection.details') }}">
+                                        <div class="card-body" style="padding: 0px;">
+                                            <span class="dash-widget-icon" style="font-size: 24px;">
+                                                <i class="fa fa-money-bill"></i>
+                                            </span>
+                                            <div class="dash-widget-info">
+                                                <h4>
+                                                    {{-- due_pay + sale --}}
+                                                    {{ App\Models\CutomerPayment::whereDate('created_at', now())
                                                     ->sum('paying_amount') }}
-                                            </b>
+                                                </h4>
+                                                <strong>
+                                                    Total Collection
+                                                </strong>
+                                            </div>
                                         </div>
                                     </a>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <b>Today Due Collection</b>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <b>
-                                                {{ App\Models\CutomerPayment::whereDate('created_at', now())
+                                </div>
+                                
+                                <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
+                                        <div class="card-body" style="padding: 0px;">
+                                            <span class="dash-widget-icon" style="font-size: 24px;">
+                                                <i class="fa fa-money-bill"></i>
+                                            </span>
+                                            <div class="dash-widget-info">
+                                                <h4>
+                                                    {{ App\Models\CutomerPayment::whereDate('created_at', now())
                                                     ->where('is_due_pay', 1)
                                                     ->sum('paying_amount') }}
-                                            </b>
+                                                </h4>
+                                                <strong>
+                                                    Due Collection
+                                                </strong>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <b>Today Total Sale</b>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <b>
-                                                {{ App\Models\CutomerPayment::whereDate('created_at', now())
+                                    </a>
+                                </div>
+                                
+                                <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
+                                        <div class="card-body" style="padding: 0px;">
+                                            <span class="dash-widget-icon" style="font-size: 24px;">
+                                                <i class="fa fa-money-bill"></i>
+                                            </span>
+                                            <div class="dash-widget-info">
+                                                <h4>
+                                                    {{ App\Models\CutomerPayment::whereDate('created_at', now())
                                                     ->where('is_due_pay', 0)
                                                     ->sum('paying_amount') }}
-                                            </b>
+                                                </h4>
+                                                <strong>
+                                                    Total Sale
+                                                </strong>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <b>Today Total Return</b>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <b>
-                                                {{
+                                    </a>
+                                </div>
+                                
+                                <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
+                                        <div class="card-body" style="padding: 0px;">
+                                            <span class="dash-widget-icon" style="font-size: 24px;">
+                                                <i class="fa fa-money-bill"></i>
+                                            </span>
+                                            <div class="dash-widget-info">
+                                                <h4>
+                                                    {{
                                                     App\Models\SaleReturn::whereDate('created_at', now())
                                                     ->sum('paid_amount')
-                                                }}
-                                            </b>
+                                                    }}
+                                                </h4>
+                                                <strong>
+                                                    Total Return
+                                                </strong>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <b>Today Total Expense</b>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
+                                        <div class="card-body" style="padding: 0px;">
+                                            <span class="dash-widget-icon" style="font-size: 24px;">
+                                                <i class="fa fa-money-bill"></i>
+                                            </span>
+                                            <div class="dash-widget-info">
+                                                <h4>
+                                                    {{ App\Models\Expense::whereDate('created_at', now())->sum('amount') }}
+                                                </h4>
+                                                <strong>
+                                                    Total Expense
+                                                </strong>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <b>
-                                                {{ App\Models\Expense::whereDate('created_at', now())->sum('amount') }}
-                                            </b>
-                                        </div>
-                                    </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- finance closed-->
+                                
                                 </div>
                             </div>
                         </div>
@@ -366,13 +410,17 @@
                                 <td class="text-center">
                                     <a href="{{ route('sale.delete', $sale->id) }}"
                                         onclick="return confirm('Are you sure you want to delete this sale?')"
-                                        class="btn btn-primary btn-sm text-white">
-                                        <i class="fa fa-check"></i>
+                                        class="btn btn-danger btn-sm text-white">
+                                        <i class="fa fa-trash"></i>
                                     </a>
                                     <a href="{{ route('sale.cancel.undo', [$sale->id]) }}"
                                         onclick="return confirm('Are you sure you want to undo cancellation?')"
-                                        class="btn btn-danger btn-sm text-white">
-                                        <i class="fa fa-times"></i>
+                                        class="btn btn-success btn-sm text-white">
+                                        <i class="fa fa-undo"></i>
+                                    </a>
+                                    <a href="{{ route('sale.pdf', [$sale->id]) }}" target="_blank"
+                                        class="btn btn-warning btn-sm text-white">
+                                        <i class="fa fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -440,6 +488,10 @@
                                         onclick="return confirm('Are you sure you want to delete this sale return?')"
                                         class="btn btn-danger btn-sm text-white">
                                         <i class="fa fa-times"></i>
+                                    </a>
+                                    <a target="_blank" href="{{ route('sale.return.pdf', $saleReturn->id) }}"
+                                        class="btn btn-warning btn-sm text-white">
+                                        <i class="fa fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>

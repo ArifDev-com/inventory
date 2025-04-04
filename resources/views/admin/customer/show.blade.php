@@ -86,38 +86,6 @@
                 </div>
                 <hr>
                 <div class="mt-3">
-                    <h5>Due Pay History: </h5>
-                    <div class="mt-2 table-responsive">
-                        <table class="table" id="example2">
-                            <thead>
-                                <tr>
-                                    <th>Sl</th>
-                                    <th>Payment Date</th>
-                                    <th>Inv. No.</th>
-                                    <th>Paid Amount</th>
-                                    <th>Discount</th>
-                                    <th>Payment Method</th>
-                                    <th>Due Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($customer->payments()->where('is_due_pay', true)->get() as $key => $payment)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $payment->date }}</td>
-                                    <td>{{ $payment->sale?->ref_code }}</td>
-                                    <td>{{ $payment->paying_amount }}</td>
-                                    <td>{{ $payment->discount }}</td>
-                                    <td>{{ $payment->payment_method }}</td>
-                                    <td>{{ $payment->due_date }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <hr>
-                <div class="mt-3">
                     <h5>Orders: </h5>
                     <div class="mt-2 table-responsive">
                         <table class="table" id="example">
@@ -166,6 +134,20 @@
                                     <td>
                                         <div style="width: 100px;">
                                             {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
+                                            {{-- @dump($sale->cancel_requested) --}}
+                                            @if($sale->cancel_requested)
+                                            <br>
+                                            <span class="badge bg-danger">Cancel Pending</span>
+                                            @endif
+                                            {{-- @dump($sale->returns->first()?->status) --}}
+                                            @if($sale->returns->count())
+                                            <br>
+                                                @if ($sale->returns()->orderBy('id', 'desc')->first()->status == 'received')
+                                                <span class="badge bg-info">Return Approved</span>
+                                                @else
+                                                <span class="badge bg-warning">Return Pending</span>
+                                                @endif
+                                            @endif
                                         </div>
                                     </td>
                                     <td>
@@ -222,6 +204,38 @@
                                             @endif
                                         </ul>
                                     </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="mt-3">
+                    <h5>Due Pay History: </h5>
+                    <div class="mt-2 table-responsive">
+                        <table class="table" id="example2">
+                            <thead>
+                                <tr>
+                                    <th>Sl</th>
+                                    <th>Payment Date</th>
+                                    <th>Inv. No.</th>
+                                    <th>Paid Amount</th>
+                                    <th>Discount</th>
+                                    <th>Payment Method</th>
+                                    <th>Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($customer->payments()->where('is_due_pay', true)->get() as $key => $payment)
+                                <tr>
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $payment->date }}</td>
+                                    <td>{{ $payment->sale?->ref_code }}</td>
+                                    <td>{{ $payment->paying_amount }}</td>
+                                    <td>{{ $payment->discount }}</td>
+                                    <td>{{ $payment->payment_method }}</td>
+                                    <td>{{ $payment->due_date }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -58,11 +58,8 @@ class CustomerController extends Controller
         $authId = Auth::user()->id;
         $city = City::latest()->get();
         $country = Country::latest()->get();
-        $customers = Customer::with(['sales' => function ($q) {
-            $q->select('grandtotal',
-                'paid_amount',
-                'due_amount');
-        }])->orderBy('id', 'ASC')->get();
+        $customers = Customer::with(['sales'])
+            ->orderBy('id', 'ASC')->get();
 
         // dd($customers);
         // return $customers;
@@ -223,7 +220,9 @@ class CustomerController extends Controller
 
     public function print()
     {
-        $customers = Customer::latest()->get();
+        $customers = Customer::latest()
+            ->with(['sales'])
+            ->get();
         $pdf = Pdf::loadView('admin.customer.print', compact('customers'));
         return $pdf->stream('Customer List.pdf', ['Attachment' => false]);
     }

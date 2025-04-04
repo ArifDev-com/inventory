@@ -12,16 +12,15 @@
                 <div>
                     <table>
                         <tr>
-                            <td style="width: 26%;">
+                            <td style="width: 20%;">
                                 Cell No.
                             </td>
                             <td>
-                                :
-                                {{ $saleReturn->customer?->phone }}
+                                : {{ $saleReturn->customer?->phone }}
                             </td>
                         </tr>
                         <tr>
-                            <td style="width: 26%;">
+                            <td style="width: 20%;">
                                 Customer Name
                             </td>
                             <td>
@@ -29,7 +28,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="width: 26%;">
+                            <td style="width: 20%;">
                                 Company Name
                             </td>
                             <td>
@@ -37,24 +36,22 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="width: 26%;">
+                            <td style="width: 20%; vertical-align: top;">
                                 Address
                             </td>
-                            <td>
+                            <td style="width: 400px;">
                                 : {{ $saleReturn->customer?->address }}
                             </td>
                         </tr>
                     </table>
                 </div>
             </td>
+            
             <td style="text-align: right">
-                <div style="
-                    display: inline-block;
-                    text-align: left;
-                ">
+                <div style="display: inline-block; text-align: left;">
                     <table>
                         <tr>
-                            <td>
+                            <td style="width: 50%;">
                                 Bill No
                             </td>
                             <td>
@@ -82,7 +79,8 @@
             </td>
         </tr>
     </table>
-    <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 8px" cellspacing="0" class="border">
+    
+    <table style="border-collapse: collapse; margin: auto; width: 100%; margin-top: 8px;" cellspacing="0" class="border">
         <tbody>
             <tr style="height: 20pt;">
                 <td
@@ -275,11 +273,13 @@
             </tr>
         </tbody>
     </table>
-    <h1 style="padding: 4px; padding-left: 10pt; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($saleReturn->grandtotal) }} Taka Only.</h1>
+    <h1 style="padding: 4px; text-indent: 0pt; text-align: left;">In Word: {{ numberToWords($saleReturn->grandtotal) }} Taka Only.</h1>
 
     @if ($saleReturn->note)
         <p>
+            <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: left;">
             Note: {{ $saleReturn->note }}
+            </p>
         </p>
     @endif
 @endsection

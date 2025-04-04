@@ -55,14 +55,8 @@
                                         Code
                                     </th>
                                     <th>{{ trans('table.thead.product_name') }}</th>
-                                    <th>{{ trans('table.thead.qty') }}</th>
                                     <th>Current Stock</th>
-                                    <th>Stock Alert </th>
-                                    <th>{{ trans('table.thead.purchaseprice') }}</th>
-                                    <th>Wholesale Price</th>
-                                    <th>Retail Price</th>
-                                    <th>{{ trans('table.thead.price') }}</th>
-                                    <th>{{ trans('table.thead.created by') }}</th>
+                                    <th>QTY Update</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -83,19 +77,20 @@
                                         </a>
                                         <a href="javascript:void(0);">{{ $product->name }}</a>
                                     </td>
+                                    <td><b style="background: #00adee;
+                                                padding: 8px 12px;
+                                                color: white;
+                                                font-size: 16px;
+                                                border-radius: 5px;"
+                                                >
+                                        {{ $product->current_stock }}</b></td>
                                     <td>
                                         <input type="number" class="form-control"
                                             value="{{ old('quantity.' . $product->id) }}"
                                             name="quantity[{{ $product->id }}]" style="width: 100px;" >
                                     </td>
-                                    <td>{{ $product->current_stock }}</td>
-                                    <td>{{ $product->alert_quantity }}</td>
-                                    <td>{{ $product->purchase_price }}</td>
-                                    <td>{{ $product->wholesale_price }}</td>
-                                    <td>{{ $product->retail_price }}</td>
-                                    <td>{{ $product->price }}</td>
+                                    
 
-                                    <td>{{ $product->user?->first_name . ' ' . $product->user?->last_name }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

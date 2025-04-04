@@ -86,9 +86,9 @@
                                 @else
                                     <td></td>
                                 @endif
-                                <td id="grand_total">{{ $customer->sales()->sum('grandtotal') ?? 'N/A' }}</td>
-                                <td id="paid_amount">{{ $customer->sales()->sum('paid_amount') ?? 'N/A'}}</td>
-                                <td id="due_amount">{{ $customer->sales()->sum('due_amount') ?? 'N/A' }}</td>
+                                <td id="grand_total">{{ $customer->sales->sum('grandtotal') ?? 'N/A' }}</td>
+                                <td id="paid_amount">{{ $customer->sales->sum('paid_amount') ?? 'N/A'}}</td>
+                                <td id="due_amount">{{ $customer->sales->sum('due_amount') ?? 'N/A' }}</td>
                                 <td>
                                     {{ $customer->creator?->first_name }}
                                 </td>
