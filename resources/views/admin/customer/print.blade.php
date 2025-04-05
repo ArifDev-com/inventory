@@ -4,8 +4,13 @@
 @section('content')
 <style>
     table * {
-        font-size: 10px !important;
+        font-size: 14px !important;
     }
+  
+  .c_list_c{
+  		padding-left: 820px !important;
+  }
+
 </style>
 <table style="margin-top: 30px">
     <tr>
@@ -137,7 +142,7 @@
                 </td>
                 <td
                 >
-                    <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
+                    <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: left;">
                         {{ $customer->name }}
                     </p>
                 </td>
@@ -153,9 +158,10 @@
                         {{ $customer->phone }}
                     </p>
                 </td>
-                <td
-                >
-                    {{ $customer->address }}
+                <td>
+                  <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: left;">
+                   {{ $customer->address }}
+                   </p>
                 </td>
             </tr>
         @endforeach

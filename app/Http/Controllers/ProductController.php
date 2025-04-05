@@ -122,7 +122,8 @@ class ProductController extends Controller
     }
 
     public function create()
-    {
+    {	
+      	if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $authId = Auth::user()->id;
         $categories = Category::latest()->get();
         $subCategories = SubCategory::latest()->get();
@@ -195,6 +196,7 @@ class ProductController extends Controller
 
     public function edit($pro_id)
     {
+      	if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $authId = Auth::user()->id;
         $categories = Category::latest()->get();
         $subCategories = SubCategory::latest()->get();
@@ -209,7 +211,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $pro_id)
     {
-
+		if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $pro_id = $request->id;
 
         $product = Product::withoutGlobalScope('active')->findOrFail($pro_id);
@@ -319,14 +321,16 @@ class ProductController extends Controller
 
     public function stock()
     {
-        $products = Product::orderBy("code")->get();
+        if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
+      	$products = Product::orderBy("code")->get();
 
         return view('admin.products.stock', compact('products'));
     }
 
     public function stockUpdate(Request $request)
     {
-        $request->validate([
+        if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
+      	$request->validate([
             'quantity' => 'required|array',
             'quantity.*' => 'nullable|integer',
         ], [

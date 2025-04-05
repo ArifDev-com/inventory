@@ -14,6 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
+      	if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $role = Role::latest()->get();
         $users = User::orderBy('id', 'DESC')->get();
 
@@ -21,7 +22,8 @@ class UserController extends Controller
     }
 
     public function create()
-    {
+    {	
+      	if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $roles = Role::latest()->get();
         $users = User::latest()->get();
 
@@ -29,7 +31,8 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {	
+      	if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'nullable|max:255',
@@ -66,6 +69,7 @@ class UserController extends Controller
 
     public function edit($user_id)
     {
+      	if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $roles = Role::latest()->get();
         $user = User::findOrFail($user_id);
 
@@ -73,7 +77,7 @@ class UserController extends Controller
     }
 
     public function update(Request $request)
-    {
+    {	if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
         $request->validate([
             'first_name' => 'required|string',
             'password' => 'nullable|max:32',

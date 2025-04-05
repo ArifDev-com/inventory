@@ -87,8 +87,6 @@
                         <li><a href="{{ route('sale.index') }}"
                                 class="{{ request()->is('admin/sales') ? 'active' : '' }}">{{
                                 trans('sidebar.sale.sale_list') }}</a></li>
-                        <li><a href="{{ route('sale.create') }}"
-                                class="{{ request()->is('admin/sale/create')  ? 'active' : '' }}">Cancelled Sales</a></li>
                     </ul>
                 </li>
                 <li class="submenu ">

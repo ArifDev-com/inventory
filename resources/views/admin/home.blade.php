@@ -169,7 +169,8 @@
                                 </div>
                             </a>
                         </div>
-
+                  
+						@if($user->user_role == 'superadmin')
                         <div class="col-md-6 col-sm-6 col-lg-4 col-xl-4">
                             <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="{{ route('customer.index') }}">
                                 <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
@@ -185,6 +186,7 @@
                                 </div>
                             </a>
                         </div>
+                  		@endif
                     </div>
 
                 </div>
@@ -282,6 +284,25 @@
                                         </div>
                                     </a>
                                 </div>
+                  				
+                  				<div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
+                                        <div class="card-body" style="padding: 0px;">
+                                            <span class="dash-widget-icon" style="font-size: 24px;">
+                                                <i class="fa fa-money-bill"></i>
+                                            </span>
+                                            <div class="dash-widget-info">
+                                                <h4>
+                                                    {{ App\Models\Sale::whereDate('created_at', now())
+                                                    ->sum('other_cost') }}
+                                                </h4>
+                                                <strong>
+                                                    Others Cost
+                                                </strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
                                 
                                 <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
                                     <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
@@ -304,7 +325,7 @@
                                 </div>
                                 
                                 <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
-                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
+                                    <a class="card dash-widget" style="border-top: 3px solid red;" href="#">
                                         <div class="card-body" style="padding: 0px;">
                                             <span class="dash-widget-icon" style="font-size: 24px;">
                                                 <i class="fa fa-money-bill"></i>
@@ -325,7 +346,7 @@
                                 </div>
 
                                 <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
-                                    <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
+                                    <a class="card dash-widget" style="border-top: 3px solid red;" href="#">
                                         <div class="card-body" style="padding: 0px;">
                                             <span class="dash-widget-icon" style="font-size: 24px;">
                                                 <i class="fa fa-money-bill"></i>
@@ -359,12 +380,6 @@
                     <table class="table" id="example">
                         <thead>
                             <tr>
-                                <th>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
-                                </th>
                                 <th>Sl</th>
                                 <th>Invoice No</th>
                                 <th>{{ trans('table.sale.date') }}</th>
@@ -382,12 +397,6 @@
                         <tbody>
                             @foreach ($cancellationRequests as $key => $sale)
                             <tr>
-                                <td>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
-                                </td>
                                 <td>{{ $key + 1 }}</td>
                                 <td class="" style="font-size: 13px;">{{ $sale->ref_code }}</td>
                                 <td>{{ $sale->date }}</td>
@@ -442,12 +451,6 @@
                     <table class="table" id="example2">
                         <thead>
                             <tr>
-                                <th>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
-                                </th>
                                 <th>Sl</th>
                                 <th>Invoice No</th>
                                 <th>{{ trans('table.sale.date') }}</th>
@@ -462,12 +465,6 @@
                         <tbody>
                             @foreach ($saleReturns as $key => $saleReturn)
                             <tr>
-                                <td>
-                                    {{-- <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label> --}}
-                                </td>
                                 <td>{{ $key + 1 }}</td>
                                 <td class="" style="font-size: 13px;">{{ $saleReturn->ref_code }}</td>
                                 <td>{{ $saleReturn->date }}</td>

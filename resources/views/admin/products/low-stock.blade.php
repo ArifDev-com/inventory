@@ -267,10 +267,7 @@
 
 <script>
     $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf', 'print'
-            ]
+            
         });
 </script>
 @endsection

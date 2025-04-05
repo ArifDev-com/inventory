@@ -102,7 +102,7 @@
 
 <script>
     $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
+           
         });
 </script>
 @endsection

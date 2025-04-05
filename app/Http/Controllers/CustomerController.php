@@ -56,7 +56,8 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $authId = Auth::user()->id;
+        if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
+      	$authId = Auth::user()->id;
         $city = City::latest()->get();
         $country = Country::latest()->get();
         $customers = Customer::with(['sales'])

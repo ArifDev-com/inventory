@@ -119,7 +119,7 @@
                     <img src="{{'data:image/png;base64,' . base64_encode(file_get_contents(public_path('logo2.png')))}}"
                         alt="image" style="width: 160px; height: auto;">
                 </td>
-                <td style="text-align: left; padding-left: 160px; ">
+                <td class="c_list_c" style="text-align: left; padding-left: 160px; ">
                     <div style="display: inline-block; width: 500px; font-size: 13px; color: #342b2b; font-family: Arial, sans-serif; font-weight: normal; letter-spacing: -0.20px;">
                         73, Karwan Bazar (1st Floor), Tejgaon, Dhaka-1215, Bangladesh.
                         <br>
