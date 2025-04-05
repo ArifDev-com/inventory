@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SMSApi;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
@@ -9,7 +10,9 @@ use App\Models\SaleReturn;
 use App\Models\SaleReturnItem;
 use App\Models\Warehouse;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SaleReturnController extends Controller
 {
@@ -24,15 +27,14 @@ class SaleReturnController extends Controller
 
     public function create($id = null)
     {
-        if($id == null)
-        {
+        if ($id == null) {
             $request = request();
-            if($request->sale_id)
-            {
+            if ($request->sale_id) {
                 return redirect()->route('sale.return', $request->sale_id);
             }
+
             return view('admin.saleReturn.select-sale', [
-                'sales' => Sale::latest()->get()
+                'sales' => Sale::latest()->get(),
             ]);
         }
         $customers = Customer::latest()->get();
@@ -85,8 +87,7 @@ class SaleReturnController extends Controller
         //     'status' =>'required|max:255',
         //     'note' =>'required|max:255',
         // ]);
-        if($request->paid_amount > $request->grand_total)
-        {
+        if ($request->paid_amount > $request->grand_total) {
             return redirect()->back()
                 ->with('error', 'Paid amount cannot be greater than grand total');
         }
@@ -111,8 +112,7 @@ class SaleReturnController extends Controller
         $pcount = count($request->product_id);
 
         for ($i = 0; $i < $pcount; $i++) {
-            if($request->quantity[$i])
-            {
+            if ($request->quantity[$i]) {
                 $saleReturn->items()->create([
                     'product_id' => $request->product_id[$i],
                     'quantity' => $request->quantity[$i],
@@ -122,6 +122,7 @@ class SaleReturnController extends Controller
             }
         }
         session()->flash('return_id', $saleReturn->id);
+
         return redirect()->route('sale.index')->with('success', 'Sale return request sent');
     }
 
@@ -168,12 +169,14 @@ class SaleReturnController extends Controller
     {
         SaleReturnItem::where('sale_return_id', $saleReturn->id)->delete();
         $saleReturn->delete();
+
         return redirect()->back()->with('delete', 'Sale Return successfully Deleted');
     }
 
     public function generatePDF(SaleReturn $saleReturn)
     {
         $pdf = Pdf::loadView('admin.saleReturn.print-page', compact('saleReturn'));
+
         return $pdf->stream('Sale Return.pdf', ['Attachment' => false]);
 
     }
@@ -181,7 +184,21 @@ class SaleReturnController extends Controller
     public function approve(SaleReturn $saleReturn)
     {
         $saleReturn->update(['status' => 'received']);
+        $customer = $saleReturn->customer;
+        try {
+            SMSApi::send(
+                $customer->phone,
+                "Dear Customer: {$customer->name},
+Invoice No: {$saleReturn->ref_code}
+Date: ".Carbon::parse($saleReturn->date)->format('d-m-Y ').date('h:i A')."
+Return Item: {$saleReturn->items->count()}
+Amount: {$saleReturn->grandtotal} Tk.
+Return Amount: {$saleReturn->paid_amount} Tk.
+Thank you."
+            );
+        } catch (\Exception $e) {
+            Log::error('SMS API Error: '.$e->getMessage());
+        }
         return redirect()->back()->with('success', 'Sale return approved');
     }
-
 }

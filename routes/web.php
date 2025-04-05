@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\SMSApi;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;

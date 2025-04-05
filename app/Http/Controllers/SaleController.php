@@ -19,7 +19,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Milon\Barcode\DNS1D;
 
@@ -61,6 +61,7 @@ class SaleController extends Controller
         $warehouses = Warehouse::latest()->get();
         $sales = Sale::latest()->get();
         $quotation = Quotation::find($request->quotation_id);
+
         return view('admin.sales.create', compact('products', 'customers', 'warehouses', 'sales', 'cities', 'countries', 'quotation'));
     }
 
@@ -84,11 +85,11 @@ class SaleController extends Controller
 
         $authId = Auth::user()->id;
         $products = Product::where(function ($query) use ($request) {
-                $query->where('product_code', 'LIKE', '%'.$request->search.'%');
-            })->orWhere(function ($query) use ($request) {
-                $query->where('name', 'LIKE', '%'.$request->search.'%')
-                    ->where('quantity', '>', 0);
-            })
+            $query->where('product_code', 'LIKE', '%'.$request->search.'%');
+        })->orWhere(function ($query) use ($request) {
+            $query->where('name', 'LIKE', '%'.$request->search.'%')
+                ->where('quantity', '>', 0);
+        })
             ->where('status', 'active')
             ->take(5)
             ->get();
@@ -141,7 +142,7 @@ class SaleController extends Controller
             'barcode_url' => $barCodeSavePath,
             'note' => $request->note,
         ]);
-        if(count($request->payments ?: []) == 0) {
+        if (count($request->payments ?: []) == 0) {
             CutomerPayment::create([
                 'user_id' => Auth::id(),
                 'sale_id' => $sale->id,
@@ -152,8 +153,8 @@ class SaleController extends Controller
                 'payment_method' => $request->payment_type,
                 'created_at' => Carbon::now(),
             ]);
-        }else {
-            foreach($request->payments as $payment) {
+        } else {
+            foreach ($request->payments as $payment) {
                 CutomerPayment::create([
                     'user_id' => Auth::id(),
                     'sale_id' => $sale->id,
@@ -180,7 +181,23 @@ class SaleController extends Controller
             ]);
         }
         if ($sale->customer->phone) {
-            SMSApi::send($sale->customer->phone, 'A Sale of '.$sale->grandtotal.' is recorded. Ref: '.$sale->ref_code);
+            try {
+                SMSApi::send(
+                    $sale->customer->phone,
+                    "Dear Customer: {$sale->customer->name},
+Invoice No: {$sale->ref_code}
+Sale Date: ".Carbon::parse($sale->date)->format('d-m-Y ').date('h:i A')."
+Total Items: {$sale->items->count()}
+Total Amount: {$sale->grandtotal} Tk.
+Discount: {$sale->discount} Tk.
+Other Cost: {$sale->other_cost} Tk.
+You have paid {$sale->paid_amount} Tk.
+And Due Amount: {$sale->due_amount} Tk.
+Thank you."
+                );
+            } catch (\Exception $e) {
+                Log::error('SMS API Error: '.$e->getMessage());
+            }
         }
         if ($request->quotation_id) {
             Quotation::query()
@@ -307,6 +324,7 @@ class SaleController extends Controller
             },
         ])->first();
         $pdf = Pdf::loadView('admin.sales.print-page', compact('sale', 'randomNumber'));
+
         return $pdf->stream('invoice.pdf', ['Attachment' => false]);
     }
 
@@ -376,6 +394,7 @@ class SaleController extends Controller
             ]);
         }
         session()->flash('success', 'Quotation Added');
+
         return response()->json(['id' => $quotation->id]);
     }
 }

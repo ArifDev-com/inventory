@@ -13,6 +13,7 @@ class CutomerPayment extends Model
         'affected_sales' => 'array',
         'is_due_pay' => 'boolean',
         'discount' => 'integer',
+        'paying_amount' => 'integer',
     ];
 
     protected $fillable = [

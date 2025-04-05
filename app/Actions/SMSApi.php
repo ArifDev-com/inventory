@@ -14,15 +14,7 @@ class SMSApi
 {
     static function send($phone, $text, $is_queue = false)
     {
-        $config = [
-            'url' => 'https://api.smsgateway.com/send-sms',
-            'type' => 'POST',
-            'headers' => [
-                'Authorization' => 'Bearer ' . env('SMS_API_KEY'),
-                'Content-Type' => 'application/json',
-            ],
-            'body' => [],
-        ];
+        // dd($config['url']);
         if (Str::startsWith($phone, '01')) $phone = '88' . $phone;
         if (Str::startsWith($phone, '1')) $phone = '880' . $phone;
         if(config('app.debug')) {
@@ -31,6 +23,26 @@ class SMSApi
         }
         Log::info('Phone SMS: ', [$phone, $text]);
 
+        $config = [
+            'url' => 'https://primesmsbd.com/smsapi/masking?' . join('&', [
+                'api_key=$2y$10$e5Zp1tB0hKgzarM6UXrqee4Y54ECuQGlqkYlFKSl86gLc6Cl4O4MW',
+                'smsType=text',
+                'mobileNo=' . $phone,
+                'smsContent=' . urlencode($text),
+                'maskingID=CapitalLift',
+            ]),
+            'type' => 'GET',
+            'headers' => [
+                // 'Authorization' => 'Bearer ' . env('SMS_API_KEY'),
+                // 'Content-Type' => 'application/json',
+            ],
+            'body' => [
+                // 'api_key' => '$2y$10$e5Zp1tB0hKgzarM6UXrqee4Y54ECuQGlqkYlFKSl86gLc6Cl4O4MW',
+                // 'type' => 'text',
+                // 'contacts' => $phone,
+                // 'msg' => $text,
+            ],
+        ];
         $url = $config['url'];
         $is_post = $config['type'] === 'POST';
         $headers = [];
@@ -55,9 +67,11 @@ class SMSApi
                     ->get($url);
             }
             if ($htt->successful()) {
+                // dd('SMS API Response: ' . $htt->body(), $config);
                 return true;
             }
         } catch (\Throwable $th) {
+            Log::error('SMS API Error: ' . $th->getMessage());
             return false;
         }
         return false;

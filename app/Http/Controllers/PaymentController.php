@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SMSApi;
 use App\Models\Customer;
 use App\Models\CutomerPayment;
 use App\Models\Sale;
@@ -11,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -90,6 +92,38 @@ class PaymentController extends Controller
             }
         }
         session()->flash('payments', json_encode($payments));
+        $customer = Customer::find($data['customer_id']);
+        if ($customer?->phone) {
+            $invoices = [];
+            $paid_amount = 0;
+            $discount = 0;
+            $due_amount = $customer->sales()->where('due_amount', '>', 0)->sum('due_amount');
+            foreach ($payments as $payment) {
+                if ($payment->sale) {
+                    $invoices[] = $payment->sale->ref_code;
+                    $paid_amount += $payment->paying_amount;
+                    $discount += $payment->discount;
+                }
+            }
+            $invoices = implode(', ', $invoices);
+            // foreach($payments as $payment){
+            if ($paid_amount > 0) {
+                try {
+                    SMSApi::send(
+                        $customer->phone,
+                        "Dear Customer: {$customer->name},
+Invoice No: {$invoices}
+Paid: {$paid_amount} Tk.
+Discount: {$discount} Tk.
+And Due Amount: {$due_amount} Tk.
+Thank you."
+                    );
+                } catch (\Exception $e) {
+                    Log::error('SMS API Error: '.$e->getMessage());
+                }
+            }
+            // }
+        }
 
         return redirect()->back()->with('success', 'Payment and discount processed successfully');
     }
