@@ -25,7 +25,7 @@
 							<a href="{{route('expense.create')}}" class="btn btn-added"><img src="{{asset('backend')}}/img/icons/plus.svg" class="me-2" alt="img">Add New Expense</a>
 						</div>
 					</div>
-					
+
 
 					<!-- /product list -->
 					<div class="card">
@@ -41,7 +41,7 @@
 									<div class="search-input">
 										<a class="btn btn-searchset">
 											<img src="{{asset('backend')}}/img/icons/search-white.svg" alt="img">
-											
+
 										</a>
 									</div>
 								</div>
@@ -116,10 +116,8 @@
 											</th>
 											<th>Sl</th>
 											<th>Date</th>
-
 											<th>Expense name</th>
-										
-											
+                                            <th>Category</th>
 											<th>Amount</th>
 											<th>Description</th>
 											<th>Action</th>
@@ -137,20 +135,17 @@
 
 											<td>{{$key+1}}</td>
 											<td>{{$expense->date}}</td>
-											
 											<td>{{$expense->expense_for}}</td>
-									
-											
-											
+											<td>{{$expense->expenseCategory?->name}}</td>
 											<td>{{$expense->amount}}</td>
 
 											@if($expense->description)
 											<td>{{$expense->description}}</td>
-											@else 
+											@else
 											<td>Null</td>
 											@endif
 											<td>
-												  
+
 												<a class="me-3" href="{{route('expense.edit',$expense->id)}}">
 													<img src="{{asset('backend')}}/img/icons/edit.svg" alt="img">
 												</a>
@@ -161,7 +156,7 @@
 													@csrf
 													@method('DELETE')
 													<button type="submit" class="show_confirm"  data-toggle="tooltip" title='Delete'>
-														<img src="{{ asset('backend') }}/img/icons/delete.svg" 
+														<img src="{{ asset('backend') }}/img/icons/delete.svg"
 														alt="img">
 													</button>
 												</form>
@@ -182,7 +177,7 @@
 											<td>120</td>
 											<td>Office Vehicle</td>
 											<td>
-												  
+
 												<a class="me-3" href="editexpense.html">
 													<img src="{{asset('backend')}}/img/icons/edit.svg" alt="img">
 												</a>
@@ -191,7 +186,7 @@
 												</a>
 											</td>
 										</tr> -->
-								
+
 									</tbody>
 								</table>
 								{{-- {!! $expenses->links() !!} --}}
@@ -210,6 +205,6 @@
 						'csv', 'excel', 'pdf' , 'print'
 					]
 				} );
-			
+
 				</script>
             @endsection

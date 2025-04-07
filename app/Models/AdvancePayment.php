@@ -46,4 +46,8 @@ class AdvancePayment extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    function change()
+    {
+        return $this->hasOne(AdvancePaymentChange::class, 'advance_payment_id', 'id');
+    }
 }
