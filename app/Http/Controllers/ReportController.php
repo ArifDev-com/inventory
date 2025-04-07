@@ -434,6 +434,10 @@ class ReportController extends Controller
         $sales = Sale::latest()
             ->whereBetween('created_at', [$fromDate, $toDate])
             ->get();
+        if($request->print_material) {
+            $pdf = Pdf::loadView('admin.reports.datewise-sale-report-print-material', compact('customers', 'sales', 'fromDate', 'toDate'));
+            return $pdf->stream('Material Order Report.pdf');
+        }
         if($request->print) {
             $pdf = Pdf::loadView('admin.reports.datewise-sale-report-print', compact('customers', 'sales', 'fromDate', 'toDate'));
             return $pdf->stream('Datewise Sale Report.pdf');

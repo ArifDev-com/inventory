@@ -32,13 +32,13 @@
                         <div class="col-lg-2 col-sm-6 col-12">
                             <div class="form-group">
                                 <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date"
-                                    value="{{ $fromDate->format('d-m-Y') }}" name="from_date">
+                                    value="{{ $fromDate->format('d-m-Y') }}" name="from_date" id="from_date">
                             </div>
                         </div>
                         <div class="col-lg-2 col-sm-6 col-12">
                             <div class="form-group">
                                 <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date"
-                                    value="{{ $toDate->format('d-m-Y') }}" name="to_date">
+                                    value="{{ $toDate->format('d-m-Y') }}" name="to_date" id="to_date">
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">
@@ -49,7 +49,9 @@
                                     <img
                                         src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img">
                                 </button>
-                                <button type="submit" class="btn btn-info" onclick="this.form.target='_blank';" name="print" value="1">
+                                <button type="submit" class="btn btn-info"
+                                    onclick="this.form.target='_blank';openOther()"
+                                    name="print" value="1">
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                     Print
                                 </button>
@@ -57,6 +59,11 @@
                         </div>
                     </form>
                 </div>
+                <script>
+                    function openOther() {
+                        window.open(location.href.split('?')[0] + '?print_material=1&from_date=' + document.getElementById('from_date').value + '&to_date=' + document.getElementById('to_date').value, '_blank');
+                    }
+                </script>
                 <!-- /Filter -->
                 <div class="table-responsive">
                     <table class="table" id="example">
