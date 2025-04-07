@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\SMSApi;
+use App\Models\AdvancePaymentChange;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Customer;
@@ -19,6 +20,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Milon\Barcode\DNS1D;
@@ -122,64 +124,112 @@ class SaleController extends Controller
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($ref_code, 'C39+'));
         $barCodeSavePath = 'upload/barcode/'.$barCodeName;
         Storage::disk('public_uploads')->put($barCodeName, $barcodeFile);
+        $customer = Customer::findOrFail($request->customer_id);
 
-        $sale = Sale::create([
-            'user_id' => Auth::id(),
-            'customer_id' => $request->customer_id,
-            'warehouse_id' => $request->warehouse_id,
-            'date' => $request->date,
-            'ref_code' => $ref_code,
-            'tax' => $request->tax,
-            'discount' => $request->discount ?: 0,
-            'shipping' => $request->shipping ?: 0,
-            'grandtotal' => $request->grand_total,
-            'paid_amount' => $request->paid_amount,
-            'due_amount' => $request->due_amount,
-            'due_date' => $request->due_date,
-            'other_cost' => $request->other_cost ?: 0,
-            'payment_status' => $request->payment_status,
-            'payment_type' => $request->payment_type,
-            'barcode_url' => $barCodeSavePath,
-            'note' => $request->note,
-        ]);
-        if (count($request->payments ?: []) == 0) {
-            CutomerPayment::create([
+        DB::beginTransaction();
+        try {
+            $sale = Sale::create([
                 'user_id' => Auth::id(),
-                'sale_id' => $sale->id,
-                'reference' => $sale->ref_code,
+                'customer_id' => $request->customer_id,
+                'warehouse_id' => $request->warehouse_id,
                 'date' => $request->date,
-                'paying_amount' => $request->paid_amount,
-                'down_payment' => $request->paid_amount,
-                'payment_method' => $request->payment_type,
-                'created_at' => Carbon::now(),
+                'ref_code' => $ref_code,
+                'tax' => $request->tax,
+                'discount' => $request->discount ?: 0,
+                'shipping' => $request->shipping ?: 0,
+                'grandtotal' => $request->grand_total,
+                'paid_amount' => $request->paid_amount,
+                'due_amount' => $request->due_amount,
+                'due_date' => $request->due_date,
+                'other_cost' => $request->other_cost ?: 0,
+                'payment_status' => $request->payment_status,
+                'payment_type' => $request->payment_type,
+                'barcode_url' => $barCodeSavePath,
+                'note' => $request->note,
             ]);
-        } else {
-            foreach ($request->payments as $payment) {
+            if (count($request->payments ?: []) == 0) {
                 CutomerPayment::create([
                     'user_id' => Auth::id(),
                     'sale_id' => $sale->id,
                     'reference' => $sale->ref_code,
                     'date' => $request->date,
-                    'paying_amount' => $payment['amount'],
-                    'down_payment' => $payment['amount'],
-                    'payment_method' => $payment['method'],
+                    'paying_amount' => $request->paid_amount,
+                    'down_payment' => $request->paid_amount,
+                    'payment_method' => $request->payment_type,
                     'created_at' => Carbon::now(),
+                    'note' => $request->bank_note ?? '',
+                ]);
+                if($request->payment_type == 'advance') {
+                    if($customer->advance < $request->paid_amount) {
+                        throw new \Exception('Advance amount is less than the payment amount');
+                    }
+                    $customer->advance -= $request->paid_amount;
+                    $customer->save();
+                    AdvancePaymentChange::create([
+                        'customer_id' => $customer->id,
+                        'amount' => $request->paid_amount,
+                        'date' => $request->date,
+                        'method' => $request->payment_type,
+                        'note' => "Sale #{$sale->ref_code}",
+                        'is_add' => false,
+                        'before_balance' => $customer->advance + $request->paid_amount,
+                        'after_balance' => $customer->advance,
+                        'created_by' => Auth::id(),
+                    ]);
+                }
+            } else {
+                foreach ($request->payments as $payment) {
+                    CutomerPayment::create([
+                        'user_id' => Auth::id(),
+                        'sale_id' => $sale->id,
+                        'reference' => $sale->ref_code,
+                        'date' => $request->date,
+                        'paying_amount' => $payment['amount'],
+                        'down_payment' => $payment['amount'],
+                        'payment_method' => $payment['method'],
+                        'created_at' => Carbon::now(),
+                        'note' => $payment['bank_note'] ?? '',
+                    ]);
+                    if($payment['method'] == 'advance') {
+                        if($customer->advance < $payment['amount']) {
+                            throw new \Exception('Advance amount is less than the payment amount');
+                        }
+                        $customer->advance -= $payment['amount'];
+                        $customer->save();
+                        AdvancePaymentChange::create([
+                            'customer_id' => $customer->id,
+                            'amount' => $payment['amount'],
+                            'date' => $request->date,
+                            'method' => $payment['method'],
+                            'note' => "Sale #{$sale->ref_code}",
+                            'is_add' => false,
+                            'before_balance' => $customer->advance + $payment['amount'],
+                            'after_balance' => $customer->advance,
+                            'created_by' => Auth::id(),
+                        ]);
+                    }
+                }
+            }
+            $pcount = count($request->product_id);
+
+            for ($i = 0; $i < $pcount; $i++) {
+                $sale->items()->create([
+                    'user_id' => Auth::id(),
+                    'product_id' => $request->product_id[$i],
+                    'quantity' => $request->quantity[$i],
+                    'price' => $request->price[$i],
+                    'purchase_price' => $request->purchase_price[$i],
+                    'sub_total' => $request->sub_total[$i],
+                    'price_type' => $request->price_type[$i] ?? '',
                 ]);
             }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
         }
-        $pcount = count($request->product_id);
 
-        for ($i = 0; $i < $pcount; $i++) {
-            $sale->items()->create([
-                'user_id' => Auth::id(),
-                'product_id' => $request->product_id[$i],
-                'quantity' => $request->quantity[$i],
-                'price' => $request->price[$i],
-                'purchase_price' => $request->purchase_price[$i],
-                'sub_total' => $request->sub_total[$i],
-                'price_type' => $request->price_type[$i] ?? '',
-            ]);
-        }
+
         if ($sale->customer->phone) {
             try {
                 SMSApi::send(

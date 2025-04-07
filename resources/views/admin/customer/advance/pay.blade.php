@@ -9,8 +9,8 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Make Due Payment</h4>
-                <h6>Add/Update Due Payment</h6>
+                <h4>Make Advance Payment</h4>
+                <h6>Add/Update Advance Payment</h6>
             </div>
             {{-- <a href="{{ route('due.payment.list') }}" class="btn btn-info">Back</a> --}}
         </div>
@@ -32,7 +32,8 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('due.payment') }}" method="post">
+
+                <form action="{{ route('advance.store') }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-12">
@@ -43,48 +44,27 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <input type="number" class="form-control" name="paying_amount" required min="0"
+                                <input type="number" class="form-control" name="amount" required min="1"
                                     onchange="calculateNextDue()" onkeyup="calculateNextDue()"
                                 >
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Discount</label>
-                                <input type="number" class="form-control" name="discount" min="0"
-                                    onchange="calculateNextDue()" onkeyup="calculateNextDue()"
-                                >
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Next Due</label>
-                                <input type="number" class="form-control" name="next_due" readonly required min="0">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Payment Method</label>
-                                <select class="form-control select2" name="payment_method" required onchange="paymentMethodChange(this)">
+                                <select class="form-control select2" name="method" required onchange="paymentMethodChange(this)">
                                     <option value="cash" selected>Cash</option>
                                     <option value="bank">Bank</option>
                                     <option value="bkash">Bkash</option>
                                     <option value="rocket">Rocket</option>
                                     <option value="nagad">Nagad</option>
-                                    <option value="advance">Advance</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Payment Date</label>
-                                <input type="date" class="form-control" name="payment_date" required value="{{ date('Y-m-d') }}">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Next Due Date: (If applicable)</label>
-                                <input type="date" class="form-control" name="next_due_date">
+                                <input type="date" class="form-control" name="date" required value="{{ date('Y-m-d') }}">
                             </div>
                         </div>
                         <div class="col-lg-12">

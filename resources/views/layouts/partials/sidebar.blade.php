@@ -136,6 +136,23 @@
 
                 <li class="submenu ">
                     <a href="javascript:void(0);"
+                        class="{{ (request()->is('admin/advance-payments') || request()->is('admin/advance-balance')) ? 'active' : '' }}"><img
+                            src="{{asset('backend')}}/img/icons/users1.svg" alt="img"><span>Advance Payment</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{{ route('advance.index') }}"
+                            class="{{ request()->is('admin/advance-payments') ? 'active' : '' }}">Advance History</a>
+                        </li>
+                        <li><a href="{{ route('advance.create') }}"
+                            class="{{ request()->is('admin/advance-payment/create') ? 'active' : '' }}">Add Advance Payment</a>
+                        </li>
+                        <li><a href="{{ route('advance.balance') }}"
+                            class="{{ request()->is('admin/advance-balance') ? 'active' : '' }}">Advance Balance</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu ">
+                    <a href="javascript:void(0);"
                         class="{{ (request()->is('admin/customer/due/pay') || request()->is('admin/customer/due/list') || request()->is('admin/customer/due/pay/list/customers')) ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/users1.svg" alt="img"><span>Due Payment</span> <span
                             class="menu-arrow"></span></a>

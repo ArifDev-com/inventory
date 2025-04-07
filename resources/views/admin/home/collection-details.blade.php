@@ -109,8 +109,8 @@
                         </form>
                     </div>
                 </div>
-             
-				
+
+
 				<div>
 					<div class="row">
 						@foreach (['cash', 'bkash', 'rocket', 'card', 'nagad'] as $item)
@@ -184,22 +184,30 @@
                                           			->whereNotNull('sale_id')
                                           			->with(['sale', 'customer'])
                                                     ->get() as $key => $sale)
-                                          <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td >{{ $sale->sale?->ref_code }}</td>
-                                            <td style="text-align: left;">
-                                    			{{ $sale->sale?->customer?->name }}
-                                            </td>
-                                            <td>
-                                            	{{ $sale->paying_amount }}
-                                            </td>
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td >{{ $sale->sale?->ref_code }}</td>
+                                                    <td style="text-align: left;">
+                                                        {{ $sale->sale?->customer?->name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $sale->paying_amount }}
+                                                    </td>
+                                                </tr>
+                                                @if ($sale->note)
+                                                <tr>
+                                                    <td colspan="4">
+                                                        Bank Note: {{ $sale->note }}
+                                                    </td>
+                                                </tr>
+                                                @endif
+                                            @endforeach
 										</tbody>
-                                      	@endforeach
 									</table>
 								</div>
 							</div>
 						</div>
-                      
+
 						<div class="col-md-6 col-sm-6 col-lg-4 col-xl-4">
 							<div class="card p-3" style="border-top: 3px solid #b27ef7;">
 								<h4>
@@ -282,7 +290,7 @@
 							</div>
 						</div>
 					</div>
-				</div>	
+				</div>
             </div>
         </div>
     </div>

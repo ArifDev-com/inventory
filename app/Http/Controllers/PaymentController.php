@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\SMSApi;
+use App\Models\AdvancePaymentChange;
 use App\Models\Customer;
 use App\Models\CutomerPayment;
 use App\Models\Sale;
@@ -37,6 +38,7 @@ class PaymentController extends Controller
             'payment_method' => 'required',
             'discount' => 'nullable|numeric|min:0',
         ]);
+        $customer = Customer::find($data['customer_id']);
         $dueSaleList = Sale::where('customer_id', $request->customer_id)
             ->orderBy('created_at', 'asc')
             ->where('due_amount', '>', 0)->get();
@@ -47,6 +49,11 @@ class PaymentController extends Controller
         $remainingPayment = $data['paying_amount'];
         $remainingDiscount = $discount;
         $payments = [];
+        if($data['payment_method'] == 'advance' && $remainingPayment > $customer->advance) {
+            return redirect()->back()
+                ->with('error', 'Advance amount is less than the payment amount')
+                ->withInput();
+        }
 
         foreach ($dueSaleList as $sale) {
             // Calculate how much to pay and discount for this sale
@@ -72,6 +79,7 @@ class PaymentController extends Controller
                     'created_at' => Carbon::now(),
                     'sale_id' => $sale->id,
                     'due_date' => $sale->due_date,
+                    'bank_note' => $data['bank_note'] ?? '',
                 ]);
 
                 // Update sale due amount by both payment and discount
@@ -92,20 +100,37 @@ class PaymentController extends Controller
             }
         }
         session()->flash('payments', json_encode($payments));
-        $customer = Customer::find($data['customer_id']);
-        if ($customer?->phone) {
-            $invoices = [];
-            $paid_amount = 0;
-            $discount = 0;
-            $due_amount = $customer->sales()->where('due_amount', '>', 0)->sum('due_amount');
-            foreach ($payments as $payment) {
-                if ($payment->sale) {
-                    $invoices[] = $payment->sale->ref_code;
-                    $paid_amount += $payment->paying_amount;
-                    $discount += $payment->discount;
-                }
+
+        $invoices = [];
+        $paid_amount = 0;
+        $discount = 0;
+        $due_amount = $customer->sales()->where('due_amount', '>', 0)->sum('due_amount');
+        foreach ($payments as $payment) {
+            if ($payment->sale) {
+                $invoices[] = $payment->sale->ref_code;
+                $paid_amount += $payment->paying_amount;
+                $discount += $payment->discount;
             }
-            $invoices = implode(', ', $invoices);
+        }
+        $invoices = implode(', ', $invoices);
+
+        if($data['payment_method'] == 'advance') {
+            $customer->advance -= $paid_amount;
+            $customer->save();
+            AdvancePaymentChange::create([
+                'customer_id' => $customer->id,
+                'amount' => $paid_amount,
+                'date' => $data['payment_date'],
+                'method' => $data['payment_method'],
+                'note' => "Due Payment #{$invoices}",
+                'is_add' => false,
+                'before_balance' => $customer->advance + $paid_amount,
+                'after_balance' => $customer->advance,
+                'created_by' => Auth::id(),
+            ]);
+        }
+
+        if ($customer?->phone) {
             // foreach($payments as $payment){
             if ($paid_amount > 0) {
                 try {

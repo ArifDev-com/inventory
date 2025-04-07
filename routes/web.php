@@ -623,4 +623,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('export/{type}', [App\Http\Controllers\ExportController::class, 'export'])->name('export');
 
     Route::get('/collection-details', [HomeController::class, 'collectionDetails'])->name('collection.details');
+
+    Route::get('/advance-payments', [App\Http\Controllers\AdvancePaymentController::class, 'index'])->name('advance.index');
+    Route::get('/advance-payment/create', [App\Http\Controllers\AdvancePaymentController::class, 'create'])->name('advance.create');
+    Route::post('/advance-payment/store', [App\Http\Controllers\AdvancePaymentController::class, 'store'])->name('advance.store');
+    Route::get('/advance-balance', [App\Http\Controllers\AdvancePaymentController::class, 'balance'])->name('advance.balance');
+    Route::get('/advance-payment/print/{advancePayment}', [App\Http\Controllers\AdvancePaymentController::class, 'print'])->name('advance.print');
 });

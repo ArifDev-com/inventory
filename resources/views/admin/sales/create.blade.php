@@ -22,7 +22,11 @@
             </div>
             <a href="{{ route('sale.index') }}" class="btn btn-info">{{ trans('sidebar.sale.create.back') }}</a>
         </div>
-
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="card">
             <div class="card-body">
                 <form action="{{ route('sale.store') }}" id="sale_store" method="post" enctype="multipart/form-data">
@@ -42,7 +46,6 @@
                         </div>
                         <div class="col-12">
                             <div class="">
-                                {{-- <label>{{ trans('form.sale.customer') }}</label> --}}
                                 <div class="row">
                                     <div class="col-lg-10 col-sm-10 col-10">
                                         @include('common.customer')
@@ -175,14 +178,16 @@
                                 <label>
                                     Payment Method
                                 </label>
-                                <select class="form-control" name="payment_type" required="true">
+                                <select class="form-control" name="payment_type" required="true" onchange="paymentMethodChange(this)">
                                     <option value="cash">Cash</option>
                                     <option value="card">Card</option>
                                     <option value="bank">Bank</option>
                                     <option value="bkash">bKash</option>
                                     <option value="rocket">Rocket</option>
                                     <option value="nagad">Nagad</option>
+                                    <option value="advance">Advance</option>
                                 </select>
+                                <span class="text-danger advance_message"></span>
                             </div>
                         </div>
 
@@ -574,14 +579,16 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Payment Method</label>
-                            <select class="select2 form-control" name="payments[${len}][method]" required="true">
+                            <select class="select2 form-control" name="payments[${len}][method]" required="true" onchange="paymentMethodChange(this)">
                                 <option value="cash">Cash</option>
                                 <option value="card">Card</option>
                                 <option value="bank">Bank</option>
                                 <option value="bkash">bKash</option>
                                 <option value="rocket">Rocket</option>
                                 <option value="nagad">Nagad</option>
+                                <option value="advance">Advance</option>
                             </select>
+                                <span class="text-danger advance_message"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -667,6 +674,28 @@
         });
         updateGrandTotal();
     }, 1000);
+
+    function paymentMethodChange(element) {
+        let method = $(element).val();
+        if(method == 'advance') {
+            $('.advance_message').text('Advance: ' + $('.advance_amount').text() + ' Tk');
+        } else {
+            $('.advance_message').text('');
+        }
+        let parent = $(element).parent();
+        if(method == 'bank') {
+            let type = $(element).attr('name');
+            let newName = (type === 'payment_type' ? 'bank_note' : type.replace('method', 'bank_note'));
+            parent.append(`
+                <div class="form-group bank_info">
+                    <label>Bank Note:</label>
+                    <input type="text" class="form-control" name="${newName}">
+                </div>
+            `);
+        } else {
+            parent.find('.bank_info').remove();
+        }
+    }
 </script>
 @endsection
 
