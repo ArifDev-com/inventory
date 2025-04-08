@@ -4,7 +4,10 @@
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
+@php
+    $fromDate = request()->from_date ? \Carbon\Carbon::parse(request()->from_date) : now()->startOfDay();
+    $toDate = request()->to_date ? \Carbon\Carbon::parse(request()->to_date) : now()->endOfDay();
+@endphp
 <div class="page-wrapper">
     <div class="content">
         <div class="page-header">
@@ -15,11 +18,37 @@
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
-                <a href="{{ route('due.list', ['print' => 1]) }}"
-                    target="_blank"
-                    class="btn btn-info btn-sm">
-                    <i class="fa fa-print"></i> Print Due List
-                </a>
+                <form class="row" action="{{ route('due.list') }}" method="get">
+                    <div class="col-lg-2 col-sm-6 col-12">
+                        <div class="form-group">
+                            <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date"
+                                value="{{ $fromDate->format('d-m-Y') }}" name="from_date" id="from_date">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-6 col-12">
+                        <div class="form-group">
+                            <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date"
+                                value="{{ $toDate->format('d-m-Y') }}" name="to_date" id="to_date">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <div class="form-group w-100">
+                            <button type="submit" class="btn btn-filters d-inline-block"
+                                onclick="this.form.target='';"
+                            >
+                                <img
+                                    src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img">
+                            </button>
+                            <button type="submit" class="btn btn-info"
+                                onclick="this.form.target='_blank';openOther()"
+                                name="print" value="1">
+                                <i class="fa fa-print" aria-hidden="true"></i>
+                                Print
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="table-responsive">
                     <table class="table" id="myTable">
                         <thead>
@@ -44,9 +73,17 @@
                                 </td>
                                 <td>{{ $customer->phone }}</td>
                                 <td style="text-align: left;">{{ $customer->address }}</td>
-                                <td>{{ $customer->sales()->sum('due_amount') }}</td>
                                 <td>
-                                    {{ $customer->sales()->where('due_amount', '>', 0)->max('due_date') }}
+                                    {{ $customer->sales()
+                                        ->whereBetween('created_at', [$fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'])
+                                        ->where('due_amount', '>', 0)
+                                        ->sum('due_amount') }}
+                                </td>
+                                <td>
+                                    {{ $customer->sales()
+                                        ->whereBetween('created_at', [$fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'])
+                                        ->where('due_amount', '>', 0)
+                                        ->max('due_date') }}
                                 </td>
                                 <td>
                                     <a href="{{ route('due.payment', ['customer' => $customer->id]) }}" class="btn btn-info btn-sm">

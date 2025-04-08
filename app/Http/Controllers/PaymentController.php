@@ -156,8 +156,13 @@ Thank you."
     public function dueList(Request $request)
     {
         $customers = Customer::query()
-            ->whereHas('sales', function ($query) {
-                $query->where('due_amount', '>', 0);
+            ->whereHas('sales', function ($query) use ($request) {
+                // $query->where('due_amount', '>', 0);
+                if($request->from_date && $request->to_date) {
+                    $query->whereBetween('created_at', [
+                        Carbon::parse($request->from_date)->format('Y-m-d') . ' 00:00:00', Carbon::parse($request->to_date)->format('Y-m-d') . ' 23:59:59'
+                    ]);
+                }
             })
             ->orderBy('name', 'asc')
             ->with('sales');

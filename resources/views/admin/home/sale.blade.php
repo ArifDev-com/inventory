@@ -1,6 +1,12 @@
 <div>
     <h4>
-        Total Collection
+        Total Collection: {{
+            App\Models\CutomerPayment::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+            ->where('payment_method', '!=', 'advance')
+            ->sum('paying_amount')
+            + App\Models\AdvancePayment::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+            ->sum('amount')
+        }}
     </h4>
     <hr>
     <div class="row">

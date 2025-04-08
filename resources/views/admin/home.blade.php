@@ -169,7 +169,7 @@
                                 </div>
                             </a>
                         </div>
-                  
+
 						@if($user->user_role == 'superadmin')
                         <div class="col-md-6 col-sm-6 col-lg-4 col-xl-4">
                             <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="{{ route('customer.index') }}">
@@ -191,7 +191,7 @@
 
                 </div>
             </div>
-            
+
             <div class="col-md-4">
                 <div class="card p-3" style="border-top: 3px solid #b27ef7;">
                     <h4>Upcoming Due:</h4>
@@ -253,9 +253,13 @@
                                             </span>
                                             <div class="dash-widget-info">
                                                 <h4>
-                                                    {{-- due_pay + sale --}}
-                                                    {{ App\Models\CutomerPayment::whereDate('created_at', now())
-                                                    ->sum('paying_amount') }}
+                                                    {{
+                                                        App\Models\CutomerPayment::whereDate('created_at', now())
+                                                        ->where('payment_method', '!=', 'advance')
+                                                        ->sum('paying_amount')
+                                                        + App\Models\AdvancePayment::whereDate('created_at', now())
+                                                        ->sum('amount')
+                                                    }}
                                                 </h4>
                                                 <strong>
                                                     Total Collection
@@ -264,7 +268,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                
+
                                 <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
                                     <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
                                         <div class="card-body" style="padding: 0px;">
@@ -284,7 +288,7 @@
                                         </div>
                                     </a>
                                 </div>
-                  				
+
                   				<div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
                                     <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
                                         <div class="card-body" style="padding: 0px;">
@@ -303,7 +307,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                
+
                                 <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
                                     <a class="card dash-widget" style="border-top: 3px solid #b27ef7;" href="#">
                                         <div class="card-body" style="padding: 0px;">
@@ -323,7 +327,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                
+
                                 <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
                                     <a class="card dash-widget" style="border-top: 3px solid red;" href="#">
                                         <div class="card-body" style="padding: 0px;">
@@ -364,7 +368,7 @@
                                 </div>
                             </div>
                             <!-- finance closed-->
-                                
+
                                 </div>
                             </div>
                         </div>

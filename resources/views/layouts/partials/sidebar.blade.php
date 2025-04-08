@@ -203,11 +203,11 @@
 
                 <li class="submenu">
                     <a href="javascript:void(0);"
-                        class="{{ request()->is('admin/report/datewise-sale-report') || request()->is('admin/reports/product-wise') || request()->is('admin/report/return-list') || request()->is('admin/reports/product-added-report') ? 'active' : '' }}"><img
+                        class="{{ request()->is('admin/reports/datewise-sale') || request()->is('admin/reports/product-wise') || request()->is('admin/report/return-list') || request()->is('admin/reports/product-added-report') ? 'active' : '' }}"><img
                             src="{{asset('backend')}}/img/icons/settings.svg" alt="img"><span> Reports </span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{{ route('reports.datewise-sale') }}"
-                                class="{{ request()->is('admin/report/datewise-sale-report') ? 'active' : '' }}">Date Wise Sale Report</a></li>
+                                class="{{ request()->is('admin/reports/datewise-sale') ? 'active' : '' }}">Date Wise Sale Report</a></li>
                         <li><a href="{{ route('reports.product-wise') }}"
                                 class="{{ request()->is('admin/reports/product-wise') ? 'active' : '' }}">Specific Product Report</a></li>
                         <li><a href="{{ route('product.added.report') }}"
