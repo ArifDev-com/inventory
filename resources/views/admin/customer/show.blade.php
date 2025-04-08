@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="card">
                                 <div class="card-body">
                                     <h5>Total Paid</h5>
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="card">
                                 <div class="card-body">
                                     <h5>Total Due</h5>
@@ -74,14 +74,14 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-md-3">
+                         <div class="col-md-2">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5>Total Return Item</h5>
-                                    <span>{{ $customer->returns }}</span>
+                                    <h5>Total Advance</h5>
+                                    <span>{{ $customer->advance }}</span>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div> 
                     </div>
                 </div>
                 <hr>

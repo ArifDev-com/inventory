@@ -5,11 +5,14 @@
 <style>
     table * {
         font-size: 10px !important;
+      
     }
+    .c_list_c{
+  		padding-left: 250px !important;
+	}
 </style>
 <div style=" margin-top: 30px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
     Date:
-    &nbsp;
     &nbsp;
     {{ $fromDate->format('d-m-Y') }} to {{ $toDate->format('d-m-Y') }}
     &nbsp;
@@ -63,6 +66,9 @@
     &nbsp;
     &nbsp;
     &nbsp;
+    &nbsp;
+  	&nbsp;
+  	&nbsp;
     Time:
     &nbsp;
     {{ now()->format('h:i a') }}
@@ -86,7 +92,7 @@
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
                 <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">
-                    No
+                    S.L
                 </p>
             </td>
             <td style="
@@ -257,7 +263,7 @@
                 </p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
+                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
                     {{ $sale->customer?->name }}
                 </p>
             </td>
@@ -453,7 +459,7 @@
         <tr style="height: 17pt;">
             <td>
                 <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
-                    1
+                    {{ $loop->iteration }}
                 </p>
             </td>
             <td>

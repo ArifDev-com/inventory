@@ -490,7 +490,7 @@ class ReportController extends Controller
 
     public function productList(Request $request)
     {
-        $products = Product::orderBy("code")->get();
+        $products = Product::orderBy("name")->get();
         if($request->print) {
             $pdf = Pdf::loadView('admin.reports.product-list-print', compact('products'));
             return $pdf->stream('Product List.pdf');

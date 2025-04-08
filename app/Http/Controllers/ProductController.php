@@ -39,7 +39,7 @@ class ProductController extends Controller
             ->where('status', '!=', 'active')
             ->orWhereNull('status')
             // ->latest()
-            ->orderBy('code', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
 
         if($request->print) {
@@ -59,7 +59,7 @@ class ProductController extends Controller
         $suppliers = Supplier::latest()->get();
         $authId = Auth::user()->id;
         $products = Product::with('user')->where('status', 'active')
-            ->orderBy('code', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
         if($request->print) {
             $active = 1;
@@ -73,6 +73,7 @@ class ProductController extends Controller
     {
         $products = Product::with('user')
             ->where('status', 'active')
+          	->orderBy('name', 'asc')
             ->get()
             ->filter(function ($product) {
                 return $product->current_stock <= $product->alert_quantity;
@@ -322,7 +323,7 @@ class ProductController extends Controller
     public function stock()
     {
         if(auth()->user()->user_role !== 'superadmin' && auth()->user()->user_role !== 'admin') abort(403);
-      	$products = Product::orderBy("code")->get();
+      	$products = Product::orderBy("name")->get();
 
         return view('admin.products.stock', compact('products'));
     }

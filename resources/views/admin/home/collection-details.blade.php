@@ -112,7 +112,7 @@
 
                 <div>
                     <h4>
-                        Total Fund: {{
+                        Total Present Cash: {{
                             App\Models\CutomerPayment::whereIn('payment_method', ['cash', 'bkash', 'rocket', 'nagad', 'card', 'bank'])
                                 ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                                 ->sum('paying_amount')

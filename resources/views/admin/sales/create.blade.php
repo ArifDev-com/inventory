@@ -65,7 +65,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-12 col-sm-6 col-12">
+                        <!--<div class="col-lg-12 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.product name') }}</label>
                                 <div class="input-groupicon">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="suggestProduct"></div>
+                        <div id="suggestProduct"></div>-->
                     </div>
                     <div class="row">
                         <div class="table-responsive mb-3">
@@ -138,6 +138,22 @@
                             </table>
                         </div>
                     </div>
+                  	
+                  	<div class="col-lg-12 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label>{{ trans('form.sale.product name') }}</label>
+                                <div class="input-groupicon">
+
+                                    <input type="text" id="search" placeholder="Please type product code and select..."
+                                        autocomplete="off">
+                                    <div class="addonset">
+                                        <img src="{{ asset('backend') }}/img/icons/scanners.svg" alt="img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="suggestProduct"></div>
+                  
                     <div class="row">
                         <div class="col-lg-12 float-md-right">
                             <div class="total-order">

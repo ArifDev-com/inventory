@@ -18,7 +18,7 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Customer Details</h4>
+                <h4>Customer D5etails</h4>
                 <h6>Manage your Customer Details</h6>
             </div>
             <a href="{{ route('customer.index') }}" class="btn btn-info" >Back</a>

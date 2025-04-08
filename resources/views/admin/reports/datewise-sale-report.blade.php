@@ -69,7 +69,7 @@
                     <table class="table" id="example">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>S.L</th>
                                 <th>Code</th>
                                 <th>Date</th>
                                 <th>Name</th>
@@ -90,7 +90,7 @@
                                     </a>
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($sale->date)->format('d-m-Y') }}</td>
-                                <td>{{ $sale->customer?->name }}</td>
+                                <td style="text-align: left;">{{ $sale->customer?->name }}</td>
                                 <td>{{ $sale->customer?->phone }}</td>
                                 <td>{{ $sale->discount }}</td>
                                 <td>{{ $sale->due_amount }}</td>
@@ -110,10 +110,7 @@
 
 <script>
     $('#example').DataTable({ pageLength: 100,
-            dom: 'Bfrtip',
-            buttons: [
-                'csv', 'excel', 'pdf', 'print'
-            ]
+
         });
 </script>
 @endsection

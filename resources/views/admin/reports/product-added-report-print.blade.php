@@ -3,7 +3,7 @@
 @section('name', 'Product added report')
 
 @section('content')
-    <table style="margin-top: 50px;">
+    <table style="margin-top: 25px;">
         <tr>
             <td>
                 Date: {{ $fromDate }} to {{ $toDate }}
@@ -123,20 +123,30 @@
         <tbody>
             @foreach ($updates as $update)
                 <tr style="height: 17pt;">
-                    <td style="padding: 5px">
+                    <td>
+                      <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                         {{ $loop->iteration }}
+                       </p>
                     </td>
-                    <td style="padding: 5px">
+                    <td>
+                      <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                         {{ $update->created_at->format('d-m-Y') }}
+                        </p>
                     </td>
-                    <td style="padding: 5px">
+                    <td>
+                      <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                         {{ $update->product->code }}
+                        </p>
                     </td>
-                    <td style="text-align: left; padding: 5px;">
+                    <td>
+                      	<p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: left;">
                         {{ $update->product->name }}
+                        </p>
                     </td>
-                    <td style="padding: 5px">
+                    <td>
+                      <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                         {{ $update->quantity }}
+                        </p>
                     </td>
                 </tr>
             @endforeach
@@ -157,7 +167,7 @@
             {{-- {{ auth()->user()?->name }} --}}
         </div>
         <div style="border-top: 2px solid #000; margin-top: 3px;">
-            for CAPITAL LIFT
+            CAPITAL LIFT
         </div>
     </td>
 @endsection
