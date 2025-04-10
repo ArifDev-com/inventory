@@ -419,9 +419,7 @@ Thank you."
 
     public function quotation_store(Request $request)
     {
-        // dd($request->all());
-
-        $quotation = Quotation::create([
+        $data = [
             'customer_id' => $request->customer_id,
             'date' => $request->date,
             'discount' => $request->discount ?: 0,
@@ -432,7 +430,14 @@ Thank you."
             'ref_code' => 100 + Quotation::count(),
             'status' => 'pending',
             'user_id' => Auth::id(),
-        ]);
+        ];
+        if($request->quotation_id) {
+            $quotation = Quotation::findOrFail($request->quotation_id);
+            $quotation->update($data);
+            $quotation->items()->delete();
+        } else {
+            $quotation = Quotation::create($data);
+        }
 
         foreach ($request->product_id as $key => $value) {
             QuotationItem::create([
@@ -443,8 +448,8 @@ Thank you."
                 'price' => $request->price[$key],
             ]);
         }
-        session()->flash('success', 'Quotation Added');
 
+        session()->flash('success', 'Quotation ' . ($request->quotation_id ? 'Updated' : 'Added'));
         return response()->json(['id' => $quotation->id]);
     }
 }

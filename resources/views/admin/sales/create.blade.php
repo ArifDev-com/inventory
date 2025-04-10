@@ -54,11 +54,10 @@
                                         <label for="customer_id_due">&nbsp;</label>
                                         <label for="customer_id_due">&nbsp;</label>
                                         <div class="add-icon">
-                                            <span><img src="{{ asset('backend') }}/img/icons/plus1.svg"
-                                                    data-bs-toggle="modal" data-bs-target="#create" alt="img"></span>
-                                            {{-- <a href="javascript:void(0);" class="btn btn-adds"
-                                                data-bs-toggle="modal" data-bs-target="#create"><i
-                                                    class="fa fa-plus me-2"></i></a> --}}
+                                            <span>
+                                                <img src="{{ asset('backend') }}/img/icons/plus1.svg"
+                                                    data-bs-toggle="modal" data-bs-target="#create" alt="img">
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -123,7 +122,7 @@
                             </table>
                         </div>
                     </div>
-                  	
+
                   	<div class="col-lg-12 col-sm-6 col-12">
                             <div class="form-group">
                                 <label>{{ trans('form.sale.product name') }}</label>
@@ -138,7 +137,7 @@
                             </div>
                         </div>
                         <div id="suggestProduct"></div>
-                  
+
                     <div class="row">
                         <div class="col-lg-12 float-md-right">
                             <div class="total-order">
@@ -238,9 +237,14 @@
                             <button type="submit" class="btn btn-submit me-2">{{ trans('form.sale.submit') }}</button>
                             <a href="" class="btn btn-cancel me-2">{{ trans('form.sale.cancel') }}</a>
                             <a href="#" onclick="checkout()" class="btn me-2 btn-warning">Checkout</a>
-                            @if (!$quotation)
-                                <button type="button" class="btn btn-success" id="quotation_add">Quotation</button>
-                            @endif
+                            <button type="button" class="btn btn-success" id="quotation_add">
+                                @if (!$quotation)
+                                    Add
+                                @else
+                                    Update
+                                @endif
+                                    Quotation
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -376,11 +380,9 @@
                     <input type="hidden" name="purchase_price[]" class="purchase_price" value="${product.price}" style="width:100px;">
 
                     <td class="price_td" mrp="${product.price}" retail="${product.retail_price}" purchase="${product.purchase_price}" wholesale="${product.wholesale_price}">
-                        <input type="number" name="price[]" class="form-control price"  placeholder="price" value="${product.price}" style="width:100px;"
+                        <input type="number" name="price[]" class="form-control price"  placeholder="price" value="" style="width:100px;" required min="0"
                             onkeyup="$(this).next().val('').trigger('change');"
                         >
-
-
                         <select name="price_type[]" class="link" onchange="updatePriceTypePrice(this)">
                             <option value="">Custom price</option>
                             <option value="mrp" selected>MRP price - ${product.price}</option>

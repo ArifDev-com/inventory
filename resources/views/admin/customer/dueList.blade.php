@@ -5,8 +5,6 @@
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 @php
-    $fromDate = request()->from_date ? \Carbon\Carbon::parse(request()->from_date) : now()->startOfDay();
-    $toDate = request()->to_date ? \Carbon\Carbon::parse(request()->to_date) : now()->endOfDay();
 @endphp
 <div class="page-wrapper">
     <div class="content">
@@ -74,15 +72,11 @@
                                 <td>{{ $customer->phone }}</td>
                                 <td style="text-align: left;">{{ $customer->address }}</td>
                                 <td>
-                                    {{ $customer->sales()
-                                        ->whereBetween('created_at', [$fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'])
-                                        ->where('due_amount', '>', 0)
+                                    {{ $customer->sales
                                         ->sum('due_amount') }}
                                 </td>
                                 <td>
-                                    {{ $customer->sales()
-                                        ->whereBetween('created_at', [$fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'])
-                                        ->where('due_amount', '>', 0)
+                                    {{ $customer->sales
                                         ->max('due_date') }}
                                 </td>
                                 <td>
