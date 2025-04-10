@@ -263,17 +263,18 @@ class ProductController extends Controller
         return redirect()->route('product.index')->with('success', 'Product successfully Updated');
     }
 
-    public function destroy(Product $product)
+    public function destroy($product)
     {
         try {
+          	$product = Product::withoutGlobalScope('active')->findOrFail($product);
             $img = $product->image.'';
-            $product->delete();
+	        $product->delete();
             @unlink($img);
 
             return redirect()->back()->with('delete', 'successfully Deleted');
         } catch (\Throwable $th) {
 
-            return redirect()->back()->with('error', 'The product is used in other places. Not deletable.');
+            return redirect()->back()->with('error', 'The product is used in other places. Not deletable.' );
         }
     }
 

@@ -64,21 +64,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!--<div class="col-lg-12 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label>{{ trans('form.sale.product name') }}</label>
-                                <div class="input-groupicon">
-
-                                    <input type="text" id="search" placeholder="Please type product code and select..."
-                                        autocomplete="off">
-                                    <div class="addonset">
-                                        <img src="{{ asset('backend') }}/img/icons/scanners.svg" alt="img">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="suggestProduct"></div>-->
                     </div>
                     <div class="row">
                         <div class="table-responsive mb-3">
@@ -195,6 +180,7 @@
                                     Payment Method
                                 </label>
                                 <select class="form-control" name="payment_type" required="true" onchange="paymentMethodChange(this)">
+                                    <option value="">Select</option>
                                     <option value="cash">Cash</option>
                                     <option value="card">Card</option>
                                     <option value="bank">Bank</option>

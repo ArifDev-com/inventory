@@ -329,6 +329,8 @@
         </tr>
     </tbody>
 </table>
+
+
 <div style="margin-top: 20px">
     <b>Due Paid </b>
 </div>
@@ -515,48 +517,275 @@
         </tr>
     </tbody>
 </table>
-<table style="border-collapse: collapse; margin-top: 20px; width: 100%;">
-    <tr >
-        <td style="width: 400px">
-            &nbsp;
+
+<div style="margin-top: 20px">
+    <b>Financial Summary</b>
+</div>
+
+<table style="border-collapse: collapse; margin-top: 5px; width: 100%;">
+    <tr>
+        
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Bill Due
         </td>
         <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            {{ $total_due }}
+        </td>
+        <td style="width: 150px; border: 0px;"></td>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
             Total Sale
         </td>
-        <td style="text-align: center; padding: 5px; border: 1px solid #969696; width: 90px;">
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
             {{ \App\Models\Sale::whereBetween('created_at', [$fromDate, $toDate])->sum('grandtotal') }}
         </td>
     </tr>
-    <tr >
-        <td style="width: 400px">
-            &nbsp;
+    
+    <tr>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Bank
         </td>
         <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            {{
+            App\Models\CutomerPayment::where('payment_method', 'bank')
+                 ->whereBetween('created_at', [$fromDate, $toDate])
+                 ->with('sale')
+                 ->sum('paying_amount')
+            }}
+        </td>
+        <td style="width: 150px; border: 0px;"></td>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
             Total Due Received
         </td>
-        <td style="text-align: center; padding: 5px; border: 1px solid #969696; width: 90px;">
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
             {{ \App\Models\CutomerPayment::whereBetween('created_at', [$fromDate, $toDate])
                 ->whereNotNull('sale_id')
                 ->where('is_due_pay', true)
                 ->sum('paying_amount') }}
         </td>
     </tr>
-    <tr >
-        <td style="width: 400px">
-            &nbsp;
+    <tr>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Mobile Banking
         </td>
         <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
-            Total Cash Received
+                {{
+                  App\Models\CutomerPayment::whereIn('payment_method', ['bkash', 'rocket', 'nagad'])
+                        ->whereBetween('created_at', [$fromDate, $toDate])
+                        ->with('sale')
+                        ->sum('paying_amount')
+                  }}
         </td>
-        <td style="text-align: center; padding: 5px; border: 1px solid #969696; width: 90px;">
-            {{ \App\Models\CutomerPayment::whereBetween('created_at', [$fromDate, $toDate])
-                ->whereNotNull('sale_id')
-                ->where('is_due_pay', false)
-                ->where('payment_method', 'cash')
-                ->sum('paying_amount') }}
+        <td style="width: 150px; border: 0px;"></td>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Total Adavnced
+        </td>
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            {{App\Models\AdvancePayment::whereBetween('created_at', [$fromDate, $toDate])
+            ->sum('amount')}}
         </td>
     </tr>
+    <tr>
+        
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Other's Cost
+        </td>
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+                {{
+                  App\Models\Sale::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('other_cost', '>', 0)
+                                      ->with('customer')
+                                    ->sum('other_cost')
+                  }}
+        </td>
+        <td style="width: 150px; border: 0px;"></td>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            All Other's
+        </td>
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            - {{
+                $total_due
+                
+                + App\Models\CutomerPayment::where('payment_method', 'bank')
+                         ->whereBetween('created_at', [$fromDate, $toDate])
+                         ->with('sale')
+                         ->sum('paying_amount')
+                 
+                 + App\Models\CutomerPayment::whereIn('payment_method', ['bkash', 'rocket', 'nagad'])
+                        ->whereBetween('created_at', [$fromDate, $toDate])
+                        ->with('sale')
+                        ->sum('paying_amount')
+                 
+                 + App\Models\Sale::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('other_cost', '>', 0)
+                                      ->with('customer')
+                                    ->sum('other_cost')
+                 
+                 + App\Models\CutomerPayment::where('payment_method', 'advance')
+                                    ->whereBetween('created_at', [$fromDate, $toDate])
+                                      ->with('sale')
+                                    ->sum('paying_amount')
+                  
+                  + App\Models\SaleReturn::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('paid_amount', '>', 0)
+                                      ->with('customer')
+                                    ->sum('paid_amount')
+                  
+                  + App\Models\Expense::whereBetween('created_at', [$fromDate, $toDate])
+                            ->with('customer')
+                            ->sum('amount')
+            }}
+        </td>
+    </tr>
+    
+    <tr>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Advance Used
+        </td>
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            {{
+                  App\Models\CutomerPayment::where('payment_method', 'advance')
+                                    ->whereBetween('created_at', [$fromDate, $toDate])
+                                      ->with('sale')
+                                    ->sum('paying_amount')
+                  }}
+        </td>
+        
+        <td style="width: 150px; border: 0px;"></td>
+        
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Present Cash
+        </td>
+        
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            
+            {{ App\Models\Sale::whereBetween('created_at', [$fromDate, $toDate])->sum('grandtotal') 
+            
+            + App\Models\CutomerPayment::whereBetween('created_at', [$fromDate, $toDate])
+                ->whereNotNull('sale_id')
+                ->where('is_due_pay', true)
+                ->sum('paying_amount') 
+                
+            + App\Models\AdvancePayment::whereBetween('created_at', [$fromDate, $toDate])
+                ->sum('amount')
+            
+               
+              - ($total_due
+                
+                + App\Models\CutomerPayment::where('payment_method', 'bank')
+                         ->whereBetween('created_at', [$fromDate, $toDate])
+                         ->with('sale')
+                         ->sum('paying_amount')
+                 
+                 + App\Models\CutomerPayment::whereIn('payment_method', ['bkash', 'rocket', 'nagad'])
+                        ->whereBetween('created_at', [$fromDate, $toDate])
+                        ->with('sale')
+                        ->sum('paying_amount')
+                 
+                 + App\Models\Sale::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('other_cost', '>', 0)
+                                      ->with('customer')
+                                    ->sum('other_cost')
+                 
+                 + App\Models\CutomerPayment::where('payment_method', 'advance')
+                                    ->whereBetween('created_at', [$fromDate, $toDate])
+                                      ->with('sale')
+                                    ->sum('paying_amount')
+                  
+                  + App\Models\SaleReturn::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('paid_amount', '>', 0)
+                                      ->with('customer')
+                                    ->sum('paid_amount')
+                  
+                  + App\Models\Expense::whereBetween('created_at', [$fromDate, $toDate])
+                            ->with('customer')
+                            ->sum('amount'))
+            }}
+        </td>
+    </tr>
+    
+    <tr>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Return
+        </td>
+        
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+                {{
+                  App\Models\SaleReturn::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('paid_amount', '>', 0)
+                                      ->with('customer')
+                                    ->sum('paid_amount')
+                  }}
+        </td>
+        
+        <td style="width: 150px; border: 0px;"></td>
+        
+        <td></td>
+        <td></td>
+    </tr>
+    
+    
+    <tr>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Expense
+        </td>
+        
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            {{
+                  App\Models\Expense::whereBetween('created_at', [$fromDate, $toDate])
+                            ->with('customer')
+                            ->sum('amount')
+                  }}
+        </td>
+        <td style="width: 150px; border: 0px;"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    
+    <tr>
+        <td style="text-align: left; padding: 5px; border: 1px solid #969696;">
+            Total
+        </td>
+        
+        <td style="text-align: center; padding: 5px; border: 1px solid #969696;">
+            {{
+                $total_due
+                
+                + App\Models\CutomerPayment::where('payment_method', 'bank')
+                         ->whereBetween('created_at', [$fromDate, $toDate])
+                         ->with('sale')
+                         ->sum('paying_amount')
+                 
+                 + App\Models\CutomerPayment::whereIn('payment_method', ['bkash', 'rocket', 'nagad'])
+                        ->whereBetween('created_at', [$fromDate, $toDate])
+                        ->with('sale')
+                        ->sum('paying_amount')
+                 
+                 + App\Models\Sale::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('other_cost', '>', 0)
+                                      ->with('customer')
+                                    ->sum('other_cost')
+                 
+                 + App\Models\CutomerPayment::where('payment_method', 'advance')
+                                    ->whereBetween('created_at', [$fromDate, $toDate])
+                                      ->with('sale')
+                                    ->sum('paying_amount')
+                  
+                  + App\Models\SaleReturn::whereBetween('created_at', [$fromDate, $toDate])
+                                      ->where('paid_amount', '>', 0)
+                                      ->with('customer')
+                                    ->sum('paid_amount')
+                  
+                  + App\Models\Expense::whereBetween('created_at', [$fromDate, $toDate])
+                            ->with('customer')
+                            ->sum('amount')
+            }}
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    
 </table>
+
 @endsection
 @section('footer')
 <td style="text-align: center; opacity: 0;">

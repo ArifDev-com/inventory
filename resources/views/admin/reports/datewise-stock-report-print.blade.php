@@ -10,8 +10,10 @@
 <div style=" margin-top: 30px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
     Date:
     &nbsp;
-    &nbsp;
     {{ $fromDate->format('d-m-Y') }} to {{ $toDate->format('d-m-Y') }}
+    &nbsp;
+    &nbsp;
+    &nbsp;
     &nbsp;
     &nbsp;
     &nbsp;
@@ -202,17 +204,17 @@
                     ->sum('quantity');
             @endphp
             <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
                     {{ $current }}
                 </p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
                     {{ $sold }}
                 </p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
+                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
                     {{ $add }}
                 </p>
             </td>
@@ -236,7 +238,7 @@
             {{-- {{ auth()->user()?->name }} --}}
         </div>
         <div style="border-top: 2px solid #000; margin-top: 3px;">
-            for CAPITAL LIFT
+            CAPITAL LIFT
         </div>
     </td>
 @endsection

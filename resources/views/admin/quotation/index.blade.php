@@ -98,6 +98,12 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
+                                            <a href="{{ route('quotation.print', $quotation->id) }}" target="_blank"
+                                                class="dropdown-item confirm-text">
+                                                View
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="{{ route('sale.create', ['quotation_id' => $quotation->id]) }}"
                                                 class="dropdown-item confirm-text">
                                                 Move to Sales

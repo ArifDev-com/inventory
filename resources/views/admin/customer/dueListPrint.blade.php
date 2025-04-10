@@ -50,10 +50,10 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;"> No.</p>
+                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">S.L</p>
             </td>
             <td style="
-                        width: 100px;
+                        width: 170px;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -70,7 +70,7 @@
                 <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Client Name</p>
             </td>
             <td style="
-                        width: 25%;
+                        width: 190px;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -87,6 +87,7 @@
                 <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Company Name</p>
             </td>
             <td style="
+                        width: 120px;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -175,7 +176,7 @@
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
                 <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Curr Due
+                    Curr. Due
                 </p>
             </td>
         </tr>
@@ -185,7 +186,7 @@
                 <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
+                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: left;">
                     {{ $customer->name }}
                 </p>
             </td>
