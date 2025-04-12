@@ -7,7 +7,7 @@
     Date:
     &nbsp;
     &nbsp;
-    {{ $fromDate->format('d-m-Y') }} to {{ $toDate->format('d-m-Y') }}
+    {{ $start_date }} to {{ $end_date }}
     &nbsp;
     &nbsp;
     &nbsp;

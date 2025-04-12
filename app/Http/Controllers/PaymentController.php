@@ -130,97 +130,52 @@ class PaymentController extends Controller
             ]);
         }
 
-        if ($customer?->phone) {
-            // foreach($payments as $payment){
-            if ($paid_amount > 0) {
-                try {
-                    SMSApi::send(
-                        $customer->phone,
-                        "Dear Customer: {$customer->name},
-Invoice No: {$invoices}
-Paid: {$paid_amount} Tk.
-Discount: {$discount} Tk.
-And Due Amount: {$due_amount} Tk.
-Thank you."
-                    );
-                } catch (\Exception $e) {
-                    Log::error('SMS API Error: '.$e->getMessage());
-                }
-            }
-            // }
-        }
-
         return redirect()->back()->with('success', 'Payment and discount processed successfully');
     }
 
     public function dueList(Request $request)
     {
-        $fromDate = $request->from_date ? \Carbon\Carbon::parse($request->from_date) : now()->startOfDay();
-        $toDate = $request->to_date ? \Carbon\Carbon::parse($request->to_date) : now()->endOfDay();
         $customers = Customer::query()
-            ->whereHas('sales', function ($query) use ($fromDate, $toDate) {
+            ->whereHas('sales', function ($query) use ($request) {
                 // $query->where('due_amount', '>', 0);
-                if($fromDate && $toDate) {
+                if($request->from_date && $request->to_date) {
                     $query->whereBetween('created_at', [
-                        $fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'
+                        Carbon::parse($request->from_date)->format('Y-m-d') . ' 00:00:00', Carbon::parse($request->to_date)->format('Y-m-d') . ' 23:59:59'
                     ]);
                 }
             })
             ->orderBy('name', 'asc')
-            ->with(['sales' => function($query) use ($fromDate, $toDate) {
-                if($fromDate && $toDate) {
-                    $query->whereBetween('created_at', [
-                        $fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'
-                    ]);
-                }
-            }]);
+            ->with('sales');
         if ($request->print) {
             $pdf = Pdf::loadView('admin.customer.dueListPrint', [
-                'customers' => $customers->get()->filter(function($customer){
-                    return $customer->sales->sum('due_amount') > 0;
-                }),
-                'fromDate' => $fromDate,
-                'toDate' => $toDate,
+                'customers' => $customers->get(),
             ]);
 
             return $pdf->stream('Due list.pdf', ['Attachment' => false]);
         }
 
         return view('admin.customer.dueList', [
-            'customers' => $customers->get()->filter(function($customer){
-                return $customer->sales->sum('due_amount') > 0;
-            }),
-            'fromDate' => $fromDate,
-            'toDate' => $toDate,
+            'customers' => $customers->get(),
         ]);
     }
 
     public function duePayList(Request $request)
     {
-        $payments = CutomerPayment::query()
-            ->latest('created_at')
-            ->where('is_due_pay', true);
-        $fromDate = $request->start_date ? \Carbon\Carbon::parse($request->start_date) : now()->startOfDay();
-        $toDate = $request->end_date ? \Carbon\Carbon::parse($request->end_date) : now()->endOfDay();
-        $payments->whereDate('created_at', '>=', $fromDate . ' 00:00:00');
-        $payments->whereDate('created_at', '<=', $toDate . ' 23:59:59');
-        
+        $payments = CutomerPayment::latest();
+        $payments->whereDate('created_at', '>=', $request->start_date ?: Carbon::now());
+        $payments->whereDate('created_at', '<=', $request->end_date ?: Carbon::now());
         if ($request->print) {
             $pdf = Pdf::loadView('admin.customer.duePaymentListPrint', [
                 'payments' => $payments->get(),
-                'fromDate' => $fromDate,
-                'toDate' => $toDate,
+                'start_date' => Carbon::parse($request->start_date ?? now()->format('Y-m-d'))->format('d-m-Y'),
+                'end_date' => Carbon::parse($request->end_date ?? now()->format('Y-m-d'))->format('d-m-Y'),
             ]);
 
             return $pdf->stream('due payment.pdf', ['Attachment' => false]);
         }
-        // dd(
-        //     $payments->get()->toArray()
-        // );
+
         return view('admin.customer.duePaymentList', [
             'payments' => $payments->get(),
-            'fromDate' => $fromDate,
-            'toDate' => $toDate,
         ]);
     }
 

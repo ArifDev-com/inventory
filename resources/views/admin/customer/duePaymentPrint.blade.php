@@ -63,10 +63,10 @@
                         </tr>
                         <tr>
                             <td>
-                                Time
+                                
                             </td>
                             <td>
-                                : {{ $payment->created_at->format('H:i') }}
+                                
                             </td>
                         </tr>
                     </table>

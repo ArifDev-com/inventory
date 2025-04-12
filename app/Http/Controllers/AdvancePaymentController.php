@@ -48,17 +48,6 @@ class AdvancePaymentController extends Controller
         $customer = Customer::findOrFail($request->customer_id);
         $pay = AdvancePayment::create($request->all());
 
-        try {
-            SMSApi::send(
-                $customer->phone,
-                "Dear Customer: {$customer->name},
-Date: ". Carbon::parse($pay->date)->format('d-m-Y ').date('h:i A')."
-Advance Payment: {$pay->amount} Tk.
-Thank you."
-            );
-        } catch (\Exception $e) {
-            Log::error('SMS API Error: '.$e->getMessage());
-        }
         session()->flash('print', $pay->id);
         return redirect()
             ->route('advance.index')

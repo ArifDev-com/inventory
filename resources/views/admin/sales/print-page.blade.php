@@ -72,10 +72,10 @@
                     </tr>
                     <tr>
                         <td>
-                            Time
+                            
                         </td>
                         <td>
-                            : {{ $sale->created_at->format('H:i') }}
+                            
                         </td>
                     </tr>
                 </table>

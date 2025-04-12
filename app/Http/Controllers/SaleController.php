@@ -230,25 +230,6 @@ class SaleController extends Controller
         }
 
 
-        if ($sale->customer->phone) {
-            try {
-                SMSApi::send(
-                    $sale->customer->phone,
-                    "Dear Customer: {$sale->customer->name},
-Invoice No: {$sale->ref_code}
-Sale Date: ".Carbon::parse($sale->date)->format('d-m-Y ').date('h:i A')."
-Total Items: {$sale->items->count()}
-Total Amount: {$sale->grandtotal} Tk.
-Discount: {$sale->discount} Tk.
-Other Cost: {$sale->other_cost} Tk.
-You have paid {$sale->paid_amount} Tk.
-And Due Amount: {$sale->due_amount} Tk.
-Thank you."
-                );
-            } catch (\Exception $e) {
-                Log::error('SMS API Error: '.$e->getMessage());
-            }
-        }
         if ($request->quotation_id) {
             Quotation::query()
                 ->where('id', $request->quotation_id)
@@ -419,7 +400,9 @@ Thank you."
 
     public function quotation_store(Request $request)
     {
-        $data = [
+        // dd($request->all());
+
+        $quotation = Quotation::create([
             'customer_id' => $request->customer_id,
             'date' => $request->date,
             'discount' => $request->discount ?: 0,
@@ -430,14 +413,7 @@ Thank you."
             'ref_code' => 100 + Quotation::count(),
             'status' => 'pending',
             'user_id' => Auth::id(),
-        ];
-        if($request->quotation_id) {
-            $quotation = Quotation::findOrFail($request->quotation_id);
-            $quotation->update($data);
-            $quotation->items()->delete();
-        } else {
-            $quotation = Quotation::create($data);
-        }
+        ]);
 
         foreach ($request->product_id as $key => $value) {
             QuotationItem::create([
@@ -448,8 +424,8 @@ Thank you."
                 'price' => $request->price[$key],
             ]);
         }
+        session()->flash('success', 'Quotation Added');
 
-        session()->flash('success', 'Quotation ' . ($request->quotation_id ? 'Updated' : 'Added'));
         return response()->json(['id' => $quotation->id]);
     }
 }

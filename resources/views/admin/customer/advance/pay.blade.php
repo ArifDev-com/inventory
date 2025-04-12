@@ -53,8 +53,7 @@
                             <div class="form-group">
                                 <label>Payment Method</label>
                                 <select class="form-control select2" name="method" required onchange="paymentMethodChange(this)">
-                                    <option value="">Select</option>
-                                    <option value="cash">Cash</option>
+                                    <option value="cash" selected>Cash</option>
                                     <option value="bank">Bank</option>
                                     <option value="bkash">Bkash</option>
                                     <option value="rocket">Rocket</option>

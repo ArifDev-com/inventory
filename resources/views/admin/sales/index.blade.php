@@ -91,13 +91,39 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <a
-                                        class="btn btn-primary btn-sm text-white" target="_blank"
-                                        href="{{ route('sale.pdf', [$sale->id]) }}"
-                                        onclick="window.open('{{ route('sale.challan.pdf', [$sale->id]) }}', '_blank')"
-                                        >
-                                        <i class="fa fa-print"></i> Print 
+                                    <a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                        aria-expanded="true">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                     </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ route('sale.pdf', [$sale->id]) }}" class="dropdown-item" target="_blank">
+                                                <img
+                                                    src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
+                                                    alt="img">
+                                                    Print Invoice
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('sale.challan.pdf', [$sale->id]) }}"
+                                                class="dropdown-item" target="_blank">
+                                                <img
+                                                    src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
+                                                    alt="img">
+                                                Print Challan
+                                            </a>
+                                        </li>
+
+                                        @if (auth()->user()->user_role == 'admin')
+                                        <li>
+                                            <a href="{{ route('sale.delete', $sale->id) }}"
+                                                onclick="return confirm('Are you sure you want to delete this sale?')"
+                                                class="dropdown-item confirm-text"><img
+                                                    src="{{ asset('backend') }}/img/icons/delete1.svg" class="me-2"
+                                                    alt="img">{{ trans('table.sale.delete sale') }}</a>
+                                        </li>
+                                        @endif
+                                    </ul>
                                 </td>
                             </tr>
                             @endforeach
