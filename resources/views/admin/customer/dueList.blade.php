@@ -12,7 +12,7 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>Due List</h4>
+                <h4>Due Report</h4>
             </div>
         </div>
         <!-- /product list -->

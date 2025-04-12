@@ -409,6 +409,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/customer/due/list/customers', [App\Http\Controllers\PaymentController::class, 'dueList'])->name('due.list');
     Route::get('/customer/due/pay/list', [App\Http\Controllers\PaymentController::class, 'duePayList'])->name('due.payments');
     Route::get('/customer/due/pay/print/{payment}', [App\Http\Controllers\PaymentController::class, 'duePayPrint'])->name('due.payment.print');
+    Route::get('/customer/due/added/history', [App\Http\Controllers\PaymentController::class, 'dueAddedHistory'])->name('due.added.history');
     Route::post('/customer/sup/pay', [App\Http\Controllers\PaymentController::class, 'supPay'])->name('sup.payment');
 
     // Sale here

@@ -197,7 +197,7 @@
       </div>
       <br><br><br>
     </center>
-    <input type="text" name="phone" placeholder="Phone" />
+    <input type="text" name="phone" placeholder="Phone" value="{{ old('phone') }}" />
     @error('phone')
     <span class="text-danger" style="color: red;">{{ $message }}</span>
     @enderror

@@ -209,4 +209,32 @@ class PaymentController extends Controller
         return redirect()->back();
 
     }
+
+    public function dueAddedHistory(Request $request)
+    {
+        $fromDate = now()->startOfDay();
+        $toDate = now()->endOfDay();
+        $dueAddedHistory = [];
+        if (($request->from_date) && ($request->to_date)) {
+            $fromDate = Carbon::parse($request->from_date)->startOfDay();
+            $toDate = Carbon::parse($request->to_date)->endOfDay();
+        }
+        $dueAddedHistory = Sale::latest()
+            ->where('due_amount', '>', 0)
+            ->whereBetween('created_at', [$fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'])
+            ->get();
+        if($request->print) {
+            $pdf = Pdf::loadView('admin.customer.dueAddedHistoryPrint', [
+                'dueAddedHistory' => $dueAddedHistory,
+                'fromDate' => $fromDate,
+                'toDate' => $toDate,
+            ]);
+            return $pdf->stream('Due Added History.pdf', ['Attachment' => false]);
+        }
+        return view('admin.customer.dueAddedHistory', [
+            'dueAddedHistory' => $dueAddedHistory,
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+        ]);
+    }
 }
