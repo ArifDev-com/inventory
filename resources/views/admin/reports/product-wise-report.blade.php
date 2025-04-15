@@ -42,21 +42,29 @@
                                         name="to_date" value="{{ request()->to_date }}">
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-sm-6 col-12">
+                            <div class="col-lg-4 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <select class="select" name="product_id" required>
-                                        <option>Choose Product</option>
+                                    <select class="select3" name="product_id" required>
+                                        <option value="">Choose Product</option>
                                         @foreach ($products ?? [] as $product)
-                                        <option @if(request()->product_id == $product->id)
-                                            selected
-                                            @endif
-                                            value="{{ $product->id }}">{{ $product->name }}</option>
+                                            <option value="{{ $product->id }}"
+                                                {{ request()->product_id == $product->id ? 'selected' : '' }}>
+                                                {{ $product->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('.select3').select2({
+                                            placeholder: 'Choose Product',
+                                            allowClear: true
+                                        });
+                                    });
+                                </script>
                             <div class="col-lg-2 ">
-                                <div class="form-group w-100">
+                                <div class="form-group w-150">
                                     <button type="submit" class="btn btn-filters d-inline-block"
                                         onclick="this.form.target='';"
                                     >

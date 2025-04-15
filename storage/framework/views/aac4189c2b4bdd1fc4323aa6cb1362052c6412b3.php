@@ -1,5 +1,4 @@
-@extends('layouts.app')
-@section('content')
+<?php $__env->startSection('content'); ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -10,37 +9,38 @@
         background-color: transparent;
     }
 </style>
-@php
+<?php
     $selected_customer = $quotation ? $quotation->customer : null;
-@endphp
+?>
 <div class="page-wrapper">
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h4>{{ trans('sidebar.sale.create.add sale') }}</h4>
-                <h6>{{ trans('sidebar.sale.create.add your new sale') }}</h6>
+                <h4><?php echo e(trans('sidebar.sale.create.add sale')); ?></h4>
+                <h6><?php echo e(trans('sidebar.sale.create.add your new sale')); ?></h6>
             </div>
-            <a href="{{ route('sale.index') }}" class="btn btn-info">{{ trans('sidebar.sale.create.back') }}</a>
+            <a href="<?php echo e(route('sale.index')); ?>" class="btn btn-info"><?php echo e(trans('sidebar.sale.create.back')); ?></a>
         </div>
-        @if(session('error'))
+        <?php if(session('error')): ?>
             <div class="alert alert-danger">
-                {{ session('error') }}
+                <?php echo e(session('error')); ?>
+
             </div>
-        @endif
+        <?php endif; ?>
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('sale.store') }}" id="sale_store" method="post" enctype="multipart/form-data">
-                    @csrf
-                    @if ($quotation)
-                        <input type="hidden" name="quotation_id" value="{{ $quotation->id }}">
-                    @endif
+                <form action="<?php echo e(route('sale.store')); ?>" id="sale_store" method="post" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+                    <?php if($quotation): ?>
+                        <input type="hidden" name="quotation_id" value="<?php echo e($quotation->id); ?>">
+                    <?php endif; ?>
                     <div class="row">
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
-                                <label>{{ trans('form.sale.sale date') }}</label>
+                                <label><?php echo e(trans('form.sale.sale date')); ?></label>
                                 <div class="input-groupicon">
                                     <input type="date" class="form-control" name="date" placeholder="Choose Date"
-                                        value="{{ $quotation ? $quotation->date : date('Y-m-d') }}" readonly>
+                                        value="<?php echo e($quotation ? $quotation->date : date('Y-m-d')); ?>" readonly>
                                 </div>
                             </div>
                         </div>
@@ -48,14 +48,14 @@
                             <div class="">
                                 <div class="row">
                                     <div class="col-lg-10 col-sm-10 col-10">
-                                        @include('common.customer')
+                                        <?php echo $__env->make('common.customer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                     </div>
                                     <div class="col-lg-2 col-sm-2 col-2 ps-0 mt-2">
                                         <label for="customer_id_due">&nbsp;</label>
                                         <label for="customer_id_due">&nbsp;</label>
                                         <div class="add-icon">
                                             <span>
-                                                <img src="{{ asset('backend') }}/img/icons/plus1.svg"
+                                                <img src="<?php echo e(asset('backend')); ?>/img/icons/plus1.svg"
                                                     data-bs-toggle="modal" data-bs-target="#create" alt="img">
                                             </span>
                                         </div>
@@ -69,55 +69,55 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>{{ trans('form.sale.product name') }}</th>
+                                        <th><?php echo e(trans('form.sale.product name')); ?></th>
                                         <th>Stock</th>
-                                        <th>{{ trans('form.sale.qty') }}</th>
-                                        <th>{{ trans('form.sale.price') }}</th>
+                                        <th><?php echo e(trans('form.sale.qty')); ?></th>
+                                        <th><?php echo e(trans('form.sale.price')); ?></th>
 
-                                        <th class="text-end">{{ trans('form.sale.subtotal') }}</th>
-                                        <th>{{ trans('form.sale.action') }}</th>
+                                        <th class="text-end"><?php echo e(trans('form.sale.subtotal')); ?></th>
+                                        <th><?php echo e(trans('form.sale.action')); ?></th>
                                     </tr>
                                 </thead>
                                 <br>
                                 <tbody class="tbody">
-                                    @if ($quotation)
-                                        @foreach ($quotation->items as $item)
+                                    <?php if($quotation): ?>
+                                        <?php $__currentLoopData = $quotation->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr id="product_${product.id}">
-                                                <input type="hidden" name="product_id[]"  class="form-control product_id"  value="{{ $item->product_id }}">
+                                                <input type="hidden" name="product_id[]"  class="form-control product_id"  value="<?php echo e($item->product_id); ?>">
                                                 <td class="productimgname">
-                                                    <a href="javascript:void(0);">{{ $item->product?->name }}</a>-<a href="javascript:void(0);">{{ $item->product?->code }}</a>
+                                                    <a href="javascript:void(0);"><?php echo e($item->product?->name); ?></a>-<a href="javascript:void(0);"><?php echo e($item->product?->code); ?></a>
                                                 </td>
 
-                                                <td >{{ $item->product?->current_stock }}</td>
+                                                <td ><?php echo e($item->product?->current_stock); ?></td>
 
                                                 <td>
-                                                    <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="{{ $item->quantity }}" style="width:100px;"
+                                                    <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="<?php echo e($item->quantity); ?>" style="width:100px;"
                                                         min="1"
                                                     >
                                                 </td>
 
-                                                <input type="hidden" name="purchase_price[]" class="purchase_price" value="{{ $item->product?->price }}" style="width:100px;">
+                                                <input type="hidden" name="purchase_price[]" class="purchase_price" value="<?php echo e($item->product?->price); ?>" style="width:100px;">
 
-                                                <td class="price_td" mrp="{{ $item->product?->price }}" retail="{{ $item->product?->retail_price }}" purchase="{{ $item->product?->purchase_price }}" wholesale="{{ $item->product?->wholesale_price }}">
-                                                    <input type="number" name="price[]" class="form-control price"  placeholder="price" value="{{ $item->price }}" style="width:100px;"
+                                                <td class="price_td" mrp="<?php echo e($item->product?->price); ?>" retail="<?php echo e($item->product?->retail_price); ?>" purchase="<?php echo e($item->product?->purchase_price); ?>" wholesale="<?php echo e($item->product?->wholesale_price); ?>">
+                                                    <input type="number" name="price[]" class="form-control price"  placeholder="price" value="<?php echo e($item->price); ?>" style="width:100px;"
                                                         onkeyup="$(this).next().val('').trigger('change');"
                                                     >
                                                     <select name="price_type[]" class="link" onchange="updatePriceTypePrice(this)">
                                                         <option value="">Custom price</option>
-                                                        <option value="mrp" selected>MRP price - {{ $item->product?->price }}</option>
-                                                        <option value="retail">Retail price - {{ $item->product?->retail_price }}</option>
-                                                        <option value="wholesale">Wholesale price - {{ $item->product?->wholesale_price }}</option>
+                                                        <option value="mrp" selected>MRP price - <?php echo e($item->product?->price); ?></option>
+                                                        <option value="retail">Retail price - <?php echo e($item->product?->retail_price); ?></option>
+                                                        <option value="wholesale">Wholesale price - <?php echo e($item->product?->wholesale_price); ?></option>
                                                     </select>
                                                 </td>
                                                 <td class="text-end" >
-                                                    <input type="number" class="inline_total" readonly name="sub_total[]" value="{{ $item->sub_total }}" style="width:100px;">
+                                                    <input type="number" class="inline_total" readonly name="sub_total[]" value="<?php echo e($item->sub_total); ?>" style="width:100px;">
                                                 </td>
                                                 <td>
-                                                    <a class="remove"><img src="{{ asset('backend') }}/img/icons/delete.svg" alt="svg"></a>
+                                                    <a class="remove"><img src="<?php echo e(asset('backend')); ?>/img/icons/delete.svg" alt="svg"></a>
                                                 </td>
                                             </tr>
-                                        @endforeach
-                                    @endif
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -125,13 +125,13 @@
 
                   	<div class="col-lg-12 col-sm-6 col-12">
                             <div class="form-group">
-                                <label>{{ trans('form.sale.product name') }}</label>
+                                <label><?php echo e(trans('form.sale.product name')); ?></label>
                                 <div class="input-groupicon">
 
                                     <input type="text" id="search" placeholder="Please type product code and select..."
                                         autocomplete="off">
                                     <div class="addonset">
-                                        <img src="{{ asset('backend') }}/img/icons/scanners.svg" alt="img">
+                                        <img src="<?php echo e(asset('backend')); ?>/img/icons/scanners.svg" alt="img">
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                                             <input type="number"  name="discount" class="form-control discount"
                                                 placeholder="Enter Discount" onkeyup="updateGrandTotal();"
                                                 onblur="updateGrandTotal();"
-                                                value="{{ $quotation ? $quotation->discount : '' }}">
+                                                value="<?php echo e($quotation ? $quotation->discount : ''); ?>">
                                         </h5>
                                     </li>
                                     <li>
@@ -157,16 +157,16 @@
                                             <input type="number" name="other_cost"
                                                 class="form-control other_cost" placeholder="Enter Other Cost"
                                                 onkeyup="updateGrandTotal();" onblur="updateGrandTotal();"
-                                                value="{{ $quotation ? $quotation->other_cost : '' }}">
+                                                value="<?php echo e($quotation ? $quotation->other_cost : ''); ?>">
                                         </h5>
                                     </li>
 
 
                                     <li class="total">
-                                        <h4>{{ trans('form.sale.grand total') }}</h4>
+                                        <h4><?php echo e(trans('form.sale.grand total')); ?></h4>
                                         <input type="number" readonly class="total_val form-control" name="grand_total"
                                             style="margin-left:30px;"
-                                            value="{{ $quotation ? $quotation->grandtotal : '' }}">
+                                            value="<?php echo e($quotation ? $quotation->grandtotal : ''); ?>">
                                     </li>
                                 </ul>
                             </div>
@@ -194,14 +194,14 @@
 
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
-                                <label>{{ trans('form.sale.paid amount') }}</label>
+                                <label><?php echo e(trans('form.sale.paid amount')); ?></label>
                                 <input type="number" name="paid_amount" class="paid_amount form-control"
-                                    placeholder="{{ trans('form.sale.enter paid amount') }}" required>
+                                    placeholder="<?php echo e(trans('form.sale.enter paid amount')); ?>" required>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="form-group">
-                                <label>{{ trans('form.sale.due amount') }}</label>
+                                <label><?php echo e(trans('form.sale.due amount')); ?></label>
                                 <input type="number" name="due_amount" class="due_amount form-control" id="due_amount"
                                     value="0" min="0">
                             </div>
@@ -227,22 +227,22 @@
 
                         <div class="col-lg-12 mt-4">
                             <div class="form-group">
-                                <label>{{ trans('form.sale.note') }}</label>
+                                <label><?php echo e(trans('form.sale.note')); ?></label>
                                 <textarea class="form-control" name="note"
-                                    placeholder="{{ trans('form.sale.enter note') }}"></textarea>
+                                    placeholder="<?php echo e(trans('form.sale.enter note')); ?>"></textarea>
                             </div>
                         </div>
 
                         <div class="col-lg-12">
-                            <button type="submit" class="btn btn-submit me-2">{{ trans('form.sale.submit') }}</button>
-                            <a href="" class="btn btn-cancel me-2">{{ trans('form.sale.cancel') }}</a>
+                            <button type="submit" class="btn btn-submit me-2"><?php echo e(trans('form.sale.submit')); ?></button>
+                            <a href="" class="btn btn-cancel me-2"><?php echo e(trans('form.sale.cancel')); ?></a>
                             <a href="#" onclick="checkout()" class="btn me-2 btn-warning">Checkout</a>
                             <button type="button" class="btn btn-success" id="quotation_add">
-                                @if (!$quotation)
+                                <?php if(!$quotation): ?>
                                     Add
-                                @else
+                                <?php else: ?>
                                     Update
-                                @endif
+                                <?php endif; ?>
                                     Quotation
                             </button>
                         </div>
@@ -253,7 +253,7 @@
     </div>
 </div>
 
-{{-- modal here --}}
+
 <div class="modal fade" id="create" tabindex="-1" aria-labelledby="create" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -264,8 +264,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('customer.store.modal') }}" method="post" enctype="multipart/form-data">
-                    @csrf
+                <form action="<?php echo e(route('customer.store.modal')); ?>" method="post" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <div class="row">
                         <div class="col-lg-6 col-sm-12 col-12">
                             <div class="form-group">
@@ -301,7 +301,7 @@
                         <div class="col-lg-6 col-sm-12 col-12 d-none">
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="date" name="dob" value="{{ date('Y-m-d') }}">
+                                <input type="date" name="dob" value="<?php echo e(date('Y-m-d')); ?>">
                             </div>
                         </div>
                     </div>
@@ -314,9 +314,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 <script>
     function checkout() {
         // Open the current page in a new tab
@@ -338,8 +338,8 @@
 
     $("body").on("keyup", "#search", function() {
         let searchData = $("#search").val();
-        let token = "{{ csrf_token() }}";
-        var route = "{{ route('find.products.purchase') }}";
+        let token = "<?php echo e(csrf_token()); ?>";
+        var route = "<?php echo e(route('find.products.purchase')); ?>";
         if (searchData.length > 0) {
             $.ajax({
                 type: "GET",
@@ -394,7 +394,7 @@
                         <input type="number" class="inline_total" readonly name="sub_total[]" value="${product.price}" style="width:100px;">
                     </td>
                     <td>
-                        <a class="remove"><img src="{{ asset('backend') }}/img/icons/delete.svg" alt="svg"></a>
+                        <a class="remove"><img src="<?php echo e(asset('backend')); ?>/img/icons/delete.svg" alt="svg"></a>
                     </td>
                 </tr>`;
 
@@ -497,7 +497,7 @@
     });
 </script>
 <script>
-    var quotationData = @json(session('quotation_to_sale'));
+    var quotationData = <?php echo json_encode(session('quotation_to_sale'), 15, 512) ?>;
     $(document).ready(function() {
 
         if (quotationData) {
@@ -533,19 +533,19 @@
 
             // Collect form data
             let formData = $('#sale_store').serialize(); // Converts form fields into a query string
-            // $('#sale_store').attr('action', "{{ route('quotation.store') }}");
+            // $('#sale_store').attr('action', "<?php echo e(route('quotation.store')); ?>");
             // return $('#sale_store').submit();
 
             // Send AJAX request
             $.ajax({
-                url: "{{ route('quotation.store') }}", // Ensure this route exists
+                url: "<?php echo e(route('quotation.store')); ?>", // Ensure this route exists
                 type: "POST",
                 data: formData,
                 success: function(response) {
                     alert("Quotation saved successfully!");
                     // console.log(response);
                     // Redirect to quotation.index route
-                    window.location.href = "{{ route('quotation.index') }}?quotation_id=" + response.id;
+                    window.location.href = "<?php echo e(route('quotation.index')); ?>?quotation_id=" + response.id;
                 },
                 error: function(xhr, status, error) {
                     alert("Error submitting form.");
@@ -656,7 +656,7 @@
         $(this).parents('tr').remove();
     })
 
-    const customers = @json($customers);
+    const customers = <?php echo json_encode($customers, 15, 512) ?>;
 
     function showCustomerDue() {
         var customerId = $('#selectpicker').val();
@@ -701,53 +701,7 @@
         }
     }
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
 
-{{-- function PrintMe(DivID) {
-var disp_setting = "toolbar=yes,location=no,";
-disp_setting += "directories=yes,menubar=yes,";
-disp_setting += "scrollbars=yes,width=410, height=600, left=100, top=25";
-var content_vlue = document.getElementById("print_area_container").innerHTML;
-var docprint = window.open("", "", disp_setting);
-docprint.document.open();
-docprint.document.write('
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"');
-    docprint.document.write('"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
-docprint.document.write('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">');
-docprint.document.write('
 
-<head>
-    <title>My Title</title>');
-    docprint.document.write(`
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
-    <style>
-        .barcode {
-            font-family: "Libre Barcode 128", system-ui;
-            font-weight: 400;
-            font-style: normal;
-        }
-    </style>
-    `);
-    docprint.document.write('<style type="text/css">
-        body {
-            margin: 0px;
-            ');
- docprint.document.write('font-family:verdana,Arial;color:#000;');
-            docprint.document.write('font-family:Verdana, Geneva, sans-serif; font-size:12px;}');
-            docprint.document.write('a{color:#000;text-decoration:none;}
-    </style>');
-    docprint.document.write('
-</head>
-
-<body onLoad="self.print()">
-    <center>');
-        docprint.document.write(content_vlue.replace('400px', '405px'));
-        docprint.document.write('</center>
-</body>
-
-</html>');
-docprint.document.close();
-docprint.focus();
-} --}}
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/sales/create.blade.php ENDPATH**/ ?>

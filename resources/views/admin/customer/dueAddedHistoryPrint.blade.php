@@ -1,6 +1,6 @@
 @extends('layouts.pdf')
 
-@section('name', 'Due Added Report')
+@section('name', 'Due Add History')
 @section('content')
 <style>
     table * {
@@ -96,7 +96,7 @@
                 </p>
             </td>
             <td style="
-                        width: 30px;
+                        width: 50px;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -111,7 +111,7 @@
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
                 <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">
-                    ID
+                    Inv. No
                 </p>
             </td>
             <td style="
@@ -204,42 +204,6 @@
                     Bill Due
                 </p>
             </td>
-            <td style="
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Bill Paid
-                </p>
-            </td>
-            <td style="
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Total
-                </p>
-            </td>
         </tr>
     </thead>
     <tbody>
@@ -284,16 +248,6 @@
                     {{ $sale->due_amount }}
                 </p>
             </td>
-            <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
-                    {{ $sale->paid_amount }}
-                </p>
-            </td>
-            <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
-                    {{ $sale->grandtotal }}
-                </p>
-            </td>
         </tr>
         @php
             $total_due += $sale->due_amount;
@@ -316,16 +270,6 @@
             <td>
                 <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
                     {{ $total_due }}
-                </p>
-            </td>
-            <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
-                    {{ $total_paid }}
-                </p>
-            </td>
-            <td>
-                <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
-                    {{ $total_grandtotal }}
                 </p>
             </td>
         </tr>

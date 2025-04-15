@@ -1,8 +1,6 @@
-@extends('layouts.pdf')
+<?php $__env->startSection('name', 'Due paid'); ?>
 
-@section('name', 'Due paid')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     .c_info td {color: #383838; font-size: 14px;}
 </style>
@@ -17,7 +15,8 @@
                             </td>
                             <td>
                                 :
-                                {{ $payment->customer?->phone }}
+                                <?php echo e($payment->customer?->phone); ?>
+
                             </td>
                         </tr>
                         <tr>
@@ -25,7 +24,8 @@
                                 Customer name
                             </td>
                             <td>
-                                : {{ $payment->customer?->name }}
+                                : <?php echo e($payment->customer?->name); ?>
+
                             </td>
                         </tr>
                         <tr>
@@ -33,7 +33,8 @@
                                 Company name
                             </td>
                             <td>
-                                : {{ $payment->customer?->company_name }}
+                                : <?php echo e($payment->customer?->company_name); ?>
+
                             </td>
                         </tr>
                         <tr>
@@ -41,7 +42,8 @@
                                 Address
                             </td>
                             <td>
-                                : {{ $payment->customer?->address }}
+                                : <?php echo e($payment->customer?->address); ?>
+
                             </td>
                         </tr>
                     </table>
@@ -58,7 +60,8 @@
                                 Date
                             </td>
                             <td>
-                                : {{ \Carbon\Carbon::parse($payment->date)->format('d-m-Y') }}
+                                : <?php echo e(\Carbon\Carbon::parse($payment->date)->format('d-m-Y')); ?>
+
                             </td>
                         </tr>
                         <tr>
@@ -66,7 +69,8 @@
                                 Time
                             </td>
                             <td>
-                                : {{ $payment->created_at->format('H:i') }}
+                                : <?php echo e($payment->created_at->format('H:i')); ?>
+
                             </td>
                         </tr>
                     </table>
@@ -83,7 +87,8 @@
 
                 </td>
                 <td>
-                    {{ $payment->customer?->sales()->sum('due_amount') + $payment->paying_amount }}
+                    <?php echo e($payment->customer?->sales()->sum('due_amount') + $payment->paying_amount); ?>
+
                 </td>
             </tr>
             <tr style="height: 17pt;">
@@ -93,7 +98,8 @@
 
                 </td>
                 <td>
-                    {{ $payment->paying_amount }}
+                    <?php echo e($payment->paying_amount); ?>
+
                 </td>
             </tr>
             <tr style="height: 17pt;">
@@ -103,7 +109,8 @@
 
                 </td>
                 <td>
-                    {{ $payment->discount }}
+                    <?php echo e($payment->discount); ?>
+
                 </td>
             </tr>
             <tr style="height: 17pt;">
@@ -113,18 +120,20 @@
 
                 </td>
                 <td>
-                    {{ $payment->customer?->sales()->sum('due_amount')}}
+                    <?php echo e($payment->customer?->sales()->sum('due_amount')); ?>
+
                 </td>
             </tr>
         </tbody>
     </table>
-    @if ($payment->note)
+    <?php if($payment->note): ?>
         <h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
-            Note: <br>{{ $payment->note }}
+            Note: <br><?php echo e($payment->note); ?>
+
         </h1>
-    @endif
-@endsection
-@section('footer')
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('footer'); ?>
     <td style="text-align: center;">
         _______________
         <br>
@@ -134,12 +143,15 @@
         SOLD GOODS ARE NOT TAKEN BACK
     </td>
     <td style="text-align: center;">
-        {{ $payment->user?->name }}
+        <?php echo e($payment->user?->name); ?>
+
         <br>
         _______________
         <br>
         for CAPITAL LIFT
     </td>
-@endsection
+<?php $__env->stopSection(); ?>
 
 
+
+<?php echo $__env->make('layouts.pdf', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/customer/duePaymentPrint.blade.php ENDPATH**/ ?>

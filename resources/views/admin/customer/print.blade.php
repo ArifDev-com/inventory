@@ -18,7 +18,7 @@
             Date: {{ now()->format('d-m-Y') }}
         </td>
         <td style="text-align: right">
-            
+            Time: {{ now()->format('h:i A') }}
         </td>
     </tr>
 </table>

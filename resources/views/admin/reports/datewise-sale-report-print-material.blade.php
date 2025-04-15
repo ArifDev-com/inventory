@@ -74,8 +74,8 @@
     {{ now()->format('h:i a') }}
 </div>
 <table style="padding-top: 5px; border-collapse: collapse; margin: auto; width: 100%;border: 1px solid #969696; " cellspacing="0" class="border">
-    <tbody>
-        <tr style="height: 20pt;">
+  <thead>
+  		<tr style="height: 20pt;">
             <td style="
                         width: 20px;
                         border-top-style: solid;
@@ -190,6 +190,8 @@
                 </p>
             </td>
         </tr>
+  </thead> 
+  <tbody>
         @php
             $total_qty = 0;
       		$index = 1;

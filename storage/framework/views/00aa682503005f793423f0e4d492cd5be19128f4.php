@@ -1,5 +1,4 @@
-@extends('layouts.app')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -12,19 +11,19 @@
                 <h4>Due Payment List</h4>
             </div>
             <div class="page-btn">
-                <a href="{{ route('due.payment') }}" class="btn btn-added"><img src="{{asset('backend')}}/img/icons/plus.svg" alt="img">Add Due Payment</a>
+                <a href="<?php echo e(route('due.payment')); ?>" class="btn btn-added"><img src="<?php echo e(asset('backend')); ?>/img/icons/plus.svg" alt="img">Add Due Payment</a>
             </div>
         </div>
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('due.payments') }}" method="get">
+                <form action="<?php echo e(route('due.payments')); ?>" method="get">
                     <div class="row">
                         <div class="col-md-3">
-                            <input type="date" name="start_date" class="form-control" value="{{ $fromDate->format('Y-m-d') }}">
+                            <input type="date" name="start_date" class="form-control" value="<?php echo e($fromDate->format('Y-m-d')); ?>">
                         </div>
                         <div class="col-md-3">
-                            <input type="date" name="end_date" class="form-control" value="{{ $toDate->format('Y-m-d') }}">
+                            <input type="date" name="end_date" class="form-control" value="<?php echo e($toDate->format('Y-m-d')); ?>">
                         </div>
                         <div class="col-md-3">
                             <button type="submit" onclick="this.form.target='';" class="btn btn-primary">Search</button>
@@ -51,27 +50,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($payments as $key => $payment)
+                            <?php $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $payment->sale?->ref_code }}</td>
-                                <td>{{ $payment->date }}</td>
-                                <td>{{ $payment->customer?->name ?: $payment->sale?->customer?->name }}</td>
-                                <td>{{ $payment->customer?->phone ?: $payment->sale?->customer?->phone }}</td>
-                                <td>{{ $payment->customer?->address ?: $payment->sale?->customer?->address }}</td>
-                                <td>{{ $payment->paying_amount }}</td>
-                                <td>{{ $payment->discount }}</td>
-                                <td>{{ $payment->due_date }}</td>
+                                <td><?php echo e($key+1); ?></td>
+                                <td><?php echo e($payment->sale?->ref_code); ?></td>
+                                <td><?php echo e($payment->date); ?></td>
+                                <td><?php echo e($payment->customer?->name ?: $payment->sale?->customer?->name); ?></td>
+                                <td><?php echo e($payment->customer?->phone ?: $payment->sale?->customer?->phone); ?></td>
+                                <td><?php echo e($payment->customer?->address ?: $payment->sale?->customer?->address); ?></td>
+                                <td><?php echo e($payment->paying_amount); ?></td>
+                                <td><?php echo e($payment->discount); ?></td>
+                                <td><?php echo e($payment->due_date); ?></td>
                                 <td>
-                                    <a href="{{ route('due.payment.print', $payment->id) }}" class="btn btn-info btn-sm" target="_blank">
+                                    <a href="<?php echo e(route('due.payment.print', $payment->id)); ?>" class="btn btn-info btn-sm" target="_blank">
                                         <i class="fa fa-print"></i> Print
                                     </a>
                                 </td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
-                    {{-- {!! $customers->links() !!} --}}
+                    
                 </div>
             </div>
         </div>
@@ -80,9 +79,9 @@
 </div>
 
     <!-- edit payment Modal -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
     <script>
 
 </script>
@@ -91,4 +90,5 @@
     let table = new DataTable('#myTable');
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/customer/duePaymentList.blade.php ENDPATH**/ ?>

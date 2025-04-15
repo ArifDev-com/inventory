@@ -1,6 +1,7 @@
 <div>
     <h4>
-        Advance Collection
+        Advance Collection:{{App\Models\AdvancePayment::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+            ->sum('amount')}}
     </h4>
     <hr>
     <div class="row">

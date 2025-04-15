@@ -1,5 +1,4 @@
-@extends('layouts.app')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -16,11 +15,11 @@
         <!-- /product list -->
         <div class="card">
             <div class="card-body">
-                <form class="row" action="{{ route('due.list') }}" method="get">
+                <form class="row" action="<?php echo e(route('due.list')); ?>" method="get">
                     <div class="col-lg-2 col-sm-6 col-12">
                         <div class="form-group">
                             <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date"
-                                value="{{ $toDate->format('d-m-Y') }}" name="to_date" id="to_date">
+                                value="<?php echo e($toDate->format('d-m-Y')); ?>" name="to_date" id="to_date">
                         </div>
                     </div>
                     <div class="col-lg-4 col-12">
@@ -29,7 +28,7 @@
                                 onclick="this.form.target='';"
                             >
                                 <img
-                                    src="{{ asset('backend') }}/img/icons/search-whites.svg" alt="img">
+                                    src="<?php echo e(asset('backend')); ?>/img/icons/search-whites.svg" alt="img">
                             </button>
                             <button type="submit" class="btn btn-info"
                                 onclick="this.form.target='_blank';openOther()"
@@ -57,23 +56,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($customers as $key => $customer)
+                            <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td>{{ $key+1 }}</td>
+                                <td><?php echo e($key+1); ?></td>
                                 <td>
-                                    {{ $toDate->format('Y-m-d') }}
+                                    <?php echo e($toDate->format('Y-m-d')); ?>
+
                                 </td>
                                 <td style="text-align: left;">
-                                    <a href="{{ route('customer.show', ['customer' => $customer->id]) }}">
-                                        {{ $customer->name }}
+                                    <a href="<?php echo e(route('customer.show', ['customer' => $customer->id])); ?>">
+                                        <?php echo e($customer->name); ?>
+
                                     </a>
                                 </td>
                                 <td style="text-align: left;">
-                                    {{ $customer->company_name }}
-                                </td>
-                                <td>{{ $customer->phone }}</td>
+                                    <?php echo e($customer->company_name); ?>
 
-                                @php
+                                </td>
+                                <td><?php echo e($customer->phone); ?></td>
+
+                                <?php
                                     // get current due
                                     $_curr = $customer->sales()
                                         ->where('due_amount', '>', 0)
@@ -102,19 +104,20 @@
                                     if($_prev < 0) {
                                         $_prev = 0;
                                     }
-                                @endphp
+                                ?>
 
-                                <td>{{ $_prev }}</td>
-                                <td>{{ $_add }}</td>
-                                <td>{{ $_paid }}</td>
+                                <td><?php echo e($_prev); ?></td>
+                                <td><?php echo e($_add); ?></td>
+                                <td><?php echo e($_paid); ?></td>
                                 <td>
-                                    {{ $customer->sales()
+                                    <?php echo e($customer->sales()
                                         ->where('date', '<=', $toDate->format('Y-m-d'))
                                         ->where('due_amount', '>', 0)
-                                        ->sum('due_amount') }}
+                                        ->sum('due_amount')); ?>
+
                                 </td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
 
@@ -126,9 +129,9 @@
 </div>
 
     <!-- edit payment Modal -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
     <script>
 
 </script>
@@ -141,4 +144,5 @@
 
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/customer/dueList.blade.php ENDPATH**/ ?>

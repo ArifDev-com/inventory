@@ -68,10 +68,10 @@
                         </tr>
                         <tr>
                             <td>
-                                
+                                Time
                             </td>
                             <td>
-                                
+                                : {{ $saleReturn->created_at->format('H:i') }}
                             </td>
                         </tr>
                     </table>

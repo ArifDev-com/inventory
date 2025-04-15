@@ -1,5 +1,4 @@
-@extends('layouts.app')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -12,32 +11,35 @@
                 <h4>Make Due Payment</h4>
                 <h6>Add/Update Due Payment</h6>
             </div>
-            {{-- <a href="{{ route('due.payment.list') }}" class="btn btn-info">Back</a> --}}
+            
         </div>
-        @if (session('error'))
+        <?php if(session('error')): ?>
             <div class="alert alert-danger">
-                {{ session('error') }}
+                <?php echo e(session('error')); ?>
+
             </div>
-        @endif
-        @foreach ($errors->all() as $error)
+        <?php endif; ?>
+        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="alert alert-danger">
-                {{ $error }}
+                <?php echo e($error); ?>
+
             </div>
-        @endforeach
-        @if (session('success'))
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php if(session('success')): ?>
             <div class="alert alert-success">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
             </div>
-        @endif
+        <?php endif; ?>
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('due.payment') }}" method="post">
-                    @csrf
+                <form action="<?php echo e(route('due.payment')); ?>" method="post">
+                    <?php echo csrf_field(); ?>
                     <div class="row">
                         <div class="col-12">
                             <div>
-                                @include('common.customer')
+                                <?php echo $__env->make('common.customer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -79,7 +81,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Payment Date</label>
-                                <input type="date" class="form-control" name="payment_date" required value="{{ date('Y-m-d') }}" readonly>
+                                <input type="date" class="form-control" name="payment_date" required value="<?php echo e(date('Y-m-d')); ?>" readonly>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -104,14 +106,14 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
-    @php
+<?php $__env->startSection('scripts'); ?>
+    <?php
         $sales = \App\Models\Sale::all(['id', 'customer_id', 'due_amount', 'ref_code']);
-    @endphp
+    ?>
 <script>
-    let allSales = @json($sales);
+    let allSales = <?php echo json_encode($sales, 15, 512) ?>;
     function calculateNextDue() {
         let payingAmount = $('[name="paying_amount"]').val();
         let discount = $('[name="discount"]').val();
@@ -130,24 +132,24 @@
             $('[name="next_due"]').val(totalDue);
             $('[name="discount"]').attr('max', totalDue);
         });
-        @if(request()->customer)
+        <?php if(request()->customer): ?>
         setTimeout(() => {
             // check url param customer
             let customer = new URLSearchParams(window.location.search).get('customer');
             if (customer) {
                 $('select[name="customer_id"]').html('');
-                $('select[name="customer_id"]').append('<option value="' + customer + '">{{  App\Models\Customer::find(request()->customer)?->name }}</option>');
+                $('select[name="customer_id"]').append('<option value="' + customer + '"><?php echo e(App\Models\Customer::find(request()->customer)?->name); ?></option>');
                 $('select[name="customer_id"]').val(customer).trigger('change');
             }
         }, 500);
-        @endif
+        <?php endif; ?>
     });
-    @if(session('payments'))
-        let payments = @json(json_decode(session('payments'), true));
+    <?php if(session('payments')): ?>
+        let payments = <?php echo json_encode(json_decode(session('payments'), true), 512) ?>;
         payments.forEach(payment => {
-            window.open("{{ route('due.payment.print', ':id') }}".replace(':id', payment.id), '_blank');
+            window.open("<?php echo e(route('due.payment.print', ':id')); ?>".replace(':id', payment.id), '_blank');
         });
-    @endif
+    <?php endif; ?>
 
 
     function paymentMethodChange(element) {
@@ -165,4 +167,5 @@
     }
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/customer/duePayment.blade.php ENDPATH**/ ?>

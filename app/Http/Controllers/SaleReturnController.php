@@ -185,6 +185,20 @@ class SaleReturnController extends Controller
     {
         $saleReturn->update(['status' => 'received']);
         $customer = $saleReturn->customer;
+        try {
+            SMSApi::send(
+                $customer->phone,
+                "Dear Customer: {$customer->name},
+Invoice No: {$saleReturn->ref_code}
+Date: ".Carbon::parse($saleReturn->date)->format('d-m-Y ').date('h:i A')."
+Return Item: {$saleReturn->items->count()}
+Amount: {$saleReturn->grandtotal} Tk.
+Return Amount: {$saleReturn->paid_amount} Tk.
+Thank you."
+            );
+        } catch (\Exception $e) {
+            Log::error('SMS API Error: '.$e->getMessage());
+        }
         return redirect()->back()->with('success', 'Sale return approved');
     }
 }

@@ -155,31 +155,25 @@ Thank you."
 
     public function dueList(Request $request)
     {
-        $fromDate = $request->from_date ? \Carbon\Carbon::parse($request->from_date) : now()->startOfDay();
         $toDate = $request->to_date ? \Carbon\Carbon::parse($request->to_date) : now()->endOfDay();
         $customers = Customer::query()
-            ->whereHas('sales', function ($query) use ($fromDate, $toDate) {
-                // $query->where('due_amount', '>', 0);
-                if($fromDate && $toDate) {
-                    $query->whereBetween('created_at', [
-                        $fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'
-                    ]);
+            ->where('id', 1537)
+            ->whereHas('sales', function ($query) use ($toDate) {
+                if($toDate) {
+                    $query->where('date', '<=', $toDate->format('Y-m-d'));
                 }
             })
-            ->orderBy('name', 'asc')
-            ->with(['sales' => function($query) use ($fromDate, $toDate) {
-                if($fromDate && $toDate) {
-                    $query->whereBetween('created_at', [
-                        $fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'
-                    ]);
-                }
-            }]);
+            ->orderBy('name', 'asc');
+            // ->with(['sales' => function($query) use ($toDate) {
+            //     if($toDate) {
+            //         $query->where('date', '<=', $toDate->format('Y-m-d'));
+            //     }
+            // }]);
         if ($request->print) {
             $pdf = Pdf::loadView('admin.customer.dueListPrint', [
                 'customers' => $customers->get()->filter(function($customer){
                     return $customer->sales->sum('due_amount') > 0;
                 }),
-                'fromDate' => $fromDate,
                 'toDate' => $toDate,
             ]);
 
@@ -190,7 +184,6 @@ Thank you."
             'customers' => $customers->get()->filter(function($customer){
                 return $customer->sales->sum('due_amount') > 0;
             }),
-            'fromDate' => $fromDate,
             'toDate' => $toDate,
         ]);
     }
@@ -198,12 +191,12 @@ Thank you."
     public function duePayList(Request $request)
     {
         $payments = CutomerPayment::query()
-            ->latest('created_at')
+            ->latest('date')
             ->where('is_due_pay', true);
         $fromDate = $request->start_date ? \Carbon\Carbon::parse($request->start_date) : now()->startOfDay();
         $toDate = $request->end_date ? \Carbon\Carbon::parse($request->end_date) : now()->endOfDay();
-        $payments->whereDate('created_at', '>=', $fromDate . ' 00:00:00');
-        $payments->whereDate('created_at', '<=', $toDate . ' 23:59:59');
+        $payments->whereDate('date', '>=', $fromDate . ' 00:00:00');
+        $payments->whereDate('date', '<=', $toDate . ' 23:59:59');
 
         if ($request->print) {
             $pdf = Pdf::loadView('admin.customer.duePaymentListPrint', [
@@ -254,6 +247,7 @@ Thank you."
         return redirect()->back();
 
     }
+
     public function dueAddedHistory(Request $request)
     {
         $fromDate = now()->startOfDay();
