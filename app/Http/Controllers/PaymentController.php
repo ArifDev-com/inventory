@@ -157,23 +157,12 @@ Thank you."
     {
         $toDate = $request->to_date ? \Carbon\Carbon::parse($request->to_date) : now()->endOfDay();
         $customers = Customer::query()
-            ->where('id', 1537)
-            ->whereHas('sales', function ($query) use ($toDate) {
-                if($toDate) {
-                    $query->where('date', '<=', $toDate->format('Y-m-d'));
-                }
-            })
             ->orderBy('name', 'asc');
-            // ->with(['sales' => function($query) use ($toDate) {
-            //     if($toDate) {
-            //         $query->where('date', '<=', $toDate->format('Y-m-d'));
-            //     }
-            // }]);
+        $customers = $customers->get(['id', 'name', 'phone', 'company_name']);
+
         if ($request->print) {
             $pdf = Pdf::loadView('admin.customer.dueListPrint', [
-                'customers' => $customers->get()->filter(function($customer){
-                    return $customer->sales->sum('due_amount') > 0;
-                }),
+                'customers' => $customers,
                 'toDate' => $toDate,
             ]);
 
@@ -181,9 +170,7 @@ Thank you."
         }
 
         return view('admin.customer.dueList', [
-            'customers' => $customers->get()->filter(function($customer){
-                return $customer->sales->sum('due_amount') > 0;
-            }),
+            'customers' => $customers,
             'toDate' => $toDate,
         ]);
     }

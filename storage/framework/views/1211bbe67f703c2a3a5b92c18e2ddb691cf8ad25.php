@@ -57,70 +57,83 @@
                         </thead>
                         <tbody>
                             <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td><?php echo e($key+1); ?></td>
-                                <td>
-                                    <?php echo e($toDate->format('Y-m-d')); ?>
+                            <?php
+                                // get current due
+                                $_curr = $customer->sales()
+                                    ->where('due_amount', '>', 0)
+                                    ->where('date', '<=', $toDate->format('Y-m-d'))
+                                    ->sum('due_amount');
 
-                                </td>
-                                <td style="text-align: left;">
-                                    <a href="<?php echo e(route('customer.show', ['customer' => $customer->id])); ?>">
-                                        <?php echo e($customer->name); ?>
+                                // get add payments
+                                $futureDuePayments = $customer->payments()
+                                    ->whereHas('sale', function($query) use ($toDate){
+                                        $query->whereDate('date', '=', $toDate->format('Y-m-d'));
+                                    })
+                                    ->where('is_due_pay', true)
+                                    ->get();
+                                $_add = $customer->sales()
+                                    ->whereDate('date', '=', $toDate->format('Y-m-d'))
+                                    ->where('due_amount', '>', 0)
+                                    ->sum('due_amount') + $futureDuePayments->sum('paying_amount') + $futureDuePayments->sum('discount');
 
-                                    </a>
-                                </td>
-                                <td style="text-align: left;">
-                                    <?php echo e($customer->company_name); ?>
+                                // // get paid amount
+                                $tmp = $customer->payments()
+                                    ->whereDate('date', '=', $toDate->format('Y-m-d'))
+                                    ->where('is_due_pay', true)
+                                    ->get();
+                                $_paid = $tmp->sum('paying_amount') + $tmp->sum('discount');
+                                // dump($tmp);
+                                // get previous due
+                                $tmp = $customer->payments()
+                                    ->where('is_due_pay', true)
+                                    ->whereHas('sale', function($query) use ($toDate){
+                                        $query->whereDate('date', '<', $toDate->format('Y-m-d'));
+                                    })
+                                    ->get();
+                                $tmp2 = $customer->payments()
+                                    ->whereDate('date', '<', $toDate->format('Y-m-d'))
+                                    ->where('is_due_pay', true)
+                                    ->whereHas('sale', function($query) use ($toDate){
+                                        $query->whereDate('date', '<', $toDate->format('Y-m-d'));
+                                    })
+                                    ->get();
+                                $_prev = $customer->sales()
+                                    ->where('date', '<', $toDate->format('Y-m-d'))
+                                    ->where('due_amount', '>', 0)
+                                    ->sum('due_amount')
+                                    + $tmp->sum('paying_amount') + $tmp->sum('discount')
+                                    - $tmp2->sum('paying_amount') - $tmp2->sum('discount');
+                            ?>
+                            <?php if($_curr || $_prev || $_paid || $_add): ?>
+                                <tr>
+                                    <td><?php echo e($key+1); ?></td>
+                                    <td>
+                                        <?php echo e($toDate->format('Y-m-d')); ?>
 
-                                </td>
-                                <td><?php echo e($customer->phone); ?></td>
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <a href="<?php echo e(route('customer.show', ['customer' => $customer->id])); ?>">
+                                            <?php echo e($customer->name); ?>
 
-                                <?php
-                                    // get current due
-                                    $_curr = $customer->sales()
-                                        ->where('due_amount', '>', 0)
-                                        ->where('date', '<=', $toDate->format('Y-m-d'))
-                                        ->sum('due_amount');
+                                        </a>
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <?php echo e($customer->company_name); ?>
 
-                                    // get add payments
-                                    $futureDuePayments = $customer->payments()
-                                        ->whereHas('sale', function($query) use ($toDate){
-                                            $query->whereDate('date', '>=', $toDate->format('Y-m-d'));
-                                        })
-                                        ->where('is_due_pay', true)
-                                        ->get();
-                                    $_add = $customer->sales()
-                                        ->whereDate('date', '=', $toDate->format('Y-m-d'))
-                                        ->where('due_amount', '>', 0)
-                                        ->sum('due_amount') + $futureDuePayments->sum('paying_amount') + $futureDuePayments->sum('discount');
+                                    </td>
+                                    <td><?php echo e($customer->phone); ?></td>
+                                    <td><?php echo e($_prev ?? 0); ?></td>
+                                    <td><?php echo e($_add ?? 0); ?></td>
+                                    <td><?php echo e($_paid ?? 0); ?></td>
+                                    <td>
+                                        <?php echo e($_prev + $_add - $_paid); ?>
 
-                                    // get paid amount
-                                    $tmp = $customer->payments()
-                                        ->whereDate('date', '=', $toDate->format('Y-m-d'))
-                                        ->where('is_due_pay', true)
-                                        ->get();
-                                    $_paid = $tmp->sum('paying_amount') + $tmp->sum('discount');
-                                    $_prev = $_curr + $_paid - $_add;
-                                    if($_prev < 0) {
-                                        $_prev = 0;
-                                    }
-                                ?>
-
-                                <td><?php echo e($_prev); ?></td>
-                                <td><?php echo e($_add); ?></td>
-                                <td><?php echo e($_paid); ?></td>
-                                <td>
-                                    <?php echo e($customer->sales()
-                                        ->where('date', '<=', $toDate->format('Y-m-d'))
-                                        ->where('due_amount', '>', 0)
-                                        ->sum('due_amount')); ?>
-
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
@@ -132,7 +145,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
-    <script>
+<script>
 
 </script>
 
