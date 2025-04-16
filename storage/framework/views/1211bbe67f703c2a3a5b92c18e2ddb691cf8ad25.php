@@ -58,52 +58,58 @@
                         <tbody>
                             <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php
-                                // get current due
-                                $_curr = $customer->sales()
+                                $sales = $customer->sales;
+                                $payments = $customer->payments;
+
+                                // Current due before or on the date
+                                $_curr = $sales
                                     ->where('due_amount', '>', 0)
                                     ->where('date', '<=', $toDate->format('Y-m-d'))
                                     ->sum('due_amount');
 
-                                // get add payments
-                                $futureDuePayments = $customer->payments()
-                                    ->whereHas('sale', function($query) use ($toDate){
-                                        $query->whereDate('date', '=', $toDate->format('Y-m-d'));
-                                    })
-                                    ->where('is_due_pay', true)
-                                    ->get();
-                                $_add = $customer->sales()
-                                    ->whereDate('date', '=', $toDate->format('Y-m-d'))
-                                    ->where('due_amount', '>', 0)
-                                    ->sum('due_amount') + $futureDuePayments->sum('paying_amount') + $futureDuePayments->sum('discount');
+                                // Payments that are due pays and sale date = target date
+                                $futureDuePayments = $payments->filter(function($payment) use ($toDate) {
+                                    return $payment->is_due_pay
+                                        && optional($payment->sale)->date === $toDate->format('Y-m-d');
+                                });
 
-                                // // get paid amount
-                                $tmp = $customer->payments()
-                                    ->whereDate('date', '=', $toDate->format('Y-m-d'))
-                                    ->where('is_due_pay', true)
-                                    ->get();
-                                $_paid = $tmp->sum('paying_amount') + $tmp->sum('discount');
-                                // dump($tmp);
-                                // get previous due
-                                $tmp = $customer->payments()
-                                    ->where('is_due_pay', true)
-                                    ->whereHas('sale', function($query) use ($toDate){
-                                        $query->whereDate('date', '<', $toDate->format('Y-m-d'));
-                                    })
-                                    ->get();
-                                $tmp2 = $customer->payments()
-                                    ->whereDate('date', '<', $toDate->format('Y-m-d'))
-                                    ->where('is_due_pay', true)
-                                    ->whereHas('sale', function($query) use ($toDate){
-                                        $query->whereDate('date', '<', $toDate->format('Y-m-d'));
-                                    })
-                                    ->get();
-                                $_prev = $customer->sales()
-                                    ->where('date', '<', $toDate->format('Y-m-d'))
+                                // Add amount for today's sales due + future due payments
+                                $_add = $sales
                                     ->where('due_amount', '>', 0)
+                                    ->where('date', '=', $toDate->format('Y-m-d'))
                                     ->sum('due_amount')
-                                    + $tmp->sum('paying_amount') + $tmp->sum('discount')
-                                    - $tmp2->sum('paying_amount') - $tmp2->sum('discount');
+                                    + $futureDuePayments->sum('paying_amount')
+                                    + $futureDuePayments->sum('discount');
+
+                                // Paid amount today (only due payments)
+                                $todayDuePayments = $payments->filter(function($payment) use ($toDate) {
+                                    return $payment->is_due_pay
+                                        && $payment->date === $toDate->format('Y-m-d');
+                                });
+                                $_paid = $todayDuePayments->sum('paying_amount') + $todayDuePayments->sum('discount');
+
+                                // Previous due logic
+                                $prevDuePayments = $payments->filter(function($payment) use ($toDate) {
+                                    $saleDate = optional($payment->sale)->date;
+                                    return $payment->is_due_pay && $saleDate < $toDate->format('Y-m-d');
+                                });
+
+                                $prevPaid = $payments->filter(function($payment) use ($toDate) {
+                                    $saleDate = optional($payment->sale)->date;
+                                    return $payment->is_due_pay
+                                        && $payment->date < $toDate->format('Y-m-d')
+                                        && $saleDate < $toDate->format('Y-m-d');
+                                });
+
+                                $_prev = $sales
+                                    ->where('due_amount', '>', 0)
+                                    ->where('date', '<', $toDate->format('Y-m-d'))
+                                    ->sum('due_amount')
+                                    + $prevDuePayments->sum('paying_amount') + $prevDuePayments->sum('discount')
+                                    - $prevPaid->sum('paying_amount') - $prevPaid->sum('discount');
                             ?>
+
+                            
                             <?php if($_curr || $_prev || $_paid || $_add): ?>
                                 <tr>
                                     <td><?php echo e($key+1); ?></td>

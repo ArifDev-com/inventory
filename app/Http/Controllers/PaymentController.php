@@ -157,6 +157,14 @@ Thank you."
     {
         $toDate = $request->to_date ? \Carbon\Carbon::parse($request->to_date) : now()->endOfDay();
         $customers = Customer::query()
+            ->with([
+                'sales' => function($q) {
+                    $q->select('id', 'customer_id', 'date', 'due_amount');
+                },
+                'payments.sale' => function($q) {
+                    $q->select('id', 'customer_id', 'date');
+                }
+            ])
             ->orderBy('name', 'asc');
         $customers = $customers->get(['id', 'name', 'phone', 'company_name']);
 

@@ -7,7 +7,7 @@
     table * {
         font-size: 9px !important;
     }
-    
+
 .c_list_c{
   		padding-left: 290px !important;
   }
@@ -200,8 +200,59 @@
             $paid = 0;
             $curr = 0;
         @endphp
-        
+
         @foreach ($customers as $customer)
+        @php
+            $sales = $customer->sales;
+            $payments = $customer->payments;
+
+            // Current due before or on the date
+            $_curr = $sales
+                ->where('due_amount', '>', 0)
+                ->where('date', '<=', $toDate->format('Y-m-d'))
+                ->sum('due_amount');
+
+            // Payments that are due pays and sale date = target date
+            $futureDuePayments = $payments->filter(function($payment) use ($toDate) {
+                return $payment->is_due_pay
+                    && optional($payment->sale)->date === $toDate->format('Y-m-d');
+            });
+
+            // Add amount for today's sales due + future due payments
+            $_add = $sales
+                ->where('due_amount', '>', 0)
+                ->where('date', '=', $toDate->format('Y-m-d'))
+                ->sum('due_amount')
+                + $futureDuePayments->sum('paying_amount')
+                + $futureDuePayments->sum('discount');
+
+            // Paid amount today (only due payments)
+            $todayDuePayments = $payments->filter(function($payment) use ($toDate) {
+                return $payment->is_due_pay
+                    && $payment->date === $toDate->format('Y-m-d');
+            });
+            $_paid = $todayDuePayments->sum('paying_amount') + $todayDuePayments->sum('discount');
+
+            // Previous due logic
+            $prevDuePayments = $payments->filter(function($payment) use ($toDate) {
+                $saleDate = optional($payment->sale)->date;
+                return $payment->is_due_pay && $saleDate < $toDate->format('Y-m-d');
+            });
+
+            $prevPaid = $payments->filter(function($payment) use ($toDate) {
+                $saleDate = optional($payment->sale)->date;
+                return $payment->is_due_pay
+                    && $payment->date < $toDate->format('Y-m-d')
+                    && $saleDate < $toDate->format('Y-m-d');
+            });
+
+            $_prev = $sales
+                ->where('due_amount', '>', 0)
+                ->where('date', '<', $toDate->format('Y-m-d'))
+                ->sum('due_amount')
+                + $prevDuePayments->sum('paying_amount') + $prevDuePayments->sum('discount')
+                - $prevPaid->sum('paying_amount') - $prevPaid->sum('discount');
+        @endphp
         <tr style="height: 17pt;">
             <td>
                 <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
@@ -226,41 +277,7 @@
                     {{ $customer->phone }}
                 </p>
             </td>
-            @php
-                $_prev = $customer->sales()
-                    ->whereDate('date', '<', $toDate->format('Y-m-d'))
-                    ->where('due_amount', '>', 0)
-                    ->sum('due_amount')
-                         + $customer->payments()
-                     ->whereHas('sale', function($query) use ($toDate){
-                         $query->whereDate('date', '<', $toDate->format('Y-m-d'));
-                     })
-                     ->where('is_due_pay', true)
-                     ->sum('paying_amount')
-                    ;
-                 $_add = $customer->sales()
-                     ->whereDate('date', '=', $toDate->format('Y-m-d'))
-                     ->where('due_amount', '>', 0)
-                     ->sum('due_amount')
-                         + $customer->payments()
-                     ->whereHas('sale', function($query){
-                         $query->whereDate('date', '=', now()->format('Y-m-d'));
-                     })
-                     ->where('is_due_pay', true)
-                     ->sum('paying_amount');
-                 $_paid = $customer->payments()
-                     ->whereDate('date', '=', now()->format('Y-m-d'))
-                     ->where('is_due_pay', true)
-                    ->sum('paying_amount');
-                $_curr = $customer->sales()
-                    ->where('due_amount', '>', 0)
-                    ->whereDate('date', $toDate->format('Y-m-d'))
-                    ->sum('due_amount');
-                $prev += $_prev;
-                 $add += $_add;
-                 $paid += $_paid;
-                $curr += $_curr;
-            @endphp
+
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
                 {{ $_prev }}
@@ -282,6 +299,12 @@
                 </p>
             </td>
         </tr>
+        @php
+            $prev += $_prev;
+            $add += $_add;
+            $paid += $_paid;
+            $curr += $_curr;
+        @endphp
         @endforeach
         <tr>
             <td colspan="4">
