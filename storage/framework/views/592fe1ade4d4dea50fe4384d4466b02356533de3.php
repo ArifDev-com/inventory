@@ -1,7 +1,5 @@
-@extends('layouts.pdf')
-
-@section('name', 'Date wise Stock Report')
-@section('content')
+<?php $__env->startSection('name', 'Date wise Stock Report'); ?>
+<?php $__env->startSection('content'); ?>
 <style>
     table * {
         font-size: 12px !important;
@@ -10,7 +8,8 @@
 <div style=" margin-top: 30px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
     Date:
     &nbsp;
-    {{ $fromDate->format('d-m-Y') }} to {{ $toDate->format('d-m-Y') }}
+    <?php echo e($fromDate->format('d-m-Y')); ?> to <?php echo e($toDate->format('d-m-Y')); ?>
+
     &nbsp;
     &nbsp;
     &nbsp;
@@ -65,7 +64,8 @@
     &nbsp;
     Time:
     &nbsp;
-    {{ now()->format('h:i a') }}
+    <?php echo e(now()->format('h:i a')); ?>
+
 </div>
 <table style="padding-top: 5px; border-collapse: collapse; margin: auto; width: 100%;border: 1px solid #969696; " cellspacing="0" class="border">
     <thead>
@@ -184,41 +184,45 @@
     </thead>
     <tbody>
 
-        @foreach ($products as $product)
+        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr style="height: 17pt;">
             <td>
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;"><?php echo e($loop->iteration); ?></p>
             </td>
             <td>
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">{{ $product->code }}</p>
+                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;"><?php echo e($product->code); ?></p>
             </td>
             <td>
                 <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: left;">
-                    {{ $product->name }}
+                    <?php echo e($product->name); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
-                    {{ $product->current_stock }}
+                    <?php echo e($product->current_stock); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
-                    {{ $product->sales_count }}
+                    <?php echo e($product->sales_count); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 4px; padding-left: 2pt; text-indent: 0pt; text-align: center;">
-                    {{ $product->add_count }}
+                    <?php echo e($product->add_count); ?>
+
                 </p>
             </td>
         </tr>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </tbody>
 </table>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('footer')
+<?php $__env->startSection('footer'); ?>
     <td style="text-align: center; opacity: 0;">
         _______________
         <br>
@@ -229,11 +233,13 @@
     </td>
     <td style="text-align: center;">
         <div>
-            {{-- {{ auth()->user()?->name }} --}}
+            
         </div>
         <div style="border-top: 2px solid #000; margin-top: 3px;">
             CAPITAL LIFT
         </div>
     </td>
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.pdf', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/reports/datewise-stock-report-print.blade.php ENDPATH**/ ?>

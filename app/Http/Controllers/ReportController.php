@@ -22,6 +22,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ReportController extends Controller
 {
@@ -391,27 +392,33 @@ class ReportController extends Controller
     public function datewiseStockReport(Request $request)
     {
 
-        $fromDate = now()->startOfMonth();
+        $fromDate = now();
         $toDate = now();
         if (($request->from_date) && ($request->to_date)) {
-            $fromDate = Carbon::createFromFormat('d-m-Y', $request->from_date);
-            $toDate = Carbon::createFromFormat('d-m-Y', $request->to_date);
+            $fromDate = Carbon::parse($request->from_date);
+            $toDate = Carbon::parse($request->to_date);
         }
-
+        ini_set('memory_limit', '2048M');
         $products = Product::query()
-            ->orderBy('name', 'asc')
-            ->get()->map(function ($p) use ($fromDate, $toDate) {
-            // $p->purchase_count = PurchaseItem::where('product_id', $p->id)
-            //     ->whereBetween('created_at', [$fromDate, $toDate])
-            //     ->sum('quantity');
-            $p->add_count = ProductStockUpdate::where('product_id', $p->id)
-                ->whereBetween('created_at', [$fromDate, $toDate])
-                ->sum('quantity');
-            $p->sales_count = SaleItem::where('product_id', $p->id)
-                ->whereBetween('created_at', [$fromDate, $toDate])
-                ->sum('quantity');
-            return $p;
-        });
+                ->orderBy('name', 'asc')
+                ->get()
+                ->append('current_stock')
+                ->map(function ($p) use ($fromDate, $toDate) {
+                // $p->purchase_count = PurchaseItem::where('product_id', $p->id)
+                //     ->whereBetween('created_at', [$fromDate, $toDate])
+                //     ->sum('quantity');
+                // $p->curr_stock = $p->current_stock;
+                $p->add_count = ProductStockUpdate::where('product_id', $p->id)
+                    ->whereBetween('created_at', [$fromDate->format('Y-m-d') . ' 00:00:00', $toDate->format('Y-m-d') . ' 23:59:59'])
+                    ->sum('quantity');
+                $p->sales_count = SaleItem::where('product_id', $p->id)
+                    ->whereHas('sale', function ($q) use($fromDate, $toDate) {
+                        $q->whereBetween('date', [$fromDate->format('Y-m-d'), $toDate->format('Y-m-d')]);
+                    })
+                    ->sum('quantity');
+                return $p;
+            });
+        // });
         if($request->print) {
             $pdf = Pdf::loadView('admin.reports.datewise-stock-report-print', compact('products', 'fromDate', 'toDate'));
             return $pdf->stream('Datewise Stock Report.pdf');
@@ -520,7 +527,7 @@ class ReportController extends Controller
 
     public function productAddedReport(Request $request)
     {
-        $fromDate = now()->startOfMonth()->format('Y-m-d');
+        $fromDate = now()->format('Y-m-d');
         $toDate = now()->format('Y-m-d');
         if (($request->from_date) && ($request->to_date)) {
             $fromDate = Carbon::parse($request->from_date)->format('Y-m-d');
@@ -528,8 +535,12 @@ class ReportController extends Controller
         }
         // dd($fromDate, $toDate);
         $updates = ProductStockUpdate::query()
+            ->with('product')
             ->whereBetween('created_at', [$fromDate . ' 00:00:00', $toDate . ' 23:59:59'])
             ->get();
+            // ->sort(function ($p) {
+            //     return $p->product?->name;
+            // });
         if($request->print) {
             $pdf = Pdf::loadView('admin.reports.product-added-report-print', compact('updates', 'fromDate', 'toDate'));
             return $pdf->stream('Product Added Report.pdf');

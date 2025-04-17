@@ -53,6 +53,7 @@
                                 <th>Prev. Due</th>
                                 <th>Add Due</th>
                                 <th>Paid Due</th>
+                                <th>Discount</th>
                                 <th>Curr. Due</th>
                             </tr>
                         </thead>
@@ -79,8 +80,8 @@
                                     ->where('due_amount', '>', 0)
                                     ->where('date', '=', $toDate->format('Y-m-d'))
                                     ->sum('due_amount')
-                                    + $futureDuePayments->sum('paying_amount')
-                                    + $futureDuePayments->sum('discount');
+                                    + $futureDuePayments->sum('paying_amount');
+                                    // + $futureDuePayments->sum('discount');
 
                                 // Paid amount today (only due payments)
                                 $todayDuePayments = $payments->filter(function($payment) use ($toDate) {
@@ -88,6 +89,8 @@
                                         && $payment->date === $toDate->format('Y-m-d');
                                 });
                                 $_paid = $todayDuePayments->sum('paying_amount') + $todayDuePayments->sum('discount');
+                                $_paid_show = $todayDuePayments->sum('paying_amount');
+                                $_discount = $todayDuePayments->sum('discount');
 
                                 // Previous due logic
                                 $prevDuePayments = $payments->filter(function($payment) use ($toDate) {
@@ -102,15 +105,21 @@
                                         && $saleDate < $toDate->format('Y-m-d');
                                 });
 
+                                // $_prev = $sales
+                                //     ->where('due_amount', '>', 0)
+                                //     ->where('date', '<', $toDate->format('Y-m-d'))
+                                //     ->sum('due_amount')
+                                //     + $prevDuePayments->sum('paying_amount') + $prevDuePayments->sum('discount')
+                                //     - $prevPaid->sum('paying_amount') - $prevPaid->sum('discount');
                                 $_prev = $sales
                                     ->where('due_amount', '>', 0)
                                     ->where('date', '<', $toDate->format('Y-m-d'))
                                     ->sum('due_amount')
-                                    + $prevDuePayments->sum('paying_amount') + $prevDuePayments->sum('discount')
-                                    - $prevPaid->sum('paying_amount') - $prevPaid->sum('discount');
+                                    + $prevDuePayments->sum('paying_amount')
+                                    - $prevPaid->sum('paying_amount');
                             @endphp
 
-                            @if($_curr || $_prev || $_paid || $_add)
+                            @if($_curr || $_prev || $_paid_show || $_add)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
                                     <td>
@@ -127,7 +136,8 @@
                                     <td>{{ $customer->phone }}</td>
                                     <td>{{ $_prev ?? 0 }}</td>
                                     <td>{{ $_add ?? 0 }}</td>
-                                    <td>{{ $_paid ?? 0 }}</td>
+                                    <td>{{ $_paid_show ?? 0 }}</td>
+                                    <td>{{ $_discount ?? 0 }}</td>
                                     <td>
                                         {{ $_prev + $_add - $_paid }}
                                     </td>

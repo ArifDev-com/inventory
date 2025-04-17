@@ -17,7 +17,7 @@ class SMSApi
         // dd($config['url']);
         if (Str::startsWith($phone, '01')) $phone = '88' . $phone;
         if (Str::startsWith($phone, '1')) $phone = '880' . $phone;
-        if(config('app.debug')) {
+        if(config('app.env') === 'local') {
             $text .= "\nDebug Mode: SMS intended for $phone";
             $phone = '8801602641073';
         }

@@ -52,6 +52,7 @@
                                 <th>Prev. Due</th>
                                 <th>Add Due</th>
                                 <th>Paid Due</th>
+                                <th>Discount</th>
                                 <th>Curr. Due</th>
                             </tr>
                         </thead>
@@ -78,8 +79,8 @@
                                     ->where('due_amount', '>', 0)
                                     ->where('date', '=', $toDate->format('Y-m-d'))
                                     ->sum('due_amount')
-                                    + $futureDuePayments->sum('paying_amount')
-                                    + $futureDuePayments->sum('discount');
+                                    + $futureDuePayments->sum('paying_amount');
+                                    // + $futureDuePayments->sum('discount');
 
                                 // Paid amount today (only due payments)
                                 $todayDuePayments = $payments->filter(function($payment) use ($toDate) {
@@ -87,6 +88,8 @@
                                         && $payment->date === $toDate->format('Y-m-d');
                                 });
                                 $_paid = $todayDuePayments->sum('paying_amount') + $todayDuePayments->sum('discount');
+                                $_paid_show = $todayDuePayments->sum('paying_amount');
+                                $_discount = $todayDuePayments->sum('discount');
 
                                 // Previous due logic
                                 $prevDuePayments = $payments->filter(function($payment) use ($toDate) {
@@ -101,16 +104,21 @@
                                         && $saleDate < $toDate->format('Y-m-d');
                                 });
 
+                                // $_prev = $sales
+                                //     ->where('due_amount', '>', 0)
+                                //     ->where('date', '<', $toDate->format('Y-m-d'))
+                                //     ->sum('due_amount')
+                                //     + $prevDuePayments->sum('paying_amount') + $prevDuePayments->sum('discount')
+                                //     - $prevPaid->sum('paying_amount') - $prevPaid->sum('discount');
                                 $_prev = $sales
                                     ->where('due_amount', '>', 0)
                                     ->where('date', '<', $toDate->format('Y-m-d'))
                                     ->sum('due_amount')
-                                    + $prevDuePayments->sum('paying_amount') + $prevDuePayments->sum('discount')
-                                    - $prevPaid->sum('paying_amount') - $prevPaid->sum('discount');
+                                    + $prevDuePayments->sum('paying_amount')
+                                    - $prevPaid->sum('paying_amount');
                             ?>
 
-                            
-                            <?php if($_curr || $_prev || $_paid || $_add): ?>
+                            <?php if($_curr || $_prev || $_paid_show || $_add): ?>
                                 <tr>
                                     <td><?php echo e($key+1); ?></td>
                                     <td>
@@ -130,7 +138,8 @@
                                     <td><?php echo e($customer->phone); ?></td>
                                     <td><?php echo e($_prev ?? 0); ?></td>
                                     <td><?php echo e($_add ?? 0); ?></td>
-                                    <td><?php echo e($_paid ?? 0); ?></td>
+                                    <td><?php echo e($_paid_show ?? 0); ?></td>
+                                    <td><?php echo e($_discount ?? 0); ?></td>
                                     <td>
                                         <?php echo e($_prev + $_add - $_paid); ?>
 
@@ -164,4 +173,5 @@
 </script>
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/customer/dueList.blade.php ENDPATH**/ ?>

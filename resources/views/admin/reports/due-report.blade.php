@@ -57,7 +57,7 @@
                     <div class="card-body pb-0">
                         <form action="{{ route('sale.report') }}" method="get">
                         <div class="row">
-                         
+
                             <div class="col-lg-2 col-sm-6 col-12">
                                 <div class="form-group">
                                     <div class="input-groupicon">
@@ -101,9 +101,9 @@
                                 <th>Sl</th>
                                 <th>Date</th>
                                 <th>Customer</th>
-              
+
                                 <th>Due</th>
-                     
+
                             </tr>
                         </thead>
                         <tbody>
@@ -118,13 +118,10 @@
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $sale->date }}</td>
                                 <td>{{ $sale->customer->name }}</td>
-                          
-                    
                                 <td class="text-red">{{ $sale->due_amount }}</td>
-                             
                             </tr>
                          @endforeach
-{{--                            
+{{--
                         <tfoot>
                             <td></td>
                             <td></td>

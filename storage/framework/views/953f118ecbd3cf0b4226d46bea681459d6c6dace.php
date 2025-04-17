@@ -1,8 +1,6 @@
-@extends('layouts.pdf')
+<?php $__env->startSection('name', 'Dues Report'); ?>
 
-@section('name', 'Dues Report')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     table * {
         font-size: 9px !important;
@@ -18,10 +16,12 @@
         <tbody>
             <tr>
                 <td>
-                    Date: {{ $toDate->format('d-m-Y') }}
+                    Date: <?php echo e($toDate->format('d-m-Y')); ?>
+
                 </td>
                 <td style="text-align: right;">
-                    Time: {{ now()->format('h:i a') }}
+                    Time: <?php echo e(now()->format('h:i a')); ?>
+
                 </td>
             </tr>
         </tbody>
@@ -213,16 +213,16 @@
         </tr>
     </thead>
     <tbody>
-        @php
+        <?php
             $prev = 0;
             $add = 0;
             $paid = 0;
             $curr = 0;
             $discount = 0;
-        @endphp
+        ?>
 
-        @foreach ($customers as $customer)
-        @php
+        <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php
             $sales = $customer->sales;
             $payments = $customer->payments;
 
@@ -274,68 +274,77 @@
                 ->sum('due_amount')
                 + $prevDuePayments->sum('paying_amount') + $prevDuePayments->sum('discount')
                 - $prevPaid->sum('paying_amount') - $prevPaid->sum('discount');
-        @endphp
-		@if($_curr || $_prev || $_paid_show || $_add)
+        ?>
+		<?php if($_curr || $_prev || $_paid_show || $_add): ?>
         <tr style="height: 17pt;">
             <td>
-                <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+                <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;"><?php echo e($loop->iteration); ?></p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">
-                    {{ $toDate->format('Y-m-d') }}
+                    <?php echo e($toDate->format('Y-m-d')); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: left;">
-                    {{ $customer->name }}
+                    <?php echo e($customer->name); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 2pt; text-indent: 0pt; text-align: left;">
-                    {{ $customer->company_name }}
+                    <?php echo e($customer->company_name); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    {{ $customer->phone }}
+                    <?php echo e($customer->phone); ?>
+
                 </p>
             </td>
 
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                {{ $_prev }}
+                <?php echo e($_prev); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    {{ $_add }}
+                    <?php echo e($_add); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    {{ $_paid_show }}
+                    <?php echo e($_paid_show); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    {{ $_discount }}
+                    <?php echo e($_discount); ?>
+
                 </p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    {{ $_curr }}
+                    <?php echo e($_curr); ?>
+
                 </p>
             </td>
         </tr>
-        @php
+        <?php
             $prev += $_prev;
             $add += $_add;
             $paid += $_paid_show;
             $curr += $_curr;
             $discount += $_discount;
-        @endphp
-        @endif
-        @endforeach
+        ?>
+        <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <tr>
             <td colspan="4">
 
@@ -344,26 +353,31 @@
                 Total
             </td>
             <td style="text-align: center;">
-                {{ $prev }}
+                <?php echo e($prev); ?>
+
             </td>
             <td style="text-align: center;">
-                {{ $add }}
+                <?php echo e($add); ?>
+
             </td>
             <td style="text-align: center;">
-                {{ $paid }}
+                <?php echo e($paid); ?>
+
             </td>
             <td style="text-align: center;">
-                {{ $discount }}
+                <?php echo e($discount); ?>
+
             </td>
             <td style="text-align: center;">
-                {{ $curr }}
+                <?php echo e($curr); ?>
+
             </td>
         </tr>
     </tbody>
 </table>
 
-@endsection
-@section('footer')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('footer'); ?>
 <td style="text-align: center; opacity: 0;">
     _______________
 </td>
@@ -380,10 +394,13 @@
     _______________
 </td>
 <td style="text-align: center;">
-    {{ auth()->user()->name }}
+    <?php echo e(auth()->user()->name); ?>
+
     <br>
     _______________
     <br>
     CAPITAL LIFT
 </td>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.pdf', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/ariful/Developer/Personal_Projects/Inventory/inventory/resources/views/admin/customer/dueListPrint.blade.php ENDPATH**/ ?>

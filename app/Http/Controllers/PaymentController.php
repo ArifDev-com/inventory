@@ -169,6 +169,18 @@ Thank you."
         $customers = $customers->get(['id', 'name', 'phone', 'company_name']);
 
         if ($request->print) {
+          	/*$html = view('admin.customer.dueListPrint', [
+                'customers' => $customers,
+                'toDate' => $toDate,
+            ]);
+
+            return \Barryvdh\Snappy\Facades\SnappyPdf::loadHTML($html)
+              ->setPaper('a4')
+              ->setOption('margin-top', '10mm')
+              ->setOption('margin-bottom', '10mm')
+              ->setOption('margin-left', '10mm')
+              ->setOption('margin-right', '10mm')
+              ->stream('Due List.pdf');*/ 
             $pdf = Pdf::loadView('admin.customer.dueListPrint', [
                 'customers' => $customers,
                 'toDate' => $toDate,
