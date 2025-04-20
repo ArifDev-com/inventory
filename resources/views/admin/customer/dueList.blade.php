@@ -58,6 +58,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                          	@php
+                          		$index = 1;
+                          	@endphp
                             @foreach($customers as $key => $customer)
                             @php
                                 $sales = $customer->sales;
@@ -121,7 +124,7 @@
 
                             @if($_curr || $_prev || $_paid_show || $_add)
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $index ++ }}</td>
                                     <td>
                                         {{ $toDate->format('Y-m-d') }}
                                     </td>

@@ -45,7 +45,151 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">S.L</p>
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">S.L</p>
+            </td>
+            <td style="
+                        width: 52px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">Date</p>
+            </td>
+            <td style="
+                        width: 130px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">Client Name</p>
+            </td>
+            <td style="
+                        width: 150px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">Company Name</p>
+            </td>
+            <td style="
+                        width: 60px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">Contact</p>
+            </td>
+            <td style="
+                        width: 50px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">
+                    Previous
+                </p>
+            </td>
+            <td style="
+                        width: 50px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">
+                    Add Due
+                </p>
+            </td>
+            <td style="
+                        width: 50px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">
+                    Paid Due
+                </p>
+            </td>
+            <td style="
+                        width: 50px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">
+                    Discount
+                </p>
             </td>
             <td style="
                         width: 55px;
@@ -62,151 +206,7 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">Date</p>
-            </td>
-            <td style="
-                        width: 120px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">Client Name</p>
-            </td>
-            <td style="
-                        width: 100px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">Company Name</p>
-            </td>
-            <td style="
-                        width: 70px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">Contact</p>
-            </td>
-            <td style="
-                        width: 60px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Previous
-                </p>
-            </td>
-            <td style="
-                        width: 60px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Add Due
-                </p>
-            </td>
-            <td style="
-                        width: 70px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Paid Due
-                </p>
-            </td>
-            <td style="
-                        width: 70px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Discount
-                </p>
-            </td>
-            <td style="
-                        width: 70px;
-                        border-top-style: solid;
-                        border-top-width: 1pt;
-                        border-top-color: #959595;
-                        border-left-style: solid;
-                        border-left-width: 1pt;
-                        border-left-color: #959595;
-                        border-bottom-style: solid;
-                        border-bottom-width: 1pt;
-                        border-bottom-color: #959595;
-                        border-right-style: solid;
-                        border-right-width: 1pt;
-                        border-right-color: #959595;
-                    " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 4px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
+                <p class="s2" style="padding: 4px 1px; text-indent: 0pt; text-align: center;">
                     Curr. Due
                 </p>
             </td>
@@ -219,6 +219,7 @@
             $paid = 0;
             $curr = 0;
             $discount = 0;
+      		$index = 1;
         @endphp
 
         @foreach ($customers as $customer)
@@ -278,7 +279,7 @@
 		@if($_curr || $_prev || $_paid_show || $_add)
         <tr style="height: 17pt;">
             <td>
-                <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+                <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">{{ $index ++ }}</p>
             </td>
             <td>
                 <p class="s2" style="padding: 3px; text-indent: 0pt; text-align: center;">

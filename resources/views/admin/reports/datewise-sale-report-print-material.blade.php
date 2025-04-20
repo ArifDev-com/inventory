@@ -199,7 +199,7 @@
       		<tr style="height: 17pt;">
       		 <td>
                 <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
-                    {{ $loop->iteration }}
+                    {{ $index ++ }}
                 </p>
              </td>
                 <td>

@@ -162,19 +162,19 @@
                     <tbody>
                         @foreach ($updates as $update)
                             <tr style="height: 17pt;">
-                                <td style="padding: 5px">
+                                <td style="padding: 5px; text-align: center;">
                                     {{ $loop->iteration }}
                                 </td>
-                                <td style="padding: 5px">
+                                <td style="padding: 5px; text-align: center;">
                                     {{ $update->created_at->format('d-m-Y') }}
                                 </td>
-                                <td style="padding: 5px">
+                                <td style="padding: 5px; text-align: center;">
                                     {{ $update->product->code }}
                                 </td>
                                 <td style="text-align: left; padding: 5px;">
                                     {{ $update->product->name }}
                                 </td>
-                                <td style="padding: 5px">
+                                <td style="padding: 5px; text-align: center;">
                                     {{ $update->quantity }}
                                 </td>
                             </tr>

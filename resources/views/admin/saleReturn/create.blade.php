@@ -51,7 +51,7 @@
                             <div class="form-group">
                                 <label>Return Date</label>
                                 <div class="input-groupicon">
-                                    <input type="date" class="form-control" name="date" value="{{ date("Y-m-d") }}">
+                                    <input type="date" class="form-control" name="date" value="{{ date("Y-m-d") }}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -167,11 +167,6 @@
                                 <label>{{ trans('form.sale.payment type') }}</label>
                                 <select class="select2 form-control" name="payment_type" required="true">
                                     <option value="cash">Cash</option>
-                                    <option value="card">Card</option>
-                                    <option value="bank">Bank</option>
-                                    <option value="bkash">bKash</option>
-                                    <option value="rocket">Rocket</option>
-                                    <option value="nagad">Nagad</option>
                                 </select>
                             </div>
                         </div>

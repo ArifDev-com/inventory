@@ -342,7 +342,7 @@ Thank you."
 
     public function destroy($sale_id)
     {
-        abort_if(Auth::user()->user_role != 'admin', 403, 'Unauthorized');
+        abort_if(Auth::user()->user_role != 'superadmin' && Auth::user()->user_role != 'admin', 403, 'Unauthorized');
         Sale::findOrFail($sale_id)->delete();
 
         SaleItem::where('sale_id', $sale_id)->delete();

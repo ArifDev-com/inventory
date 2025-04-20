@@ -44,6 +44,7 @@
                                 <th>Customer</th>
                                 <th>Phone</th>
                                 <th>Address</th>
+                              	<th>Type</th>
                                 <th>Paid Amount</th>
                                 <th>Discount</th>
                                 <th>Due Date</th>
@@ -56,10 +57,11 @@
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $payment->sale?->ref_code }}</td>
                                 <td>{{ $payment->date }}</td>
-                                <td>{{ $payment->customer?->name ?: $payment->sale?->customer?->name }}</td>
+                                <td style="text-align: left;">{{ $payment->customer?->name ?: $payment->sale?->customer?->name }}</td>
                                 <td>{{ $payment->customer?->phone ?: $payment->sale?->customer?->phone }}</td>
-                                <td>{{ $payment->customer?->address ?: $payment->sale?->customer?->address }}</td>
-                                <td>{{ $payment->paying_amount }}</td>
+                                <td style="text-align: left;">{{ $payment->customer?->address ?: $payment->sale?->customer?->address }}</td>
+                                <td>{{ $payment->payment_method }}</td>
+                              	<td>{{ $payment->paying_amount }}</td>
                                 <td>{{ $payment->discount }}</td>
                                 <td>{{ $payment->due_date }}</td>
                                 <td>

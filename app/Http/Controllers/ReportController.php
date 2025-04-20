@@ -537,10 +537,10 @@ class ReportController extends Controller
         $updates = ProductStockUpdate::query()
             ->with('product')
             ->whereBetween('created_at', [$fromDate . ' 00:00:00', $toDate . ' 23:59:59'])
-            ->get();
-            // ->sort(function ($p) {
-            //     return $p->product?->name;
-            // });
+          	->get()
+          	 ->sortBy(function ($item) {
+                  return $item->product?->name;
+              });
         if($request->print) {
             $pdf = Pdf::loadView('admin.reports.product-added-report-print', compact('updates', 'fromDate', 'toDate'));
             return $pdf->stream('Product Added Report.pdf');
