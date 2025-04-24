@@ -36,7 +36,7 @@
                     <table class="table" id="example">
                         <thead>
                             <tr>
-                                <th>Sl</th>
+                                <th>S.L</th>
                                 <th>Inv. No.</th>
                                 <th>{{ trans('table.sale.date') }}</th>
                                 <th>{{ trans('table.sale.customer') }}</th>
@@ -64,7 +64,8 @@
                                 </td>
                                 <td>
                                     <div style="width: 100px; word-wrap: break-word; overflow: hidden;">
-                                        {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }}
+                                        {{ join(', ', $sale->payments->pluck('payment_method')->toArray()) }} <br>
+                                      	<span style="color: #ff4903cc; font-size: 12px;">{{ join(', ', $sale->payments->pluck('note')->toArray()) }}</span>
                                     </div>
                                 </td>
                                 <td>{{ $sale->grandtotal }}</td>

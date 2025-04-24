@@ -81,7 +81,7 @@
                                     <span>{{ $customer->advance }}</span>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -104,10 +104,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customer->sales as $key => $sale)
+                                @foreach($customer->sales()->latest()->get() as $key => $sale)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{ $sale->id }}</td>
+                                    <td>{{ $sale->ref_code }}</td>
                                     <td>{{ $sale->date }}</td>
                                     <td style="width: 400px;">
                                         <table class="" style="width: 100%;">
@@ -157,12 +157,12 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="{{ route('sale.pdf', [$sale->id]) }}" class="dropdown-item"><img
+                                                <a href="{{ route('sale.pdf', [$sale->id]) }}" target="_blank" class="dropdown-item"><img
                                                         src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
                                                         alt="img">Print Invoice</a>
                                             </li>
                                             <li>
-                                                <a href="{{ route('sale.challan.pdf', [$sale->id]) }}"
+                                                <a href="{{ route('sale.challan.pdf', [$sale->id]) }}" target="_blank"
                                                     class="dropdown-item">
                                                     <img
                                                         src="{{ asset('backend') }}/img/icons/download.svg" class="me-2"
@@ -227,7 +227,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customer->payments()->where('is_due_pay', true)->get() as $key => $payment)
+                                @foreach($customer->payments()->where('is_due_pay', true)->latest()->get() as $key => $payment)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
                                     <td>{{ $payment->date }}</td>

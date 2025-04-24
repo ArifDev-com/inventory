@@ -119,7 +119,7 @@ class SaleController extends Controller
         // ]);
         // dd($request->all());
         // make barcode
-        $ref_code = 100 + Sale::count();
+        $ref_code = (Sale::latest()->first()->ref_code ?: 100) + 1;
         $barCodeName = $ref_code.'.png';
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($ref_code, 'C39+'));
         $barCodeSavePath = 'upload/barcode/'.$barCodeName;

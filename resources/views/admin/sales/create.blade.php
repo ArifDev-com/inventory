@@ -93,7 +93,7 @@
                                                 <td>
                                                     <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="{{ $item->quantity }}" style="width:100px;"
                                                         min="1"
-                                                    >
+                                                    />
                                                 </td>
 
                                                 <input type="hidden" name="purchase_price[]" class="purchase_price" value="{{ $item->product?->price }}" style="width:100px;">
@@ -178,7 +178,7 @@
                                 <label>
                                     Payment Method
                                 </label>
-                                <select class="form-control" name="payment_type" required="true" onchange="paymentMethodChange(this)">
+                                <select class="form-control" name="payment_type" onchange="paymentMethodChange(this)">
                                     <option value="">Select</option>
                                     <option value="cash">Cash</option>
                                     <option value="card">Card</option>
@@ -221,7 +221,7 @@
                                 onclick="addPaymentMethod()" type="button"
                                 id="add_payment_method">
                                 <i class="fa fa-plus"></i>
-                                Add More Method
+                                Multiple Payment Method
                             </button>
                         </div>
 
@@ -362,19 +362,15 @@
             return;
         }
         var htmldata = `<tr id="product_${product.id}">
-                    <input type="hidden" name="product_id[]"  class="form-control product_id"  value="${product.id}">
-
+	                    <input type="hidden" name="product_id[]"  class="form-control product_id"  value="${product.id}">
                     <td class="productimgname">
-
-                    <a href="javascript:void(0);">${product.name}</a>-<a href="javascript:void(0);">${product.code}</a>
+                    	<a href="javascript:void(0);">${product.name}</a>-<a href="javascript:void(0);">${product.code}</a>
                     </td>
-
-                    <td >${product.current_stock}</td>
-
+                    <td>${product.current_stock}</td>
                     <td>
-                    <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;"
-                        min="1"
-                    >
+                      <input type="number" name="quantity[]" class="form-control quantity"  placeholder="quantity" value="1" style="width:100px;"
+                          min="1"
+                      />
                     </td>
 
                     <input type="hidden" name="purchase_price[]" class="purchase_price" value="${product.price}" style="width:100px;">
@@ -583,7 +579,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Payment Method</label>
-                            <select class="select2 form-control" name="payments[${len}][method]" required="true" onchange="paymentMethodChange(this)">
+                            <select class="select2 form-control extra-methods" name="payments[${len}][method]" required="true" onchange="paymentMethodChange(this)">
+								<option value="">Select method</option>
                                 <option value="cash">Cash</option>
                                 <option value="card">Card</option>
                                 <option value="bank">Bank</option>
@@ -592,7 +589,7 @@
                                 <option value="nagad">Nagad</option>
                                 <option value="advance">Advance</option>
                             </select>
-                                <span class="text-danger advance_message"></span>
+                            <span class="text-danger advance_message"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -681,6 +678,23 @@
 
     function paymentMethodChange(element) {
         let method = $(element).val();
+      	if($(element).hasClass('extra-methods'))
+        {
+            let found = false;
+            document.querySelectorAll('.extra-methods').forEach(extra => {
+            	console.log(extra !== element, extra, element, extra.value == method)
+            	if(extra !== element && extra.value == method)
+                {	
+                	found = true;
+                  	$(extra).val('').trigger('change')
+                  	alert("Same payment method cannot be used in multiple times. Please select a different method!")
+                }
+            })
+	        if(found) {
+              setTimeout(() => $(element).val('').trigger('change'), 100)
+              return;
+            }
+        }
         if(method == 'advance') {
             $('.advance_message').text('Advance: ' + $('.advance_amount').text() + ' Tk');
         } else {

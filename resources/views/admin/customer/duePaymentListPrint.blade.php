@@ -6,9 +6,9 @@
 <div style=" margin-top: 30px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
     Date:
     &nbsp;
-    &nbsp;
     {{ $fromDate->format('d-m-Y') }} to {{ $toDate->format('d-m-Y') }}
     &nbsp;
+  	&nbsp;
     &nbsp;
     &nbsp;
     &nbsp;
@@ -59,6 +59,8 @@
     &nbsp;
     &nbsp;
     &nbsp;
+  	&nbsp;
+  	&nbsp;
     Time:
     &nbsp;
     {{ now()->format('h:i a') }}
@@ -80,7 +82,25 @@
                         border-right-width: 1pt;
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
-                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;"> No.</p>
+                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">S.L</p>
+            </td>
+          	
+          	<td style="
+                       	width: 70px;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-top-color: #959595;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-left-color: #959595;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-bottom-color: #959595;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                        border-right-color: #959595;
+                    " bgcolor="#EFEFEF">
+                <p class="s2" style="padding: 5px; text-indent: 0pt; text-align: center;">Inv. No</p>
             </td>
             <td style="
                         width: 100px;
@@ -151,7 +171,7 @@
                 </p>
             </td>
             <td style="
-                        width: 20%;
+                        width: 100px;
                         border-top-style: solid;
                         border-top-width: 1pt;
                         border-top-color: #959595;
@@ -166,7 +186,7 @@
                         border-right-color: #959595;
                     " bgcolor="#EFEFEF">
                 <p class="s2" style="padding: 5px; padding-left: 1pt; text-indent: 0pt; text-align: center;">
-                    Paid Amount
+                    Paid Amn.
                 </p>
             </td>
         </tr>
@@ -174,6 +194,11 @@
         <tr style="height: 17pt;">
             <td>
                 <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">{{ $loop->iteration }}</p>
+            </td>
+          	<td>
+                <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
+                    {{ $payment->sale?->ref_code }}
+                </p>
             </td>
             <td>
                 <p class="s2" style="padding: 4px; text-indent: 0pt; text-align: center;">
@@ -203,8 +228,8 @@
         </tr>
         @endforeach
         <tr>
-            <td colspan="4">
-                Total
+            <td colspan="5" style="text-align: right;">
+                Total :
             </td>
             <td style="padding: 5px">
                 {{ $payments->sum('discount') }}
@@ -212,7 +237,6 @@
             <td style="text-align: center;">
                 {{ $payments->sum('paying_amount') }}
             </td>
-            {{-- <td></td> --}}
         </tr>
     </tbody>
 </table>

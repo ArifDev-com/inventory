@@ -38,7 +38,7 @@
                     <table class="table" id="myTable">
                         <thead>
                             <tr>
-                                <th>Sl</th>
+                                <th>S.l</th>
                                 <th>Inv. No.</th>
                                 <th>Payment Date</th>
                                 <th>Customer</th>
