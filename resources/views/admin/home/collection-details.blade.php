@@ -117,6 +117,7 @@
                                 ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                                 ->sum('paying_amount')
                             - App\Models\SaleReturn::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+                                ->where('status', 'received')
                                 ->sum('paid_amount')
                             - App\Models\Expense::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                                 ->sum('amount')

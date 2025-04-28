@@ -20,6 +20,12 @@
                         ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                         ->with('sale')
                         ->sum('paying_amount')
+                    - (is_string($item) && $item == 'cash' ?
+                        App\Models\SaleReturn::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+                            ->where('paid_amount', '>', 0)
+                            ->where('status', 'received')
+                            ->sum('paid_amount')
+                        : 0)
                   }}
               </h4>
                 <div style="height: 400px; overflow-y: auto;">
@@ -207,7 +213,7 @@
                   Return: {{
                   App\Models\SaleReturn::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                                       ->where('paid_amount', '>', 0)
-                                      ->with('customer')
+                                      ->where('status', 'received')
                                     ->sum('paid_amount')
                   }}
               </h4>

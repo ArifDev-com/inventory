@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $appends = [
-        'current_stock',
+        // 'current_stock',
     ];
     protected $casts = [
         'wholesale_price' => 'integer',

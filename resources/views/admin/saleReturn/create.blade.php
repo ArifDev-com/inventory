@@ -4,7 +4,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
+@php
+    $prevReturn = \App\Models\SaleReturn::where('sale_id', $sale->id)->exists();
+    $discount = $sale->discount && !$prevReturn ? $sale->discount : 0;
+@endphp
 <div class="page-wrapper">
     <div class="content">
         <div class="page-header">
@@ -130,13 +133,29 @@
                             <div class="total-order">
                                 <ul>
                                     <li class="total">
+                                        <h4>Total</h4>
+                                        <input type="text" readonly class="total_val" name="total"
+                                            style="margin-left:30px;">
+                                    </li>
+                                    <li class="total">
+                                        <h4>Discount of Sale</h4>
+                                        <input type="text" readonly class="discount_val" name="discount"
+                                            style="margin-left:30px;" value="{{ $discount }}">
+                                    </li>
+                                    <li class="total">
                                         <h4>Grand Total</h4>
-                                        <input type="text" readonly class="total_val" name="grand_total"
+                                        <input type="text" readonly class="grand_total_val" name="grand_total"
                                             style="margin-left:30px;">
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                        @if ($prevReturn && $sale->discount)
+                            <div class="col-12 text-warning text-end mb-2">
+                                <i class="fa fa-exclamation-triangle"></i> Note:
+                                The sale had a discount of {{ $sale->discount }} Tk. It was already applied in the previous return.
+                            </div>
+                        @endif
                     </div>
                     <div class="row d-none" >
                         <div class="col-lg-3 col-sm-6 col-12">
@@ -221,10 +240,12 @@
             total += inlineTotal;
         });
         var formattedTotal = total.toFixed(0); // Fixed a typo: 'num' should be 'total'
+        let discount = Number("{{ $discount }}") || 0;
         $('.total_val').val(formattedTotal);
-        $('.paid_amount').val(formattedTotal);
+        $('.grand_total_val').val(formattedTotal - discount);
+        $('.paid_amount').val(formattedTotal - discount);
         $('.return_amount').val(
-            $('.return_amount').attr('sale_grandtotal') - formattedTotal
+            $('.return_amount').attr('sale_grandtotal') - formattedTotal - discount
         );
     }
 
@@ -290,19 +311,12 @@
             total += inlineTotal;
         });
 
-        var discount =  $(this).val();
-        // var taxPercent =  $('#tax_val').val();
-        // var shipping =  $('#shipping_val').val();
         var t = parseInt(total) ;
-        // var grandTotal = t + parseInt(shipping);
-        //var finalTotal = grandTotal + ((grandTotal * parseInt(taxPercent)) /100);
-        // var finalTotal = grandTotal ;
-
-
-        // var grandtotal = total - discount;
+        let discount = Number("{{ $discount }}") || 0;
         $('.total_val').val(t);
+        $('.grand_total_val').val(t - discount);
         //$('#discount').text(discount);
-        $('.amount_left').val(t - $(this).val());
+        $('.amount_left').val(t - discount - $(this).val());
     });
 
     //shipping cost
@@ -311,7 +325,7 @@
         var total = 0;
             $('.inline_total').each(function (i, e) {
                 var inlineTotal = $(this).val() - 0;
-            return	total += inlineTotal;
+                return	total += inlineTotal;
             });
             var shipping =  $(this).val();
             var discount = $('#discount_val').val();
