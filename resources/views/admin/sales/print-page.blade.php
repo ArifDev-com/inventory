@@ -268,7 +268,7 @@
             </td>
             <td>
                 <p class="s2">
-                {{ $sale->customer?->sales()->where('id', '!=', $sale->id)->sum('due_amount') }}
+                {{ $sale->customer?->sales()->where('id', '!=', $sale->id)->sum('main_due') }}
                 </p>
             </td>
             <td>
@@ -297,7 +297,7 @@
             </td>
             <td>
                 <p class="s2">
-                {{ $sale->due_amount }}
+                {{ $sale->main_due }}
                 </p>
             </td>
             <td>
@@ -327,7 +327,7 @@
             </td>
             <td>
                 <p class="s2">
-                {{ $sale->customer?->sales()->sum('due_amount') }}
+                {{ $sale->customer?->sales()->sum('main_due') }}
                 </p>
             </td>
             <td>

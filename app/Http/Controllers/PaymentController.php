@@ -74,7 +74,7 @@ class PaymentController extends Controller
                     'discount' => $discountForThisSale,
                     'customer_id' => $data['customer_id'],
                     'payment_method' => $data['payment_method'],
-                    'note' => $data['note'] ?? '',
+                    'note' => $request->note,
                     'is_due_pay' => true,
                     'created_at' => Carbon::now(),
                     'sale_id' => $sale->id,
@@ -180,7 +180,7 @@ Thank you."
               ->setOption('margin-bottom', '10mm')
               ->setOption('margin-left', '10mm')
               ->setOption('margin-right', '10mm')
-              ->stream('Due List.pdf');*/ 
+              ->stream('Due List.pdf');*/
             $pdf = Pdf::loadView('admin.customer.dueListPrint', [
                 'customers' => $customers,
                 'toDate' => $toDate,

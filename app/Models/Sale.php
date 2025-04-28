@@ -29,6 +29,8 @@ class Sale extends Model
         'other_cost',
         'price_type',
         'cancel_requested',
+        'main_due',
+        'main_due_date',
     ];
 
     public function returns(){

@@ -72,8 +72,8 @@
                                 {{-- <td>{{ $sale->discount }}</td>
                                 <td>{{ $sale->other_cost }}</td> --}}
                                 <td>{{ $sale->paid_amount }}</td>
-                                <td class="text-red">{{ $sale->due_amount }}</td>
-                                <td>{{ $sale->due_date }}</td>
+                                <td class="text-red">{{ $sale->main_due }}</td>
+                                <td>{{ $sale->main_due_date }}</td>
                                 <td style="text-align: left;">
                                     {{ $sale->user?->first_name . ' ' . $sale->user?->last_name }}
                                     {{-- @dump($sale->cancel_requested) --}}
@@ -97,7 +97,7 @@
                                         href="{{ route('sale.pdf', [$sale->id]) }}"
                                         onclick="window.open('{{ route('sale.challan.pdf', [$sale->id]) }}', '_blank')"
                                         >
-                                        <i class="fa fa-print"></i> Print 
+                                        <i class="fa fa-print"></i> Print
                                     </a>
                                 </td>
                             </tr>

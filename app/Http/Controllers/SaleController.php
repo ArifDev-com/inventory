@@ -146,6 +146,8 @@ class SaleController extends Controller
                 'payment_type' => $request->payment_type,
                 'barcode_url' => $barCodeSavePath,
                 'note' => $request->note,
+                'main_due' => $request->due_amount,
+                'main_due_date' => $request->due_date,
             ]);
             if (count($request->payments ?: []) == 0) {
                 CutomerPayment::create([
@@ -299,9 +301,6 @@ Thank you."
 
     public function update(Request $request, $id)
     {
-
-        // dd($request->all());
-
         // make barcode
         $barCodeName = $request->ref_code.'.png';
         $barcodeFile = base64_decode(DNS1D::getBarcodePNG($request->ref_code, 'C39+'));

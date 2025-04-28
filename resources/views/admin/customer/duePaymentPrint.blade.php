@@ -44,6 +44,14 @@
                                 : {{ $payment->customer?->address }}
                             </td>
                         </tr>
+                        <tr>
+                            <td style="width: 26%;">
+                                Invoice No
+                            </td>
+                            <td>
+                                : {{ $payment->sale?->ref_code }}
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </td>
@@ -118,9 +126,10 @@
             </tr>
         </tbody>
     </table>
+
     @if ($payment->note)
         <h1 style="padding-top: 4px; text-indent: 0pt; text-align: left;">
-            Note: <br>{{ $payment->note }}
+            Note: {{ $payment->note }}
         </h1>
     @endif
 @endsection
